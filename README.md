@@ -1,5 +1,5 @@
 # Sign-Lang-Tutor
-A web app aimed at teaching sign language 
+A web app aimed at teaching sign language.
 
 ## Contributors
 - [marinov98](https://github.com/marinov98)
