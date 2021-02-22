@@ -5,4 +5,4 @@ Contains the flask code used in setting up the database and making the routes fo
 This backend is developed used anaconda 
 - To create the appropriate python environment run `conda env create -f environment.yml`
 	- To activate the environment run `conda activate slt`
-	- To update environment run `conda env export > environment.yml`
+	- To update the environment run `conda env export > environment.yml`
