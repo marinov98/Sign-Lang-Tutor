@@ -2,11 +2,12 @@ name: slt
 channels:
   - chen
   - anaconda
+  - conda-forge
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=main
-  - ca-certificates=2021.1.19=h06a4308_0
-  - certifi=2020.12.5=py36h06a4308_0
+  - ca-certificates=2020.12.5=ha878542_0
+  - certifi=2020.12.5=py36h5fab9bb_1
   - click=7.1.2=pyhd3eb1b0_0
   - flask=1.1.2=pyhd3eb1b0_0
   - flask-cors=3.0.9=py_0
@@ -24,6 +25,8 @@ dependencies:
   - pip=21.0.1=py36h06a4308_0
   - pymongo=3.11.3=py36h2531618_0
   - python=3.6.12=hcff3b4d_2
+  - python-dotenv=0.15.0=pyhd8ed1ab_0
+  - python_abi=3.6=1_cp36m
   - readline=8.1=h27cfd23_0
   - setuptools=52.0.0=py36h06a4308_0
   - six=1.15.0=py_0
@@ -34,4 +37,3 @@ dependencies:
   - wheel=0.36.2=pyhd3eb1b0_0
   - xz=5.2.5=h7b6447c_0
   - zlib=1.2.11=h7b6447c_3
-prefix: /home/marinov/anaconda3/envs/slt
