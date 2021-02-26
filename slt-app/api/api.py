@@ -24,7 +24,6 @@ def create_app():
     # database
     app.config["MONGO_URI"] = db_url
     app.config["MONGO_DBNAME"] = db_name
-    mongo.init_app(app)
 
     # routes
     import routes

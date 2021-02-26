@@ -1,26 +1,24 @@
 name: slt
 channels:
-  - conda-forge
   - chen
   - anaconda
+  - conda-forge
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=main
   - astroid=2.5=py36h06a4308_1
   - autopep8=1.5.5=pyhd3eb1b0_0
   - bcrypt=3.2.0=py36h7b6447c_0
-  - ca-certificates=2021.1.19=h06a4308_0
-  - certifi=2020.12.5=py36h06a4308_0
+  - ca-certificates=2020.12.5=ha878542_0
+  - certifi=2020.12.5=py36h5fab9bb_1
   - cffi=1.14.5=py36h261ae71_0
   - click=7.1.2=pyhd3eb1b0_0
-  - cryptography=2.9.2=py36h1ba5d50_0
   - flake8=3.8.4=py_0
   - flask=1.1.2=pyhd3eb1b0_0
   - flask-bcrypt=0.7.1=py_1
   - flask-cors=3.0.9=py_0
-  - flask-jwt-extended=4.0.2=pyhd3eb1b0_0
+  - flask-jwt-extended=4.0.2=pyhd8ed1ab_0
   - flask-pymongo=0.5.1=py36_0
-  - idna=3.1=pyhd3eb1b0_0
   - importlib-metadata=2.0.0=py_1
   - isort=5.7.0=pyhd3eb1b0_0
   - itsdangerous=1.1.0=py36_0
@@ -41,11 +39,12 @@ dependencies:
   - pycodestyle=2.6.0=pyhd3eb1b0_0
   - pycparser=2.20=py_2
   - pyflakes=2.2.0=pyhd3eb1b0_0
-  - pyjwt=2.0.1=py36h06a4308_0
+  - pyjwt=2.0.1=pyhd8ed1ab_0
   - pylint=2.7.0=py36h06a4308_1
   - pymongo=3.11.3=py36h2531618_0
   - python=3.6.12=hcff3b4d_2
   - python-dotenv=0.15.0=pyhd8ed1ab_0
+  - python_abi=3.6=1_cp36m
   - readline=8.1=h27cfd23_0
   - rope=0.18.0=py_0
   - setuptools=52.0.0=py36h06a4308_0
@@ -60,3 +59,4 @@ dependencies:
   - xz=5.2.5=h7b6447c_0
   - zipp=3.4.0=pyhd3eb1b0_0
   - zlib=1.2.11=h7b6447c_3
+prefix: /home/marinov/anaconda3/envs/slt
