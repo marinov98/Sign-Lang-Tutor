@@ -1,6 +1,10 @@
 import os
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
+from dotenv import load_dotenv
+
+# load environment
+load_dotenv()
 
 try:
     db_url = os.getenv('DB_URL')

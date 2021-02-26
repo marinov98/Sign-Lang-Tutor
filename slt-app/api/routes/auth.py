@@ -3,7 +3,6 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from config.keys import mongo, bcrypt
 from datetime import datetime
 
-users = mongo.db.users
 
 auth = Blueprint('auth', __name__)
 
@@ -11,6 +10,7 @@ auth = Blueprint('auth', __name__)
 # /api/auth/register
 @auth.route('/register', methods = ['POST'])
 def register_user():
+    users = mongo.db.users
     email = request.json.get("email")
     user = users.find_one({'email': email})
 
@@ -40,6 +40,7 @@ def register_user():
 # /api/auth/login
 @auth.route('/login', methods = ['GET'])
 def login_user():
+    users = mongo.db.users
     email = request.json.get("email")
     password = request.json.get("password")
     user = users.find_one_or_404({'email': email})

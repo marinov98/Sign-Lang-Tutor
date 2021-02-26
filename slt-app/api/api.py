@@ -1,15 +1,10 @@
 import os
 from flask import Flask
-from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
 from config.keys import bcrypt, mongo, db_url, db_name
 
-# load environment
-load_dotenv()
 
 def create_app():
-    # import configuration and routes
-    import routes
 
     # initialize flask app creation
     app = Flask(__name__)
@@ -29,9 +24,11 @@ def create_app():
     # database
     app.config["MONGO_URI"] = db_url
     app.config["MONGO_DBNAME"] = db_name
+    print(app.config['MONGO_URI'])
     mongo.init_app(app)
 
     # routes
+    import routes
     routes.init_app(app)
 
     return app
