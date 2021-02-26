@@ -6,7 +6,7 @@ from config import activate_env
 
 def create_app():
     activate_env()
-    from . import .models, routes
+    #from . import .models.users, routes
     app = Flask(__name__)
     app.config["MONGO_URI"] = os.getenv("DB_URL")
     mongo = PyMongo(app)
@@ -17,6 +17,7 @@ def create_app():
         app.register_blueprint(analysis, url_prefix="/analysis")
 
     return app
+
 
 app = create_app()
 
