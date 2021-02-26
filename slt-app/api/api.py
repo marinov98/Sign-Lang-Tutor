@@ -1,7 +1,6 @@
 import os
 from flask import Flask
-from flask_jwt_extended import JWTManager
-from config.keys import bcrypt, mongo, db_url, db_name
+from config.keys import bcrypt, mongo, db_url, db_name, jwt
 
 
 def create_app():
@@ -17,7 +16,8 @@ def create_app():
     app.config['JWT_SECRET_KEY'] = os.getenv('SECRET')
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3600 * 6 # 6 hours
     app.config['JWT_REFRESH_TOKEN_EXPIRES'] = 3600 * 288
-    JWTManager(app)
+    app.config['JWT_TOKEN_LOCATION'] = ['headers', 'cookies']
+    jwt.init_app(app)
     bcrypt.init_app(app)
 
 

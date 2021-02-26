@@ -2,6 +2,7 @@ import os
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
+from flask_jwt_extended import JWTManager
 
 # load environment
 load_dotenv()
@@ -12,6 +13,7 @@ try:
     secret = os.getenv('SECRET')
     mongo = PyMongo()
     bcrypt = Bcrypt()
+    jwt = JWTManager()
 except:
     print("Check your environment variables")
     raise
