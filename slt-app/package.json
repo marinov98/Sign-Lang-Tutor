@@ -16,7 +16,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-	"server:install": "cd api && conda create -f environment.yml && and cd ..",
+	"server:install": "cd api && conda env create -f environment.yml && and cd ..",
 	"server:start": "cd api && flask run --no-debugger",
     "start": "react-scripts start",
     "build": "react-scripts build",
