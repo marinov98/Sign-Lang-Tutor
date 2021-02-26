@@ -59,4 +59,3 @@ dependencies:
   - xz=5.2.5=h7b6447c_0
   - zipp=3.4.0=pyhd3eb1b0_0
   - zlib=1.2.11=h7b6447c_3
-prefix: /home/marinov/anaconda3/envs/slt
