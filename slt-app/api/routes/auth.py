@@ -43,7 +43,13 @@ def login_user():
     users = mongo.db.users
     email = request.json.get("email")
     password = request.json.get("password")
-    user = users.find_one_or_404({'email': email})
+    user = users.find_one({'email': email})
+
+    if not email or not password:
+        return jsonify({'message': 'blank field(s) detected'}), 409
+
+    if not user:
+        return jsonify({'message': 'email and password do not match'}), 404
 
     # check password
     if not bcrypt.check_password_hash(user['password'], password):
