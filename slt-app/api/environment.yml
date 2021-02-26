@@ -18,11 +18,12 @@ dependencies:
   - flask=1.1.2=pyhd3eb1b0_0
   - flask-bcrypt=0.7.1=py_1
   - flask-cors=3.0.9=py_0
+  - flask-jwt-extended=4.0.2=pyhd3eb1b0_0
   - flask-pymongo=0.5.1=py36_0
   - idna=3.1=pyhd3eb1b0_0
   - importlib-metadata=2.0.0=py_1
   - isort=5.7.0=pyhd3eb1b0_0
-  - itsdangerous=1.1.0=pyhd3eb1b0_0
+  - itsdangerous=1.1.0=py36_0
   - jedi=0.18.0=py36h06a4308_1
   - jinja2=2.11.3=pyhd3eb1b0_0
   - lazy-object-proxy=1.5.2=py36h27cfd23_0
@@ -45,20 +46,17 @@ dependencies:
   - pymongo=3.11.3=py36h2531618_0
   - python=3.6.12=hcff3b4d_2
   - python-dotenv=0.15.0=pyhd8ed1ab_0
-  - python_abi=3.6=1_cp36m
   - readline=8.1=h27cfd23_0
   - rope=0.18.0=py_0
   - setuptools=52.0.0=py36h06a4308_0
-  - six=1.15.0=py_0
+  - six=1.15.0=py36h06a4308_0
   - sqlite=3.33.0=h62c20be_0
   - tk=8.6.10=hbc83047_0
   - toml=0.10.1=py_0
   - typed-ast=1.4.2=py36h27cfd23_1
-  - tzdata=2020f=h52ac0ba_0
   - werkzeug=1.0.1=pyhd3eb1b0_0
   - wheel=0.36.2=pyhd3eb1b0_0
   - wrapt=1.12.1=py36h7b6447c_1
   - xz=5.2.5=h7b6447c_0
   - zipp=3.4.0=pyhd3eb1b0_0
   - zlib=1.2.11=h7b6447c_3
-prefix: /home/marinov/anaconda3/envs/slt
