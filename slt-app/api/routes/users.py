@@ -14,11 +14,11 @@ def get_all_users():
     all_users = mongo.db.users.find()
     return json.dumps([learner for learner in all_users],indent=4, default=str), 200
 
-# /api/users/single/<id>
-@users.route('single/<id>')
+# /api/users/single or /api/users/single?id=A_USER_ID
+@users.route('/single', methods = ['GET'])
 @jwt_required()
-def get_user(id):
-    user_id = id
+def get_user():
+    user_id = request.args.get('id')
     email = request.json.get("email")
 
     if user_id:
