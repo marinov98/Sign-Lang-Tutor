@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_cors import CORS
 from dotenv import load_dotenv
 
 # load environment
@@ -13,6 +14,9 @@ def create_app():
 
     # initialize flask app creation
     app = Flask(__name__)
+
+    if os.getenv("FLASK_ENV") == 'development':
+        CORS(app)
 
     initialize_db(app, db_url, db_name, mongo)
     routes.init_app(app)
