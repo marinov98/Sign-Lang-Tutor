@@ -1,20 +1,20 @@
 import os
 from flask import Flask
-from flask_pymongo import PyMongo
-from config import activate_env
+from dotenv import load_dotenv
 
+# load environment
+load_dotenv()
 
 def create_app():
-    activate_env()
-    #from . import .models.users, routes
-    app = Flask(__name__)
-    app.config["MONGO_URI"] = os.getenv("DB_URL")
-    mongo = PyMongo(app)
+    # import configuration and routes
+    import routes
+    from config.db import initialize_db
 
-    with app.app_context():
-        app.register_blueprint(auth, url_prefix="/auth")
-        app.register_blueprint(tokens, url_prefix="/tokens")
-        app.register_blueprint(analysis, url_prefix="/analysis")
+    # initialize flask app creation
+    app = Flask(__name__)
+
+    initialize_db(app)
+    routes.init_app(app)
 
     return app
 
