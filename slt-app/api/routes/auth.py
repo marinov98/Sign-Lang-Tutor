@@ -38,7 +38,7 @@ def register_user():
 
 
 # /api/auth/login
-@auth.route('/login', methods = ['GET'])
+@auth.route('/login', methods = ['POST'])
 def login_user():
     users = mongo.db.users
     email = request.json.get("email")

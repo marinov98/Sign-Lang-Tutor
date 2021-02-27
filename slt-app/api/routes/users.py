@@ -19,7 +19,8 @@ def get_all_users():
 @jwt_required()
 def get_user():
     user_id = request.args.get('id')
-    email = request.json.get("email")
+    if request.data:
+        email = request.json.get("email")
 
     if user_id:
         user = mongo.db.users.find_one_or_404({'_id': ObjectId(user_id)})
