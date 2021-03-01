@@ -10,18 +10,18 @@ const NavBar = () => {
 
     return (
         <div>
-            <Navbar color="faded" light>
+            <Navbar light>
                 <NavbarBrand href="/" className="mr-auto">Sign Language Tutor</NavbarBrand>
                 <NavbarToggler onClick={toggleNavbar} className="mr-2" />
                 <Collapse isOpen={!collapsed} navbar>
                     <Nav navbar>
-                        <NavItem>
+                        <NavItem className="border-bottom">
                             <NavLink href="/">Home</NavLink>
                         </NavItem>
-                        <NavItem>
+                        <NavItem className="border-bottom">
                             <NavLink href="/login">Login</NavLink>
                         </NavItem>
-                        <NavItem>
+                        <NavItem className="border-bottom">
                             <NavLink href="/register">Register</NavLink>
                         </NavItem>
                     </Nav>

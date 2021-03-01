@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import { UserContext } from '../../UserContext';
 import "./Register.css"
 
 const Register = () => {
     const [email, changeEmail] = useState<string | undefined>("");
     const [password, changePassword] = useState<string | undefined>("");
     const [confirmPassword, changeConfirmPassword] = useState<string | undefined>("");
+    const {user}  = useContext(UserContext);
 
+    console.log(user);
 
     return (
         <div>
@@ -57,9 +60,9 @@ const Register = () => {
                     />
                 </FormGroup>
 
-                <Button className="btn-lg btn-dark btn-block">
-                    Submit
-                </Button>
+                <Button className="btn-block btn-dark btn-lg">
+                    Register
+                </Button>   
 
             </Form>
         </div>
