@@ -1,25 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import {Route, Redirect, BrowserRouter} from 'react-router-dom';
 import './App.css';
+import Home from './components/Home/Home';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
+import NavBar from './components/NavBar/NavBar';
+import {UserContext} from './UserContext';
 
-function App() {
+const App = () => {
+
+  const [user, setUser] = useState<any | undefined>("hello from context");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+    <div>
+      <NavBar/>
+      <Route exact path="/" component={Home} />
+      <UserContext.Provider value={{user, setUser}}>
+        <Route path="/login" component={Login}/>
+        <Route path="/register" component={Register}/>
+      </UserContext.Provider>
+      </div>
+    </BrowserRouter>
   );
 }
 
