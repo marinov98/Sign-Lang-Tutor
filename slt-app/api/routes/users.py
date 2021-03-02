@@ -33,3 +33,37 @@ def get_user():
         return jsonify({'message': 'user not found'}), 404
 
     return json.dumps(user,indent=4, default=str), 200
+
+# /api/users/update or /api/users/update?id=A_USER_ID
+@users.route('/update', methods = ['PUT'])
+@jwt_required()
+def update_user():
+    if not request.data:
+        return jsonify({'message': 'no data found in request'}), 409
+
+    user_id = request.args.get('id')
+    email = request.json.get("email")
+    lessons = request.json.get('lessonsCompleted')
+    stars = request.json.get('stars')
+    progress = request.json.get('progress')
+
+    if not lessons or not stars or not progress:
+        return jsonify({'message': 'lessons, stars, or progress data missing!'})
+
+    if user_id:
+        user = mongo.db.users.find_one_or_404({'_id': ObjectId(user_id)})
+        mongo.db.users.update({'_id': ObjectId(user_id)},
+                              {'$set': {'lessonsCompleted': lessons,
+                                        'stars': stars,
+                                        'progress': progress }})
+    elif email:
+        user = mongo.db.users.find_one_or_404({'email': email})
+        mongo.db.users.update({'email': email},
+                              {'$set': {'lessonsCompleted': lessons,
+                                        'stars': stars,
+                                        'progress': progress }})
+
+    return jsonify({'message': 'user successfully updated!'}), 200
+
+
+

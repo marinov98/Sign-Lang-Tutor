@@ -10,6 +10,9 @@ auth = Blueprint('auth', __name__)
 # /api/auth/register
 @auth.route('/register', methods = ['POST'])
 def register_user():
+    if not request.data:
+        return jsonify({'message': 'no data found in request'}), 409
+
     users = mongo.db.users
     email = request.json.get("email")
     user = users.find_one({'email': email})
@@ -40,6 +43,9 @@ def register_user():
 # /api/auth/login
 @auth.route('/login', methods = ['POST'])
 def login_user():
+    if not request.data:
+        return jsonify({'message': 'no data found in request'}), 409
+
     users = mongo.db.users
     email = request.json.get("email")
     password = request.json.get("password")
