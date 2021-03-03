@@ -65,3 +65,8 @@ def login_user():
     access_token = create_access_token(identity=email)
     refresh_token = create_refresh_token(identity=email)
     return jsonify(access_token=access_token, refresh_token=refresh_token), 200
+
+# /api/auth/logout
+@auth.route('/logout', methods = ['POST'])
+def logout_user():
+    pass
