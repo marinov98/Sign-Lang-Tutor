@@ -34,7 +34,7 @@ def register_user():
         'lessonsCompleted': 0,
         'stars': 0,
         'dateJoined': datetime.now(),
-        'progress' : 'progressed'
+        'progress' : 'Just started'
     })
 
     return jsonify({'message': 'User successfully created!'}), 201
