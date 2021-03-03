@@ -48,12 +48,13 @@ def update_user():
     stars = request.json.get('stars')
     progress = request.json.get('progress')
 
-    if not lessons or not stars or not progress:
+    if lessons is None or stars is None or progress is None:
         return jsonify({'message': 'Lessons, stars, or progress data missing!'})
 
     if user_id:
-        user = mongo.db.users.find_one_or_404({'_id': ObjectId(user_id)})
-        mongo.db.users.update({'_id': ObjectId(user_id)},
+        proper_id = ObjectId(user_id)
+        user = mongo.db.users.find_one_or_404({'_id': proper_id})
+        mongo.db.users.update({'_id': proper_id},
                               {'$set': {'lessonsCompleted': lessons,
                                         'stars': stars,
                                         'progress': progress }})
@@ -75,9 +76,9 @@ def delete_user():
         email = request.json.get("email")
 
     if user_id:
-        mongod.db.users.remove({'_id': user_id})
+        mongo.db.users.remove({'_id': ObjectId(user_id)})
     elif email:
-        mongod.db.users.remove({'email': email})
+        mongo.db.users.remove({'email': email})
     else:
         return  jsonify({'message':'No id or email found'}), 404
 
