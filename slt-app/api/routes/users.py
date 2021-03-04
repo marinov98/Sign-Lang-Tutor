@@ -19,6 +19,7 @@ def get_all_users():
 @jwt_required()
 def get_user():
     user_id = request.args.get('id')
+    email = None
     if request.data:
         email = request.json.get('email')
 
@@ -72,6 +73,7 @@ def update_user():
 @jwt_required()
 def delete_user():
     user_id = request.args.get('id')
+    email = None
     if request.data:
         email = request.json.get('email')
 
