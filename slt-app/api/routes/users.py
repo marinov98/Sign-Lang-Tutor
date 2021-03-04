@@ -20,7 +20,7 @@ def get_all_users():
 def get_user():
     user_id = request.args.get('id')
     if request.data:
-        email = request.json.get("email")
+        email = request.json.get('email')
 
     if user_id:
         user = mongo.db.users.find_one_or_404({'_id': ObjectId(user_id)})
@@ -43,7 +43,7 @@ def update_user():
         return jsonify({'message': 'No data found in request'}), 409
 
     user_id = request.args.get('id')
-    email = request.json.get("email")
+    email = request.json.get('email')
     lessons = request.json.get('lessonsCompleted')
     stars = request.json.get('stars')
     progress = request.json.get('progress')
@@ -73,7 +73,7 @@ def update_user():
 def delete_user():
     user_id = request.args.get('id')
     if request.data:
-        email = request.json.get("email")
+        email = request.json.get('email')
 
     if user_id:
         mongo.db.users.remove({'_id': ObjectId(user_id)})
