@@ -7,6 +7,12 @@ class SLTTesting(unittest.TestCase):
         """ Assumes a user with test2@gmail.com exists """
 
         tester = app.test_client(self)
+
+        response = tester.post(
+            'api/auth/register',
+            json={'email': 'test2@gmail.com', 'password': '456'})
+        self.assertTrue(response.status_code == 201 or response.status_code == 409)
+
         response = tester.post(
             'api/auth/login',
             json={'email':'test2@gmail.com', 'password':"456"})
