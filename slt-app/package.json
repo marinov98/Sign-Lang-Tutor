@@ -7,8 +7,11 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/react-dom": "^17.0.0",
+    "axios": "^0.21.1",
+    "axios-auth-refresh": "^3.1.0",
     "bootstrap": "^4.6.0",
     "dotenv": "^8.2.0",
+    "jwt-decode": "^3.1.2",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -19,8 +22,9 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-	"server:install": "cd api && conda env create -f environment.yml && and cd ..",
-	"server:start": "cd api && flask run --no-debugger",
+    "server:install": "cd api && conda env create -f environment.yml && and cd ..",
+    "server:test": "cd api && python test.py && cd ..",
+    "server:start": "cd api && flask run --no-debugger",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -47,13 +51,9 @@
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/node": "^12.20.4",
-
-    "@types/react": "^17.0.2"
+    "@types/react": "^17.0.2",
+    "@types/react-router-dom": "^5.1.7",
+    "concurrently": "^6.0.0"
   },
   "proxy": "http://localhost:5000"
-
-    "@types/react": "^17.0.2",
-    "@types/react-router-dom": "^5.1.7"
-  }
-
 }
