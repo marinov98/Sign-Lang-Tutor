@@ -15,14 +15,21 @@ def register_user():
 
     users = mongo.db.users
     email = request.json.get("email")
+
+    if email is None:
+        return jsonify({'message': 'Email not found in body!'}), 409
+
     user = users.find_one({'email': email})
 
     if user:
         return jsonify({'message': "User with this email already exists!"}), 409
 
-    first_name = request.json.get("firstName")
-    last_name = request.json.get("lastName")
+    first_name = request.json.get('firstName', 'Not provided')
+    last_name = request.json.get('lastName', 'Not provided')
     password = request.json.get("password")
+
+    if password is None:
+        return jsonify({'message': 'Password not found in body!'}), 409
 
 
     # create new user
