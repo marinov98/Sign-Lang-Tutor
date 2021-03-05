@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
-import { UserContext } from "../../UserContext";
-import { registerUser } from "../../utils/auth";
+import { registerUser, UserContext } from "../../utils/auth";
 import "./Register.css";
 
 const Register = () => {
@@ -13,7 +12,11 @@ const Register = () => {
   const [password, changePassword] = useState<string | undefined>("");
   const [confirmPassword, changeConfirmPassword] = useState<string | undefined>("");
   const [registerError, setRegisterError] = useState<string | undefined>("");
-  const {auth, setAuth}  = useContext(UserContext);
+  const {auth, authenticated, checkAuth, fillAuth}  = useContext(UserContext);
+
+  if (authenticated) {
+    history.replace("/");
+  }
 
 
   console.log(auth);
@@ -21,9 +24,10 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (password !== confirmPassword)
-      setRegisterError("passwords don't match");
-
+    if (password !== confirmPassword) {
+      setRegisterError("Passwords do not match!");
+    }
+    else {
       const user: any  = {
         email,
         password
@@ -35,16 +39,19 @@ const Register = () => {
       if (lastName !== undefined)
         user.lastName = lastName
 
-    const res = await registerUser(user);
-    console.log(res);
+      console.log("Registeration call")
+      const res = await registerUser(user);
+      console.log("Registeration result:")
+      console.log(res);
 
-    if (res.authenticated) {
-      setAuth(true);
-      history.push("/");
-      return;
+      if (res) {
+        await fillAuth(res);
+        await checkAuth()
+        history.push("/");
+      }
+
+      setRegisterError("Unsuccessful");
     }
-
-    setRegisterError("Unsuccessful");
   };
 
   return (
@@ -54,8 +61,8 @@ const Register = () => {
         className="register-form"
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
       >
-      {registerError != "" ? (
-          <p className="text-danger text-center">User already exists</p>
+      {registerError !== "" ? (
+          <p className="text-danger text-center">{registerError}</p>
         ) : null}
 
         <FormGroup>

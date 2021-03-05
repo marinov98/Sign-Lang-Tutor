@@ -1,27 +1,32 @@
 import React, { useContext, useState } from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
-import { UserContext } from '../../UserContext';
-import { loginUser } from '../../utils/auth';
+import { useHistory } from "react-router-dom"
+import { loginUser, UserContext } from '../../utils/auth';
 import "./Login.css"
 
 const Login = () => {
+    const history = useHistory()
     const [email, changeEmail] = useState<string>("");
     const [password, changePassword] = useState<string | undefined>("");
-    const [loginError, setLoginError] = useState<boolean>(false)
-    const {auth, setAuth} = useContext(UserContext);
+    const [loginError, setLoginError] = useState<string | undefined>("")
+    const {auth,authenticated, checkAuth, fillAuth} = useContext(UserContext);
 
-    console.log(auth);
+    console.log(authenticated);
+    if (authenticated) {
+      history.replace("/");
+    }
 
-    const handleSubmit =  async(e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const res = await loginUser({email, password})
 
-        if (res.authenticated) {
-            setAuth(true);
-            return;
+        if (res) {
+            await fillAuth(res);
+            await checkAuth()
+            history.push("/")
         }
 
-        setLoginError(true);
+        setLoginError("Unsuccessful");
     }
 
     return (
@@ -35,7 +40,7 @@ const Login = () => {
                 } 
                 className="login-form" 
             >
-                {loginError ? <p className="text-danger text-center">Email and password does not match</p> : null }
+                {loginError !== "" ? <p className="text-danger text-center">{loginError}</p> : null }
                 <FormGroup>
                     <Label for="email">
                         Email

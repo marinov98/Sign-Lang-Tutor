@@ -8,14 +8,14 @@ users = Blueprint('users', __name__)
 
 
 # /api/users/all
-@users.route('/all', methods = ['GET'])
+@users.route('/all', methods = ['GET', 'POST'])
 @jwt_required()
 def get_all_users():
     all_users = mongo.db.users.find()
     return json.dumps([learner for learner in all_users],indent=4, default=str), 200
 
 # /api/users/single or /api/users/single?id=A_USER_ID
-@users.route('/single', methods = ['GET'])
+@users.route('/single', methods = ['GET', 'POST'])
 @jwt_required()
 def get_user():
     user_id = request.args.get('id')
@@ -37,7 +37,7 @@ def get_user():
 
 
 # /api/users/update or /api/users/update?id=A_USER_ID
-@users.route('/update', methods = ['PUT'])
+@users.route('/update', methods = ['PUT', 'PATCH'])
 @jwt_required()
 def update_user():
     if not request.data:

@@ -1,7 +1,8 @@
 import os
-from datetime import timezone, timedelta
+from datetime import timezone, timedelta, datetime
 from flask import Flask
 from config.keys import bcrypt, mongo, db_url, db_name, jwt
+from flask_jwt_extended import create_access_token, set_access_cookies, get_jwt, get_jwt_identity
 
 
 def create_app():
@@ -12,7 +13,7 @@ def create_app():
     if os.getenv("FLASK_ENV") == 'development':
         from flask_cors import CORS
         app.config["JWT_COOKIE_SECURE"] = False
-        CORS(app)
+        CORS(app, supports_credentials=True, withCredentials=True)
     else:
         app.config["JWT_COOKIE_SECURE"] = True
 
@@ -56,5 +57,8 @@ def refresh_expiring_jwts(response):
         return response
 
 if __name__ == '__main__':
-    app.run()
+    if os.getenv("FLASK_ENV") == 'development':
+        app.run(host="0.0.0.0", port="5000")
+    else:
+        app.run()
 

@@ -1,5 +1,10 @@
 export default interface DecodedToken {
-  email: string;
+  sub: string;
   exp: number;
+  type: string;
+  csrf?: string;
+  fresh: boolean;
+  iat: number;
+  jti?: string
 }
 

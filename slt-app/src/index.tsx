@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios'
+import { getCookie } from "./utils/auth"
 
 
 if (process.env.NODE_ENV !== "production") {
@@ -21,6 +22,17 @@ if (process.env.REACT_APP_REFRESH_METHOD === "explicit") {
     if (token) {
         request.headers["Authorization"] = `Bearer ${token}`;
     }
+
+    return request;
+  })
+}
+else {
+  axios.defaults.withCredentials = true
+  axios.interceptors.request.use(request => {
+    let cookie: any = getCookie("csrf_access_token")
+
+    if (cookie !== null) 
+        request.headers["X-CSRF-TOKEN"] = cookie;
 
     return request;
   })

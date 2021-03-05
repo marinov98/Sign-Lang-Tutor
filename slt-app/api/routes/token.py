@@ -1,9 +1,6 @@
 from datetime import timezone, timedelta
-from flask import Blueprint
-from flask_jwt_extended import jwt_required,
-                               get_jwt_identity,
-                               set_access_cookies,
-                               get_jwt
+from flask import Blueprint, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity, set_access_cookies, get_jwt, create_access_token
 
 token = Blueprint('token', __name__)
 
