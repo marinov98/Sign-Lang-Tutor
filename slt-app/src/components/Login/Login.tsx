@@ -1,10 +1,14 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { UserContext } from '../../UserContext';
 import { loginUser } from '../../utils/auth';
 import "./Login.css"
 
 const Login = () => {
+
+    const history = useHistory()
+
     const [email, changeEmail] = useState<string>("");
     const [password, changePassword] = useState<string | undefined>("");
     const [loginError, setLoginError] = useState<boolean>(false)
@@ -18,6 +22,7 @@ const Login = () => {
 
         if (res.authenticated) {
             setAuth(true);
+            history.push("/")
             return;
         }
 
