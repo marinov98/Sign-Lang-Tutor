@@ -21,8 +21,8 @@ const Login = () => {
         const res = await loginUser({email, password})
 
         if (res) {
-            await fillAuth(res);
-            await checkAuth()
+            fillAuth(res);
+            checkAuth()
             history.push("/")
         }
 
