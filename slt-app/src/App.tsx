@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Redirect, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
@@ -13,21 +13,19 @@ const App: React.FunctionComponent = () => {
   const [auth, setAuth] = useState<IUser | null>(null);
   const [authenticated, checkAuthenticated] = useState<boolean | null>(false)
 
-  const checkAuth = async () => {
-    checkAuthenticated(await authenticate());
+  const checkAuth = (): void => {
+    checkAuthenticated(authenticate());
     if (authenticated === false)
       setAuth(null)
   };
 
-  const fillAuth = async (data: IUser) => {
+  const fillAuth = (data: IUser): void => {
     setAuth(data)
   }
 
-  useEffect(() => {
-    (async () => {
-      await checkAuth();
-    })();
-  }, []);
+  useEffect((): void => {
+    checkAuth();
+  });
 
 
 
@@ -35,7 +33,7 @@ const App: React.FunctionComponent = () => {
     <BrowserRouter>
       <UserContext.Provider value={{ auth, authenticated: authenticated, fillAuth: fillAuth , checkAuth: checkAuth }}>
         <NavBar/>
-        <Route exact path="/" component={Home} />
+        <ProtectedRoute exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
       </UserContext.Provider>

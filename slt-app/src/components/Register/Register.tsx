@@ -45,8 +45,8 @@ const Register = () => {
       console.log(res);
 
       if (res) {
-        await fillAuth(res);
-        await checkAuth()
+        fillAuth(res);
+        checkAuth()
         history.push("/");
       }
 

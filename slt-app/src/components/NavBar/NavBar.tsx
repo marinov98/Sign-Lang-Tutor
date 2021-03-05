@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import { logout, UserContext } from './../../utils/auth'
 
 const NavBar: React.FunctionComponent = () => {
     const history = useHistory()
     const { authenticated, checkAuth } = useContext(UserContext);
+
     if (!authenticated)
         history.replace('/login')
 

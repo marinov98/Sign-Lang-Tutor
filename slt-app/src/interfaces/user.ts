@@ -7,8 +7,10 @@ export interface IUser {
   stars?: number;
   progress?: any;
 }
-
 export interface UserContextState {
-  auth?: IUser | null
-  updateAuth: () => void;
+  auth?: IUser | null;
+  authenticated: boolean | null;
+  checkAuth: () => void;
+  fillAuth: (user: IUser) => void;
 }
+

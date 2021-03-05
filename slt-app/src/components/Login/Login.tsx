@@ -9,7 +9,7 @@ const Login = () => {
     const [email, changeEmail] = useState<string>("");
     const [password, changePassword] = useState<string | undefined>("");
     const [loginError, setLoginError] = useState<string | undefined>("")
-    const {auth,authenticated, checkAuth, fillAuth} = useContext(UserContext);
+    const {authenticated, checkAuth, fillAuth} = useContext(UserContext);
 
     console.log(authenticated);
     if (authenticated) {
