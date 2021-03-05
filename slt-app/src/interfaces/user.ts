@@ -3,9 +3,9 @@ export interface IUser {
   firstName?: string;
   lastName?: string;
   password: string;
-  lessonsCompleted: number;
-  stars: number;
-  progress: any;
+  lessonsCompleted?: number;
+  stars?: number;
+  progress?: any;
 }
 
 export interface UserContextState {

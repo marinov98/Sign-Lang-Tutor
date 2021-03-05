@@ -7,6 +7,9 @@ import Register from './components/Register/Register';
 import NavBar from './components/NavBar/NavBar';
 import { UserContext } from './UserContext';
 
+
+
+
 const App = () => {
 
   const [auth, setAuth] = useState<any | undefined>(null);

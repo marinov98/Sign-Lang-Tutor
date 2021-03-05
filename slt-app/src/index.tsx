@@ -4,6 +4,27 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
+import axios from 'axios'
+
+
+if (process.env.NODE_ENV !== "production") {
+  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL_DEV
+  console.log(process.env.REACT_APP_BASE_URL_DEV)
+  console.log(process.env.REACT_APP_REFRESH_METHOD)
+}
+
+if (process.env.REACT_APP_REFRESH_METHOD === "explicit") {
+
+  axios.interceptors.request.use(request => {
+    const token = localStorage.getItem("access_token");
+
+    if (token) {
+        request.headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    return request;
+  })
+}
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,17 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-axios.interceptors.request.use(request => {
-    const token = localStorage.getItem("access_token");
-
-    if (token) {
-        request.headers["Authorization"] = `Bearer ${token}`;
-    }
-
-    return request;
-})
-
-
 export const registerUser = async(user: any) => {
 
     if(typeof(Storage) === "undefined"){
