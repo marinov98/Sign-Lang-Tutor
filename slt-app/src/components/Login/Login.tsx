@@ -1,26 +1,31 @@
 import React, { useContext, useState } from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { UserContext } from '../../UserContext';
-import { login } from '../../utils/login';
+import { loginUser } from '../../utils/auth';
 import "./Login.css"
 
 const Login = () => {
     const [email, changeEmail] = useState<string>("");
     const [password, changePassword] = useState<string | undefined>("");
-    const {user, setUser} = useContext(UserContext);
+    const [loginError, setLoginError] = useState<boolean>(false)
+    const {auth, setAuth} = useContext(UserContext);
 
+    console.log(auth);
 
-    const handleSubmit =  (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit =  async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setUser("testlogin")
+        const res = await loginUser({email, password})
 
-        changeEmail("");
-        changePassword("");
+        if (res.authenticated) {
+            setAuth(true);
+            return;
+        }
 
+        setLoginError(true);
     }
 
     return (
-        <div>
+        <div className="mt-5">
             <h1 className="text-center">
                 Login
             </h1>
@@ -30,6 +35,7 @@ const Login = () => {
                 } 
                 className="login-form" 
             >
+                {loginError ? <p className="text-danger text-center">Email and password does not match</p> : null }
                 <FormGroup>
                     <Label for="email">
                         Email
@@ -41,6 +47,7 @@ const Login = () => {
                         onChange={(text: React.ChangeEvent<HTMLInputElement>) => 
                             changeEmail(text.target.value)
                         }
+                        required={true}
                     />
                 </FormGroup>
 
@@ -55,6 +62,7 @@ const Login = () => {
                         onChange={(text: React.ChangeEvent<HTMLInputElement>) => 
                             changePassword(text.target.value)
                         }
+                        required={true}
                     />
                 </FormGroup>
                 <Button className="btn-lg btn-dark btn-block">
