@@ -47,7 +47,7 @@ Installs the python environment from the enviroment file located in the `api` fo
 
 Starts the flask back-end server
 
-### yarn/npm run dev
+### `yarn/npm run dev`
 
 Runs front-end and back-end concurrently
 
