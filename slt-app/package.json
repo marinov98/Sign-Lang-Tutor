@@ -24,7 +24,8 @@
   "scripts": {
     "server:install": "cd api && conda env create -f environment.yml && and cd ..",
     "server:test": "cd api && python test.py && cd ..",
-    "server:start": "cd api && flask run --no-debugger",
+    "server:start": "cd api && flask run && cd ..",
+    "dev": "concurrently \"npm run server:start\"  \"npm start\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
