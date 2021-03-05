@@ -1,32 +1,29 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { UserContext } from '../../UserContext';
 
 const NavBar = () => {
-    const [collapsed, setCollapsed] = useState<boolean | undefined>(true);
 
-    const toggleNavbar = () => {
-        setCollapsed(!collapsed)
-    };
+    const { auth } = useContext(UserContext);
 
     return (
+
         <div>
-            <Navbar light>
-                <NavbarBrand href="/" className="mr-auto">Sign Language Tutor</NavbarBrand>
-                <NavbarToggler onClick={toggleNavbar} className="mr-2" />
-                <Collapse isOpen={!collapsed} navbar>
-                    <Nav navbar>
-                        <NavItem className="border-bottom">
-                            <NavLink href="/">Home</NavLink>
-                        </NavItem>
-                        <NavItem className="border-bottom">
-                            <NavLink href="/login">Login</NavLink>
-                        </NavItem>
-                        <NavItem className="border-bottom">
-                            <NavLink href="/register">Register</NavLink>
-                        </NavItem>
-                    </Nav>
-                </Collapse>
-            </Navbar>
+            <nav className="navbar navbar-dark bg-dark">
+                <Link to={auth ? "/" : "/login"} className="navbar-brand mr-auto">Sign Language Tutor</Link>
+                {auth ?
+                    <div>
+                         <Link to="/" className="navbar-brand navbar-text ml-auto">Home</Link>
+                         <Link to="" className="navbar-brand navbar-text ml-auto">Account</Link>
+                         <Link to="" className="navbar-brand navbar-text ml-auto">Logout</Link>
+                    </div> :
+                    <div>
+                        <Link to="/login" className="navbar-brand navbar-text">Login</Link>
+                        <Link to="/register" className="navbar-brand navbar-text">Register</Link>
+                    </div>
+                }
+            </nav>
         </div>
     );
 }
