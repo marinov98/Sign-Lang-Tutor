@@ -1,6 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import { UserContext } from '../../UserContext';
 
 const NavBar = () => {
