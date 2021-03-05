@@ -52,7 +52,7 @@ Starts the flask back-end server
 Runs front-end and back-end concurrently
 
 ### Environment
-Create React environment file `cat .flaskenv.example > .env` , fields are already filled in due to the fact that they are all meant for dev work
+Create React environment file `cat .env.sample > .env` , fields are already filled in due to the fact that they are all meant for dev work
 
 ## Learn More
 
