@@ -19,7 +19,7 @@ def create_app():
     # jwt and bcrypt
     app.config['JWT_SECRET_KEY'] = os.getenv('SECRET')
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=5)
-    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelat(days=6)
+    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=6)
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
     jwt.init_app(app)
     bcrypt.init_app(app)
