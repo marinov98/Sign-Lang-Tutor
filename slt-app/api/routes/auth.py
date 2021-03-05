@@ -1,7 +1,10 @@
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, create_refresh_token
 from config.keys import mongo, bcrypt
 from datetime import datetime
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import create_access_token,
+                               create_refresh_token,
+                               set_access_cookies,
+                               unset_jwt_cookies
 
 
 auth = Blueprint('auth', __name__)
@@ -70,10 +73,16 @@ def login_user():
 
     # create jwt
     access_token = create_access_token(identity=email)
-    refresh_token = create_refresh_token(identity=email)
-    return jsonify(access_token=access_token, refresh_token=refresh_token), 200
+
+    #  explicit refreshing 
+    #  refresh_token = create_refresh_token(identity=email)
+    set_access_cookies(response, access_token)
+    return response
+
 
 # /api/auth/logout
 @auth.route('/logout', methods = ['POST'])
 def logout_user():
-    pass
+    response = jsonify({'message': 'Logout successful!'})
+    unset_jwt_cookies(response)
+    return response
