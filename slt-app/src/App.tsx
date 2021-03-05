@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
@@ -17,9 +17,11 @@ const App = () => {
     <BrowserRouter>
       <UserContext.Provider value={{ auth, setAuth }}>
         <NavBar/>
-        <PrivateRoute exact path="/" component={Home} />
+        <Switch>
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
+        <PrivateRoute exact path="/" component={Home} />
+        </Switch>
       </UserContext.Provider>
     </BrowserRouter>
   );
