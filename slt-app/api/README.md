@@ -19,3 +19,5 @@ a local database use the `mongodb://127.0.0.1:27017/mydbname` as a connect strin
 
 ## Running the backend
 - Assuming you have your environment setup, then use the command `flask run` to start the server
+### Running tests
+- To initiate unit testing, run `python test.py`
