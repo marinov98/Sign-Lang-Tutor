@@ -6,8 +6,8 @@ import "./Register.css";
 
 const Register: React.FunctionComponent = () => {
   const history = useHistory();
-  const [firstName, changeFirstName] = useState<string | undefined>(undefined);
-  const [lastName, changeLastName] = useState<string | undefined>(undefined);
+  const [firstName, changeFirstName] = useState<string | undefined>("");
+  const [lastName, changeLastName] = useState<string | undefined>("");
   const [email, changeEmail] = useState<string | undefined>("");
   const [password, changePassword] = useState<string | undefined>("");
   const [confirmPassword, changeConfirmPassword] = useState<string | undefined>("");
@@ -29,10 +29,10 @@ const Register: React.FunctionComponent = () => {
         password
       }
 
-      if (firstName !== undefined)
+      if (firstName !== "")
         user.firstName = firstName
 
-      if (lastName !== undefined)
+      if (lastName !== "")
         user.lastName = lastName
 
       const res = await registerUser(user);
