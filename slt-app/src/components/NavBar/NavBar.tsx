@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom';
-import { logout, UserContext } from './../../utils/auth'
+import { UserContext, logout  } from './../../utils/auth'
 
 const NavBar: React.FunctionComponent = () => {
     const history = useHistory()
@@ -10,10 +10,10 @@ const NavBar: React.FunctionComponent = () => {
     if (!authenticated) 
         history.replace('/login');
 
-    const remove_cookies = useCallback(async () => {
-          await logout();
-          checkAuth();
-    }, [])
+    const remove_cookies = async (e: React.MouseEvent<HTMLElement>) => {
+        await logout();
+        checkAuth()
+    }
 
     return (
 

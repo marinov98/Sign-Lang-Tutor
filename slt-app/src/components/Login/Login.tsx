@@ -9,7 +9,7 @@ const Login: React.FunctionComponent = () => {
     const [email, changeEmail] = useState<string>("");
     const [password, changePassword] = useState<string | undefined>("");
     const [loginError, setLoginError] = useState<string | undefined>("")
-    const {authenticated, checkAuth, fillAuth} = useContext(UserContext);
+    const {authenticated, fillAuth} = useContext(UserContext);
 
 
     if (authenticated) 
@@ -24,7 +24,6 @@ const Login: React.FunctionComponent = () => {
                 setLoginError(res.data.message)
             else {
               fillAuth(res);
-              checkAuth()
               history.push("/")
             }
         }

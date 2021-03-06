@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { registerUser, UserContext } from "../../utils/auth";
@@ -12,7 +12,7 @@ const Register: React.FunctionComponent = () => {
   const [password, changePassword] = useState<string | undefined>("");
   const [confirmPassword, changeConfirmPassword] = useState<string | undefined>("");
   const [registerError, setRegisterError] = useState<string | undefined>("");
-  const {authenticated, checkAuth, fillAuth}  = useContext(UserContext);
+  const {authenticated, fillAuth}  = useContext(UserContext);
 
   if (authenticated) 
     history.replace("/");
@@ -43,7 +43,6 @@ const Register: React.FunctionComponent = () => {
         }
         else {
           fillAuth(res);
-          checkAuth()
           history.push("/");
         }
       }

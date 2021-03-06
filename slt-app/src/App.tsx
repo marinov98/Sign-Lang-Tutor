@@ -11,10 +11,10 @@ import { IUser } from './interfaces/user'
 
 const App: React.FunctionComponent = () => {
   const [auth, setAuth] = useState<IUser | null>(null);
-  const [authenticated, checkAuthenticated] = useState<boolean | null>(false)
+  const [authenticated, makeAuthenticated] = useState<boolean | null>(false)
 
   const checkAuth = (): void => {
-    checkAuthenticated(authenticate());
+    makeAuthenticated(authenticate());
     if (authenticated === false)
       setAuth(null)
   };
@@ -28,10 +28,9 @@ const App: React.FunctionComponent = () => {
   });
 
 
-
   return (
     <BrowserRouter>
-      <UserContext.Provider value={{ auth, authenticated: authenticated, fillAuth: fillAuth , checkAuth: checkAuth }}>
+      <UserContext.Provider value={{ auth, authenticated,  fillAuth, checkAuth }}>
         <NavBar/>
         <ProtectedRoute exact path="/" component={Home} />
         <Route path="/login" component={Login} />

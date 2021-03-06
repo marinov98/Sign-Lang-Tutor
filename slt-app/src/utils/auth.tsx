@@ -8,7 +8,7 @@ import { UserContextState } from './../interfaces/user'
 export const UserContext = createContext<UserContextState>({
   authenticated: false,
   checkAuth: () => {},
-  fillAuth: ({}) => {}
+  fillAuth: () => {}
 });
 
 
@@ -48,7 +48,7 @@ export async function registerUser(user: any): Promise<any> {
 }
 
 
-export async function loginUser(user:any): Promise<any>  {
+export async function loginUser(user: any): Promise<any>  {
     const loginUrl = '/api/auth/login';
     try {
         const { data: { token } } = await axios.post(loginUrl, user);
