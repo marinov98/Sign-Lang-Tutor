@@ -57,15 +57,6 @@ class SLTTesting(unittest.TestCase):
         response = tester.put('/api/users/update')
         self.assertTrue(response.status_code == 401)
 
-        # bad token
-        response = tester.get('/api/users/all', headers={'Authorization': 'Bearer badtoken'})
-        self.assertTrue(response.status_code == 422)
-
-        response = tester.get('/api/users/single', headers={'Authorization': 'Bearer badtoken'})
-        self.assertTrue(response.status_code == 422)
-
-        response = tester.put('/api/users/update', headers={'Authorization': 'Bearer badtoken'})
-        self.assertTrue(response.status_code == 422)
 
 """ Todo: Need to be changed because they do not work
     def test_users_good(self):
