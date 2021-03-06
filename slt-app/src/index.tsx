@@ -29,7 +29,7 @@ if (process.env.REACT_APP_REFRESH_METHOD === "explicit") {
 else {
   axios.defaults.withCredentials = true
   axios.interceptors.request.use(request => {
-    let cookie: any = getCookie("csrf_access_token")
+    const cookie: any = getCookie("csrf_access_token")
 
     if (cookie !== null) 
         request.headers["X-CSRF-TOKEN"] = cookie;

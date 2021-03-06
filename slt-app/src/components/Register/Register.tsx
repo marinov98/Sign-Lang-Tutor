@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import { useHistory } from "react-router";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { registerUser, UserContext } from "../../utils/auth";
 import "./Register.css";
 
-const Register = () => {
+const Register: React.FunctionComponent = () => {
   const history = useHistory();
   const [firstName, changeFirstName] = useState<string | undefined>(undefined);
   const [lastName, changeLastName] = useState<string | undefined>(undefined);
@@ -12,14 +12,10 @@ const Register = () => {
   const [password, changePassword] = useState<string | undefined>("");
   const [confirmPassword, changeConfirmPassword] = useState<string | undefined>("");
   const [registerError, setRegisterError] = useState<string | undefined>("");
-  const {auth, authenticated, checkAuth, fillAuth}  = useContext(UserContext);
+  const {authenticated, checkAuth, fillAuth}  = useContext(UserContext);
 
-  if (authenticated) {
+  if (authenticated) 
     history.replace("/");
-  }
-
-
-  console.log(auth);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,18 +35,21 @@ const Register = () => {
       if (lastName !== undefined)
         user.lastName = lastName
 
-      console.log("Registeration call")
       const res = await registerUser(user);
-      console.log("Registeration result:")
-      console.log(res);
 
       if (res) {
-        fillAuth(res);
-        checkAuth()
-        history.push("/");
+        if (res.data && res.data.message) {
+          setRegisterError(res.data.message)
+        }
+        else {
+          fillAuth(res);
+          checkAuth()
+          history.push("/");
+        }
       }
-
-      setRegisterError("Unsuccessful");
+      else {
+        setRegisterError("Registration was unsuccessful!");
+      }
     }
   };
 

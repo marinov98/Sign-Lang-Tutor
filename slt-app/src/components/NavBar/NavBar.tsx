@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 import { logout, UserContext } from './../../utils/auth'
@@ -7,14 +7,13 @@ const NavBar: React.FunctionComponent = () => {
     const history = useHistory()
     const { authenticated, checkAuth } = useContext(UserContext);
 
-    if (!authenticated)
-        history.replace('/login')
+    if (!authenticated) 
+        history.replace('/login');
 
-    const handleLogout = async (e: React.MouseEvent<HTMLElement>) => {
-        await logout();
-        checkAuth();
-    }
-
+    const remove_cookies = useCallback(async () => {
+          await logout();
+          checkAuth();
+    }, [])
 
     return (
 
@@ -25,7 +24,7 @@ const NavBar: React.FunctionComponent = () => {
                     <div>
                          <Link to="/" className="navbar-brand navbar-text ml-auto">Home</Link>
                          <Link to="" className="navbar-brand navbar-text ml-auto">Account</Link>
-                         <Link to="" className="navbar-brand navbar-text ml-auto" onClick={handleLogout}>Logout</Link>
+                         <Link to="" className="navbar-brand navbar-text ml-auto" onClick={remove_cookies}>Logout</Link>
                     </div> :
                     <div>
                         <Link to="/login" className="navbar-brand navbar-text">Login</Link>

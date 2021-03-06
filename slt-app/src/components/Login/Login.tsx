@@ -4,29 +4,33 @@ import { useHistory } from "react-router-dom"
 import { loginUser, UserContext } from '../../utils/auth';
 import "./Login.css"
 
-const Login = () => {
+const Login: React.FunctionComponent = () => {
     const history = useHistory()
     const [email, changeEmail] = useState<string>("");
     const [password, changePassword] = useState<string | undefined>("");
     const [loginError, setLoginError] = useState<string | undefined>("")
     const {authenticated, checkAuth, fillAuth} = useContext(UserContext);
 
-    console.log(authenticated);
-    if (authenticated) {
+
+    if (authenticated) 
       history.replace("/");
-    }
 
     const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const res = await loginUser({email, password})
 
         if (res) {
-            fillAuth(res);
-            checkAuth()
-            history.push("/")
+            if (res.data && res.data.message) 
+                setLoginError(res.data.message)
+            else {
+              fillAuth(res);
+              checkAuth()
+              history.push("/")
+            }
         }
-
-        setLoginError("Unsuccessful");
+        else {
+          setLoginError("Login attempt unsuccessful!");
+        }
     }
 
     return (
