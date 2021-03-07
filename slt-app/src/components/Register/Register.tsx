@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
-import { Button, Form, FormGroup, Input, Label, Alert } from "reactstrap";
+import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { registerUser, UserContext } from "../../utils/auth";
 import "./Register.css";
 
@@ -61,7 +61,7 @@ const Register: React.FunctionComponent = () => {
         className="register-form"
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
       >
-      {registerError !== "" ? <Alert color="danger">{registerError}</Alert> : null}
+      {registerError !== "" ?  <p className="text-danger text-center">{registerError}</p> : null}
 
         <FormGroup>
           <Label for="FirstName">First Name (Optional)</Label>

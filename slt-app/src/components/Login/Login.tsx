@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Button, Form, FormGroup, Input, Label, Alert } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useHistory } from "react-router-dom"
 import { loginUser, UserContext } from '../../utils/auth';
 import "./Login.css"
@@ -46,7 +46,7 @@ const Login: React.FunctionComponent = () => {
                 } 
                 className="login-form" 
             >
-                {loginError !== "" ? <Alert color="danger">{loginError}</Alert> : null }
+                {loginError !== "" ? <p className="text-danger text-center">{loginError}</p> : null }
                 <FormGroup>
                     <Label for="email">
                         Email
