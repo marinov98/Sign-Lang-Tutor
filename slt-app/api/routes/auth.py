@@ -87,6 +87,16 @@ def get_authenticated_user():
     
     return json.dumps(user,indent=4, default=str), 200
 
+# /api/auth/delete
+@auth.route('/delete', methods = ['DELETE'])
+@jwt_required()
+def delete_user_account():
+    auth_identity = get_jwt_identity()
+    mongo.db.users.remove({'_id': ObjectId(auth_identity)})
+    # TODO: delete user's lessons?
+    
+    return jsonify({'msg': 'Deletion applied successfully!'}), 200
+
 # /api/auth/logout
 @auth.route('/logout', methods = ['POST'])
 def logout_user():
