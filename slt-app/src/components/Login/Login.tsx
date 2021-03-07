@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Button, Form, FormGroup, Input, Label, Alert } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useHistory } from "react-router-dom"
 import { loginUser, UserContext } from '../../utils/auth';
 import "./Login.css"
@@ -20,11 +20,14 @@ const Login: React.FunctionComponent = () => {
         const res = await loginUser({email, password});
 
         if (res) {
-            if (res && res.msg) 
+            if (res && res.msg) // error known to the server occurred
                 setLoginError(res.msg);
-            else {
+            else if (res && res.email) { // user was successfully pulled
               fillAuth(res);
               history.push("/");
+            }
+            else { // an unexpected error occurred
+              setLoginError("Unexpected error occurred try again later...");
             }
         }
         else {
@@ -43,7 +46,7 @@ const Login: React.FunctionComponent = () => {
                 } 
                 className="login-form" 
             >
-                {loginError !== "" ? <Alert color="danger">{loginError}</Alert> : null }
+                {loginError !== "" ? <p className="text-danger text-center">{loginError}</p> : null }
                 <FormGroup>
                     <Label for="email">
                         Email
