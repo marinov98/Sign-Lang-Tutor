@@ -1,5 +1,6 @@
 from config.keys import mongo, bcrypt
 import json
+from bson import ObjectId
 from datetime import datetime
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required, get_jwt_identity
@@ -70,12 +71,11 @@ def login_user():
         return jsonify({'msg': 'Email and password do not match!'}), 404
 
     # create jwt
-    access_token = create_access_token(identity=email)
-
-    #  explicit refreshing 
-    #  refresh_token = create_refresh_token(identity=email)
+    access_token = create_access_token(identity=str(user['_id']))
+     
+    #  refresh_token = create_refresh_token(identity=email)  #  explicit refreshing
     response = jsonify({'msg': "Login successful!"})
-    set_access_cookies(response, access_token)
+    set_access_cookies(response, access_token) # implicit refreshing
     return response
 
 # /api/auth/user
@@ -83,7 +83,7 @@ def login_user():
 @jwt_required()
 def get_authenticated_user():
     auth_identity = get_jwt_identity()
-    user = mongo.db.users.find_one_or_404({'email': auth_identity})
+    user = mongo.db.users.find_one_or_404({'_id': ObjectId(auth_identity)})
     
     return json.dumps(user,indent=4, default=str), 200
 

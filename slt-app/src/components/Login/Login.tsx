@@ -20,11 +20,14 @@ const Login: React.FunctionComponent = () => {
         const res = await loginUser({email, password});
 
         if (res) {
-            if (res && res.msg) 
+            if (res && res.msg) // error known to the server occurred
                 setLoginError(res.msg);
-            else {
+            else if (res && res.email) { // user was successfully pulled
               fillAuth(res);
               history.push("/");
+            }
+            else { // an unexpected error occurred
+              setLoginError("Unexpected error occurred try again later...");
             }
         }
         else {
