@@ -10,7 +10,7 @@ const NavBar: React.FunctionComponent = () => {
     if (!authenticated) 
         history.replace('/login');
 
-    const remove_cookies = async (e: React.MouseEvent<HTMLElement>) => {
+    const handleLogout = async (e: React.MouseEvent<HTMLElement>) => {
         await logout();
         checkAuth()
     }
@@ -24,7 +24,7 @@ const NavBar: React.FunctionComponent = () => {
                     <div>
                          <Link to="/" className="navbar-brand navbar-text ml-auto">Home</Link>
                          <Link to="" className="navbar-brand navbar-text ml-auto">Account</Link>
-                         <Link to="" className="navbar-brand navbar-text ml-auto" onClick={remove_cookies}>Logout</Link>
+                         <Link to="" className="navbar-brand navbar-text ml-auto" onClick={handleLogout}>Logout</Link>
                     </div> :
                     <div>
                         <Link to="/login" className="navbar-brand navbar-text">Login</Link>
