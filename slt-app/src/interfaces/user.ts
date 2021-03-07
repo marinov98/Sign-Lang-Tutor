@@ -7,7 +7,7 @@ export interface IUser {
   lessonsCompleted: number;
   stars: number;
   progress: any;
-  dataJoined: string;
+  dateJoined: string;
 }
 
 export interface UserContextState {
