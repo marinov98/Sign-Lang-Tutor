@@ -6,11 +6,13 @@ Contains the flask code used in setting up the database and making the routes fo
 ### Python
 
 This backend uses python's Flask framework and uses conda for package, environment, and dependency management
-- To create the appropriate python environment run `conda env create -f environment.yml`
-	- To activate the environment run `conda activate slt`
-	- To update the environment run `conda env export --no-builds > environment.yml`
-		- The `--no-builds` flag is there because sometimes build numbers don't match across platforms but are not necessary if that is not a problem on your own OS.
+- *NOTE* commands might be different based on OS (specifically Windows)
+- To create the appropriate python environment run `conda env create -n slt-pip python=3.7`
+	- To activate the environment run `conda activate slt-pip`
+		- Install all necessary packages with pip run `python -m pip install -r requirements.txt`
+	- To update the environment run `python -m pip freeze > requirements.txt`
 - Create Flask environment file `cat .flaskenv.example > .env` and fill in appropriate fields
+- To remove environment run `conda env --name slt-pip --all`
 
 ### Database
 
