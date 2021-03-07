@@ -13,8 +13,8 @@ export const UserContext = createContext<UserContextState>({
 
 
 export function getCookie(name: string): any {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
+  const value: string = `; ${document.cookie}`;
+  const parts: Array<string> = value.split(`; ${name}=`);
   if (parts.length === 2) return parts?.pop()?.split(';').shift();
   else return null
 }
@@ -46,11 +46,11 @@ export async function registerUser(user: any): Promise<any> {
 
 
 export async function loginUser(user: any): Promise<any>  {
-    const loginUrl = '/api/auth/login';
+    const loginUrl: string = '/api/auth/login';
     try {
         const { data: { token } } = await axios.post(loginUrl, user);
-        const auth : DecodedToken | null = jwt_decode(token);
-        const currentTime = Date.now() / 1000;
+        const auth : DecodedToken | null = jwt_decode<DecodedToken>(token);
+        const currentTime: number = Date.now() / 1000;
 
         if (auth && auth.exp > currentTime) {
             const { data: userData } = await axios.post('/api/users/single', {email: auth.sub})
