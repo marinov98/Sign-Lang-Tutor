@@ -1,28 +1,29 @@
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
-
-axios.interceptors.request.use(request => {
-    const token = localStorage.getItem("access_token");
-
-    if (token) {
-        request.headers["Authorization"] = `Bearer ${token}`;
-    }
-
-    return request;
-})
+import { createContext } from "react"
+import { UserContextState } from './../interfaces/user'
 
 
-export const registerUser = async(user: any) => {
+export const UserContext = createContext<UserContextState>({
+  authenticated: false,
+  checkAuth: () => {},
+  fillAuth: () => {}
+});
 
-    if(typeof(Storage) === "undefined"){
-        throw new Error("Browser does not support localStorage");
-    }
 
-    try{
+export function getCookie(name: string): any {
+  const value: string = `; ${document.cookie}`;
+  const parts: Array<string> = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts?.pop()?.split(';').shift();
+  else return null;
+}
+
+
+export async function registerUser(user: any): Promise<any> {
+    try {
         const url : string = '/api/auth/register';
-        const {status} = await axios.post(url, user);
+        const { status } = await axios.post(url, user);
 
-        if (status === 201){
+        if (status === 201) {
             const res = await loginUser({
                 email: user.email,
                 password: user.password
@@ -32,70 +33,56 @@ export const registerUser = async(user: any) => {
         }
     }
     catch (err) {
-        if(err.response){
+        if (err.response) {
             return err.response.data;
         }
-        else{
+        else {
             console.error(err);        
         }
     }
 }
 
 
-export const loginUser = async(user:any) => {
-
-    if(typeof(Storage) === "undefined"){
-        throw new Error("Browser does not support localStorage");
-    }
-
-    const loginUrl = '/api/auth/login';
-    try{
-        const{
-            data: {access_token}
-        } = await axios.post(loginUrl, user);
-        
-        localStorage.setItem("accessToken", access_token);
-
-        return {authenticated: true}
-    }
-    catch (err) {
-        if (err.response){
-            return err.response.data;
-        }
-        else {
-            return console.error(err);
-        }
-    }
-}
-
-export const logout = async() => {
-    
-    if(typeof(Storage) === "undefined"){
-        throw new Error("Browser does not support localStorage");
-    }
-
-    if (localStorage["access_token"]){
-        localStorage.removeItem("access_token");
-    }
-    
-}
-
-
-export const authenticate = async() => {
-
-    if(typeof(Storage) === "undefined"){
-        throw new Error("Browser does not support localStorage");
-    }
-
-    if(localStorage["access_token"]){
-        const token : any = localStorage.getItem("access_token")
-
-        const auth : any = jwt_decode(token);
-        const currentTime = Date.now()/1000;
-
-        if(auth.exp > currentTime){
-            return auth;
+export async function loginUser(user: any): Promise<any>  {
+    try {
+        await axios.post('/api/auth/login', user);
+        const { data: userData } = await axios.post('/api/auth/user');
+        if (userData) {
+            delete userData.password; // don't expose password even if it is hashed
+            return userData;
         }
         return null;
     }
+    catch (err) {
+        if (err.response) {
+            return err.response.data;
+        }
+        else {
+            console.error(err);
+        }
+    }
+}
+
+
+export async function logout(): Promise<void> {
+    try {
+      await axios.post('/api/auth/logout');
+    }
+    catch (err) {
+        if (err.response) {
+            return err.response.data;
+        }
+        else {
+            console.error(err);
+        }
+    }
+}
+
+
+export function authenticate(): boolean {
+    const cookie = getCookie("csrf_access_token")
+    if (cookie === null)
+        return false
+    else
+        return true
 }

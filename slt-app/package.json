@@ -10,7 +10,6 @@
     "axios": "^0.21.1",
     "axios-auth-refresh": "^3.1.0",
     "bootstrap": "^4.6.0",
-    "dotenv": "^8.2.0",
     "jwt-decode": "^3.1.2",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
@@ -24,7 +23,8 @@
   "scripts": {
     "server:install": "cd api && conda env create -f environment.yml && and cd ..",
     "server:test": "cd api && python test.py && cd ..",
-    "server:start": "cd api && flask run --no-debugger",
+    "server:start": "cd api && flask run && cd ..",
+    "dev": "concurrently \"npm run server:start\"  \"npm start\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

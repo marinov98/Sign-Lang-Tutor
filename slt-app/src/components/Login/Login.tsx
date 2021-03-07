@@ -1,32 +1,39 @@
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
-import { UserContext } from '../../UserContext';
-import { loginUser } from '../../utils/auth';
+
+import { loginUser, UserContext } from '../../utils/auth';
 import "./Login.css"
 
-const Login = () => {
-
+const Login: React.FunctionComponent = () => {
     const history = useHistory()
-
     const [email, changeEmail] = useState<string>("");
     const [password, changePassword] = useState<string | undefined>("");
-    const [loginError, setLoginError] = useState<boolean>(false)
-    const {auth, setAuth} = useContext(UserContext);
+    const [loginError, setLoginError] = useState<string | undefined>("");
+    const {authenticated, fillAuth} = useContext(UserContext);
 
-    console.log(auth);
 
-    const handleSubmit =  async(e: React.FormEvent<HTMLFormElement>) => {
+    if (authenticated) 
+      history.replace("/");
+
+    const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const res = await loginUser({email, password})
+        const res = await loginUser({email, password});
 
-        if (res.authenticated) {
-            setAuth(true);
-            history.push("/")
-            return;
+        if (res) {
+            if (res.msg) // error known to the server occurred
+                setLoginError(res.msg);
+            else if (res.email) { // user was successfully pulled
+              fillAuth(res);
+              history.push("/");
+            }
+            else { // an unexpected error occurred
+              setLoginError("Unexpected error occurred try again later...");
+            }
         }
-
-        setLoginError(true);
+        else {
+          setLoginError("Login attempt unsuccessful!");
+        }
     }
 
     return (
@@ -40,7 +47,7 @@ const Login = () => {
                 } 
                 className="login-form" 
             >
-                {loginError ? <p className="text-danger text-center">Email and password does not match</p> : null }
+                {loginError !== "" ? <p className="text-danger text-center">{loginError}</p> : null }
                 <FormGroup>
                     <Label for="email">
                         Email
