@@ -9,10 +9,10 @@ This backend uses python's Flask framework and uses conda for package, environme
 - *NOTE* commands might be different based on OS (specifically Windows)
 - To create the appropriate python environment run `conda env create -n slt-pip python=3.7`
 	- To activate the environment run `conda activate slt-pip`
-		- Install all necessary packages with pip run `python -m pip install -r requirements.txt`
+		- Install all necessary packages with pip: `python -m pip install -r requirements.txt`
 	- To update the environment run `python -m pip freeze > requirements.txt`
 - Create Flask environment file `cat .flaskenv.example > .env` and fill in appropriate fields
-- To remove environment run `conda env --name slt-pip --all`
+- To delete Python environment run `conda env --name slt-pip --all`
 
 ### Database
 
