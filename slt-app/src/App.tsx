@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
+
 import './App.css';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
@@ -32,9 +33,11 @@ const App: React.FunctionComponent = () => {
     <BrowserRouter>
       <UserContext.Provider value={{ auth, authenticated,  fillAuth, checkAuth }}>
         <NavBar/>
-        <ProtectedRoute exact path="/" component={Home} />
+        <Switch>
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
+        <ProtectedRoute exact path="/" component={Home} />
+        </Switch>
       </UserContext.Provider>
     </BrowserRouter>
   );
