@@ -38,9 +38,9 @@ const Register: React.FunctionComponent = () => {
       const res = await registerUser(user);
 
       if (res) {
-        if (res && res.msg) // error known to the server occurred
+        if (res.msg) // error known to the server occurred
           setRegisterError(res.msg);
-        else if (res && res.email) { // user was successfully pulled
+        else if (res.email) { // user was successfully pulled
           fillAuth(res);
           history.push("/");
         }
