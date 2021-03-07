@@ -14,13 +14,21 @@ const Register = () => {
     const [email, changeEmail] = useState<string | undefined>("");
     const [password, changePassword] = useState<string | undefined>("");
     const [confirmPassword, changeConfirmPassword] = useState<string | undefined>("");
-    const [registerError, setRegisterError] = useState<boolean | undefined>(false);
-    const {auth, setAuth}  = useContext(UserContext);
+
+    const [registerError, setRegisterError] = useState<boolean>(false);
+    const [passwordError, setPasswordError] = useState<boolean>(false)
+
+    const { auth, setAuth } = useContext(UserContext);
 
     console.log(auth)
 
-    const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (confirmPassword !== password) {
+            setPasswordError(true);
+            return;
+        }
 
         const user = {
             email,
@@ -32,7 +40,7 @@ const Register = () => {
         const res = await registerUser(user);
         console.log(res)
 
-        if(res.authenticated){
+        if (res.authenticated) {
 
             setAuth(true);
             history.push('/');
@@ -47,10 +55,19 @@ const Register = () => {
             <h1 className="text-center">
                 Register
             </h1>
-            <Form className="register-form" onSubmit={(e : React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
+            <Form className="register-form" onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
 
-                    {registerError ? <p className="text-danger text-center">User already exists</p> : null }
-                
+                {registerError ? (
+                    <p className="text-danger text-center">User already exists</p>
+                ) : (
+                    null
+                )}
+                {passwordError ? (
+                    <p className="text-danger text-center">Passwords do not match</p>
+                ) : (
+                    null
+                )}
+
                 <FormGroup>
                     <Label for="FirstName">
                         First Name
@@ -111,7 +128,7 @@ const Register = () => {
                     />
                 </FormGroup>
 
-                {/* <FormGroup>
+                <FormGroup>
                     <Label for="confirmPassword">
                         Confirm Password
                     </Label>
@@ -123,11 +140,11 @@ const Register = () => {
                             (text: React.ChangeEvent<HTMLInputElement>) => changeConfirmPassword(text.target.value)
                         }
                     />
-                </FormGroup> */}
+                </FormGroup>
 
                 <Button className="btn-block btn-dark btn-lg">
                     Register
-                </Button>   
+                </Button>
 
             </Form>
         </div>
