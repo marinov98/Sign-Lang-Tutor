@@ -28,10 +28,10 @@ def get_user():
     elif email:
         user = mongo.db.users.find_one_or_404({'email': email})
     else:
-        return  jsonify({'message':'No id or email found!'}), 404
+        return  jsonify({'msg':'No id or email found!'}), 404
 
     if not user:
-        return jsonify({'message': 'User not found!'}), 404
+        return jsonify({'msg': 'User not found!'}), 404
 
     return json.dumps(user,indent=4, default=str), 200
 
@@ -41,7 +41,7 @@ def get_user():
 @jwt_required()
 def update_user():
     if not request.data:
-        return jsonify({'message': 'No data found in request'}), 409
+        return jsonify({'msg': 'No data found in request'}), 409
 
     user_id = request.args.get('id')
     email = request.json.get('email')
@@ -50,7 +50,7 @@ def update_user():
     progress = request.json.get('progress')
 
     if lessons is None or stars is None or progress is None:
-        return jsonify({'message': 'Lessons, stars, or progress data missing!'})
+        return jsonify({'msg': 'Lessons, stars, or progress data missing!'})
 
     if user_id:
         proper_id = ObjectId(user_id)
@@ -66,7 +66,7 @@ def update_user():
                                         'stars': stars,
                                         'progress': progress }})
 
-    return jsonify({'message': 'User successfully updated!'}), 200
+    return jsonify({'msg': 'User successfully updated!'}), 200
 
 # /api/users/delete or /api/users/delete?id=A_USER_ID
 @users.route('/delete', methods = ['DELETE'])
@@ -82,6 +82,6 @@ def delete_user():
     elif email:
         mongo.db.users.remove({'email': email})
     else:
-        return  jsonify({'message':'No id or email found'}), 404
+        return  jsonify({'msg':'No id or email found'}), 404
 
-    return jsonify({'message': 'Deletion applied successfully!'}), 200
+    return jsonify({'msg': 'Deletion applied successfully!'}), 200

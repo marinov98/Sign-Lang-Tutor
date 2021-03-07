@@ -9,9 +9,9 @@ import { getCookie } from "./utils/auth"
 
 
 if (process.env.NODE_ENV !== "production") {
-  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL_DEV
-  console.log(process.env.REACT_APP_BASE_URL_DEV)
-  console.log(process.env.REACT_APP_REFRESH_METHOD)
+  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL_DEV;
+  console.log(process.env.REACT_APP_BASE_URL_DEV);
+  console.log(process.env.REACT_APP_REFRESH_METHOD);
 }
 
 if (process.env.REACT_APP_REFRESH_METHOD === "explicit") {
@@ -29,7 +29,7 @@ if (process.env.REACT_APP_REFRESH_METHOD === "explicit") {
 else {
   axios.defaults.withCredentials = true
   axios.interceptors.request.use(request => {
-    const cookie: any = getCookie("csrf_access_token")
+    const cookie: any = getCookie("csrf_access_token");
 
     if (cookie !== null) 
         request.headers["X-CSRF-TOKEN"] = cookie;

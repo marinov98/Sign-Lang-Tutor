@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label, Alert } from 'reactstrap';
 import { useHistory } from "react-router-dom"
 import { loginUser, UserContext } from '../../utils/auth';
 import "./Login.css"
@@ -8,7 +8,7 @@ const Login: React.FunctionComponent = () => {
     const history = useHistory()
     const [email, changeEmail] = useState<string>("");
     const [password, changePassword] = useState<string | undefined>("");
-    const [loginError, setLoginError] = useState<string | undefined>("")
+    const [loginError, setLoginError] = useState<string | undefined>("");
     const {authenticated, fillAuth} = useContext(UserContext);
 
 
@@ -17,14 +17,14 @@ const Login: React.FunctionComponent = () => {
 
     const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const res = await loginUser({email, password})
+        const res = await loginUser({email, password});
 
         if (res) {
-            if (res && res.message) 
-                setLoginError(res.message)
+            if (res && res.msg) 
+                setLoginError(res.msg);
             else {
               fillAuth(res);
-              history.push("/")
+              history.push("/");
             }
         }
         else {
@@ -43,7 +43,7 @@ const Login: React.FunctionComponent = () => {
                 } 
                 className="login-form" 
             >
-                {loginError !== "" ? <p className="text-danger text-center">{loginError}</p> : null }
+                {loginError !== "" ? <Alert color="danger">{loginError}</Alert> : null }
                 <FormGroup>
                     <Label for="email">
                         Email
