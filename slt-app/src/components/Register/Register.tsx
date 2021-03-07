@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
-import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import { Button, Form, FormGroup, Input, Label, Alert } from "reactstrap";
 import { registerUser, UserContext } from "../../utils/auth";
 import "./Register.css";
 
@@ -27,20 +27,19 @@ const Register: React.FunctionComponent = () => {
       const user: any  = {
         email,
         password
-      }
+      };
 
       if (firstName !== "")
-        user.firstName = firstName
+        user.firstName = firstName;
 
       if (lastName !== "")
-        user.lastName = lastName
+        user.lastName = lastName;
 
       const res = await registerUser(user);
 
       if (res) {
-        if (res && res.message) {
-          setRegisterError(res.message)
-        }
+        if (res && res.msg) 
+          setRegisterError(res.msg);
         else {
           fillAuth(res);
           history.push("/");
@@ -59,9 +58,7 @@ const Register: React.FunctionComponent = () => {
         className="register-form"
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
       >
-      {registerError !== "" ? (
-          <p className="text-danger text-center">{registerError}</p>
-        ) : null}
+      {registerError !== "" ? <Alert color="danger">{registerError}</Alert> : null}
 
         <FormGroup>
           <Label for="FirstName">First Name (Optional)</Label>
