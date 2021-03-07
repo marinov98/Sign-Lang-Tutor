@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { createContext } from "react"
-import Token from "./../interfaces/token"
+import DecodedToken from "./../interfaces/token"
 import { UserContextState } from './../interfaces/user'
 
 
@@ -25,21 +25,18 @@ export async function registerUser(user: any): Promise<any> {
         const url : string = '/api/auth/register';
         const { status } = await axios.post(url, user);
 
-        if (status === 201){
+        if (status === 201) {
             const res = await loginUser({
                 email: user.email,
                 password: user.password
             });
-
-            console.log(res)
 
             return res;
         }
     }
     catch (err) {
         if (err.response) {
-            console.log(err.response)
-            return err.response;
+            return err.response.data;
         }
         else {
             console.error(err);        
@@ -52,18 +49,19 @@ export async function loginUser(user: any): Promise<any>  {
     const loginUrl = '/api/auth/login';
     try {
         const { data: { token } } = await axios.post(loginUrl, user);
-        const auth : Token | null = jwt_decode(token);
+        const auth : DecodedToken | null = jwt_decode(token);
         const currentTime = Date.now() / 1000;
 
         if (auth && auth.exp > currentTime) {
             const { data } = await axios.post('/api/users/single', {email: auth.sub})
+            delete data.password // don't expose password even if it is hashed
             return data
         }
         return null;
     }
     catch (err) {
         if (err.response){
-            return err.response;
+            return err.response.data;
         }
         else {
             console.error(err);

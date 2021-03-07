@@ -38,8 +38,8 @@ const Register: React.FunctionComponent = () => {
       const res = await registerUser(user);
 
       if (res) {
-        if (res.data && res.data.message) {
-          setRegisterError(res.data.message)
+        if (res && res.message) {
+          setRegisterError(res.message)
         }
         else {
           fillAuth(res);

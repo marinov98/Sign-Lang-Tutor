@@ -20,8 +20,8 @@ const Login: React.FunctionComponent = () => {
         const res = await loginUser({email, password})
 
         if (res) {
-            if (res.data && res.data.message) 
-                setLoginError(res.data.message)
+            if (res && res.message) 
+                setLoginError(res.message)
             else {
               fillAuth(res);
               history.push("/")
