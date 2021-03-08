@@ -7,7 +7,7 @@ Contains the flask code used in setting up the database and making the routes fo
 
 This backend uses python's Flask framework and uses conda for package, environment, and dependency management
 - *NOTE* commands might be different based on OS (specifically Windows)
-- To create the appropriate python environment run `conda env create -n slt-pip python=3.7`
+- To create the appropriate python environment run `conda create -n slt-pip python=3.7`
 	- To activate the environment run `conda activate slt-pip`
 		- Install all necessary packages with pip: `python -m pip install -r requirements.txt`
 	- To update the environment run `python -m pip freeze > requirements.txt`
@@ -18,6 +18,10 @@ This backend uses python's Flask framework and uses conda for package, environme
 
 This backend uses [MongoDB](https://docs.mongodb.com/manual/installation/) as its DBMS, for making 
 a local database use the `mongodb://127.0.0.1:27017/mydbname` as a connect string
+
+### PyTorch
+
+This application uses pytorch please install it on your specific OS following the instructions on the [official website](https://pytorch.org/)
 
 ## Running the backend
 - Assuming you have your environment setup, then use the command `flask run` to start the server
