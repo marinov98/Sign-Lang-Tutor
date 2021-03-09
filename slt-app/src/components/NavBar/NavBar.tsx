@@ -51,3 +51,4 @@ const NavBar: React.FunctionComponent = () => {
 };
 
 export default NavBar;
+

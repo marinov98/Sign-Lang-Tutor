@@ -8,3 +8,4 @@ export default interface DecodedToken {
   iat: number;
   jti?: string;
 }
+
