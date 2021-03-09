@@ -84,6 +84,7 @@ def login_user():
 def get_authenticated_user():
     auth_identity = get_jwt_identity()
     user = mongo.db.users.find_one_or_404({'_id': ObjectId(auth_identity)})
+    del user['password']
     
     return json.dumps(user,indent=4, default=str), 200
 
