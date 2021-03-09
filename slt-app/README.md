@@ -47,6 +47,13 @@ Installs the python environment from the enviroment file located in the `api` fo
 
 Starts the flask back-end server
 
+### `yarn/npm run dev`
+
+Runs front-end and back-end concurrently
+
+### Environment
+Create React environment file `cat .env.sample > .env` , fields are already filled in due to the fact that they are all meant for dev work
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

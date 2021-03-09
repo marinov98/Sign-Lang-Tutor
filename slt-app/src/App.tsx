@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import { Route, BrowserRouter } from 'react-router-dom';
 import './App.css';
+import Home from './components/Home/Home';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
+import NavBar from './components/NavBar/NavBar';
+import ProtectedRoute from './components/Protected/ProtectedRoute';
+import { authenticate, UserContext } from './utils/auth'
+import { IUser } from './interfaces/user'
 
-function App() {
+const App: React.FunctionComponent = () => {
+  const [auth, setAuth] = useState<IUser | null>(null);
+  const [authenticated, makeAuthenticated] = useState<boolean | null>(false)
+
+  const checkAuth = (): void => {
+    makeAuthenticated(authenticate());
+    if (authenticated === false)
+      setAuth(null)
+  };
+
+  const fillAuth = (data: IUser): void => {
+    setAuth(data)
+  }
+
+  useEffect((): void => {
+    checkAuth();
+  });
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <UserContext.Provider value={{ auth, authenticated,  fillAuth, checkAuth }}>
+        <NavBar/>
+        <ProtectedRoute exact path="/" component={Home} />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+      </UserContext.Provider>
+    </BrowserRouter>
   );
 }
 
