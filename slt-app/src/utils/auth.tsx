@@ -48,7 +48,6 @@ export async function loginUser(user: any): Promise<any>  {
         await axios.post('/api/auth/login', user);
         const { data: userData } = await axios.post('/api/auth/user');
         if (userData) {
-            delete userData.password; // don't expose password even if it is hashed
             return userData;
         }
         return null;

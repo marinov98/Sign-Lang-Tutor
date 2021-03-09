@@ -1,14 +1,9 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 import { UserContext, logout  } from './../../utils/auth'
 
 const NavBar: React.FunctionComponent = () => {
-    const history = useHistory()
     const { authenticated, checkAuth } = useContext(UserContext);
-
-    if (!authenticated) 
-        history.replace('/login');
 
     const handleLogout = async (e: React.MouseEvent<HTMLElement>) => {
         await logout();
