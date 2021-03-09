@@ -47,9 +47,17 @@ Installs the python environment from the enviroment file located in the `api` fo
 
 Starts the flask back-end server
 
+### `yarn/npm run server:test`
+
+Runs unit tests for the backend
+
 ### `yarn/npm run dev`
 
 Runs front-end and back-end concurrently
+
+### `yarn/npm run format`
+
+Formats the everything inside the `src` folder that has the extension .ts and .tsx using the `.prettierrc` configuration file
 
 ### Environment
 Create React environment file `cat .env.sample > .env` , fields are already filled in due to the fact that they are all meant for dev work
