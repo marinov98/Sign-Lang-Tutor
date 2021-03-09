@@ -6,6 +6,6 @@ export default interface DecodedToken {
   csrf?: string;
   fresh: boolean;
   iat: number;
-  jti?: string
+  jti?: string;
 }
 
