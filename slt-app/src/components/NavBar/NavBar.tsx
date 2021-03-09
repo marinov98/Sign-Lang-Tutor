@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom'
-import { Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { UserContext, logout  } from './../../utils/auth'
 
 const NavBar: React.FunctionComponent = () => {
