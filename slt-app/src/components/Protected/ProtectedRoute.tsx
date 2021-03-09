@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import { Route, Redirect } from "react-router-dom";
-import ProtectedRouteProps from "../../interfaces/protected";
-import { UserContext } from "../../utils/auth";
+import React, { useContext } from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import ProtectedRouteProps from '../../interfaces/protected';
+import { UserContext } from '../../utils/auth';
 
 /**
  *   ProtectedRoute
@@ -29,7 +29,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     const renderComponent = () => (
       <Redirect
         to={{
-          pathname: redirect ? redirect : "/login",
+          pathname: redirect ? redirect : '/login',
           state: { from: props.location }
         }}
       />
