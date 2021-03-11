@@ -46,7 +46,7 @@ def get_user():
 @jwt_required()
 def update_user():
     if not request.data:
-        return jsonify({'msg': 'No data found in request'}), 409
+        return jsonify({'msg': 'No data found in request!'}), 409
 
     user_id = request.args.get('id')
     email = request.json.get('email')

@@ -11,8 +11,8 @@ def create_alphabet_lessons(user_id):
                 "module": "Alphabet",
                 "title": "The letter {}".format(letter),
                 "guide": link,
-                "stars_achieved": 0,
-                "total_stars": 3,
+                "starsAchieved": 0,
+                "totalStars": 3,
                 "completed": False
             }
         )
