@@ -21,3 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+*/data
+*.png
+*/dataset5
+*/fingerspelling5.tar.bz2
+*/image_sizes.csv
