@@ -14,7 +14,7 @@ def get_lessons_modules():
 
     return json.dumps([module for module in modules], indent=4, default=str), 200
 
-# /api/user/<module>
+# /api/lessons/user/<module>
 @lessons.route('/user/<module>', methods = ['GET'])
 @jwt_required()
 def get_user_lessons(module="Alphabet"):
