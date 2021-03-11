@@ -4,10 +4,10 @@ from bson import ObjectId
 from datetime import datetime
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required, get_jwt_identity
+from utils.lessons import create_alphabet_lessons
 
 
 auth = Blueprint('auth', __name__)
-
 
 # /api/auth/register
 @auth.route('/register', methods = ['POST'])
@@ -16,6 +16,7 @@ def register_user():
         return jsonify({'msg': 'No data found in request!'}), 409
 
     users = mongo.db.users
+    lessons = mongo.db.lessons
     email = request.json.get('email')
 
     if email is None:
@@ -46,8 +47,13 @@ def register_user():
         'progress' : 'Just started'
     })
 
-    return jsonify({'msg': 'User successfully created!'}), 201
+    user = users.find_one_or_404({'email': email})
 
+    # create lessons
+    alphabet_lessons = create_alphabet_lessons(user['_id'])
+    lessons.insert_many(alphabet_lessons)
+
+    return jsonify({'msg': 'User successfully created!'}), 201
 
 # /api/auth/login
 @auth.route('/login', methods = ['POST'])

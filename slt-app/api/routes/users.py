@@ -7,12 +7,17 @@ from flask_jwt_extended import jwt_required
 users = Blueprint('users', __name__)
 
 
-# /api/users/all
+# /api/users/all or /api/users/all?limit=LIMIT
 @users.route('/all', methods = ['GET', 'POST'])
 @jwt_required()
 def get_all_users():
-    all_users = mongo.db.users.find()
-    return json.dumps([learner for learner in all_users],indent=4, default=str), 200
+    limit = request.args.get('limit')
+    if limit:
+        all_users = mongo.db.users.find(limit=int(limit))
+    else:
+        all_users = mongo.db.users.find()
+
+    return json.dumps([learner for learner in all_users], indent=4, default=str), 200
 
 # /api/users/single or /api/users/single?id=A_USER_ID
 @users.route('/single', methods = ['GET', 'POST'])
@@ -33,7 +38,7 @@ def get_user():
     if not user:
         return jsonify({'msg': 'User not found!'}), 404
 
-    return json.dumps(user,indent=4, default=str), 200
+    return json.dumps(user, indent=4, default=str), 200
 
 
 # /api/users/update or /api/users/update?id=A_USER_ID
