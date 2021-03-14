@@ -4,6 +4,8 @@ import torchvision.datasets as datasets
 import torch.optim as optim
 import torch.nn as nn
 import torch
+import albumentations as A
+import albumentations.augmentations.transforms as AT
 
 import os
 from tqdm import tqdm
@@ -15,21 +17,34 @@ from tqdm import tqdm
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+torch.seed(42)
+
 print(f"Using: {device}")
 
 data_folder = "data"
 
-transforms = torchvision.transforms.Compose(
+training_transforms = A.core.composition.Compose(
   [
-    torchvision.transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    AT.RandomBrightnessContrast(p=0.5),
+    AT.GaussianBlur(),
+    AT.ColorJitter(),
+    AT.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+    A.pytorch.transforms.ToTensorV2()
+  ]
+)
+
+testing_transforms = A.core.composition.Compose(
+  [
+    AT.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+    A.pytorch.transforms.ToTensorV2()
   ]
 )
 
 BATCHSIZE = 256
-training_set = datasets.ImageFolder(os.path.join(data_folder,'train'), transform=transforms)
+training_set = datasets.ImageFolder(os.path.join(data_folder,'train'), transform=training_transforms)
 trainerloader = torch.utils.data.DataLoader(training_set, batch_size=BATCHSIZE, shuffle=True, num_workers=20, pin_memory=True)
 
-test_set = datasets.ImageFolder(os.path.join(data_folder,'test'), transform=transforms)
+test_set = datasets.ImageFolder(os.path.join(data_folder,'test'), transform=testing_transforms)
 testloader = torch.utils.data.DataLoader(test_set, batch_size=BATCHSIZE, shuffle=True, num_workers=20, pin_memory=True)
 
 
