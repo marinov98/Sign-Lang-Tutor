@@ -6,6 +6,7 @@ from flask_jwt_extended import create_access_token, set_access_cookies, get_jwt,
 
 
 def create_app():
+
     # initialize flask app creation
     app = Flask(__name__)
 

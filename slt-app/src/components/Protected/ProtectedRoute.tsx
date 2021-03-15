@@ -24,7 +24,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   redirect,
   ...props
 }) => {
+  
   const { authenticated } = useContext(UserContext);
+  
   if (!authenticated) {
     const renderComponent = () => (
       <Redirect
