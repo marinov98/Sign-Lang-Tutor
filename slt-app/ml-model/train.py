@@ -1,11 +1,13 @@
 import torchvision
+import torch.backends.cudnn as cudnn
 import torchvision.models as models
 import torchvision.datasets as datasets
 import torch.optim as optim
 import torch.nn as nn
 import torch
 import albumentations as A
-import albumentations.augmentations.transforms as AT
+from albumentations.pytorch import ToTensorV2
+#import albumentations.augmentations.transforms as AT
 
 import os
 from tqdm import tqdm
@@ -16,27 +18,28 @@ from tqdm import tqdm
 # because they require motion
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+cudnn.benchmark = True
 
-torch.seed(42)
+torch.manual_seed(42)
 
 print(f"Using: {device}")
 
 data_folder = "data"
 
-training_transforms = A.core.composition.Compose(
+training_transforms = A.Compose(
   [
-    AT.RandomBrightnessContrast(p=0.5),
-    AT.GaussianBlur(),
-    AT.ColorJitter(),
-    AT.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-    A.pytorch.transforms.ToTensorV2()
+    A.RandomBrightnessContrast(p=0.5),
+    A.GaussianBlur(),
+    A.ColorJitter(),
+    A.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+    ToTensorV2()
   ]
 )
 
-testing_transforms = A.core.composition.Compose(
+testing_transforms = A.Compose(
   [
-    AT.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-    A.pytorch.transforms.ToTensorV2()
+    A.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+    ToTensorV2()
   ]
 )
 
@@ -123,5 +126,6 @@ def test(model,load_path,testloader,bsize=BATCHSIZE):
 
 
 
-train(50,trainerloader,'saved_models')
-test(models.alexnet(num_classes=24).to(device),'saved_models',testloader)
+if __name__ == "__main__":  
+    train(50,trainerloader,'saved_models')
+    test(models.alexnet(num_classes=24).to(device),'saved_models',testloader)
