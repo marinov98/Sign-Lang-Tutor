@@ -1,4 +1,3 @@
-import torchvision
 import torch.backends.cudnn as cudnn
 import torchvision.models as models
 import torchvision.datasets as datasets
@@ -105,14 +104,14 @@ def main():
       A.RandomBrightnessContrast(p=0.5),
       A.GaussianBlur(),
       A.ColorJitter(),
-      A.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+      A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
       ToTensorV2()
     ]
   )
 
   testing_transforms = A.Compose(
     [
-      A.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+      A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
       ToTensorV2()
     ]
   )
