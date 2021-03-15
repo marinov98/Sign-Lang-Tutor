@@ -134,4 +134,3 @@ const Register: React.FunctionComponent = () => {
 };
 
 export default Register;
-

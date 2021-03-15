@@ -71,4 +71,3 @@ export function authenticate(): boolean {
   if (cookie === null) return false;
   else return true;
 }
-
