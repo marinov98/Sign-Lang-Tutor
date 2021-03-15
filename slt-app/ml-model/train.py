@@ -30,7 +30,7 @@ def train(epochs, trainloader,save_path,device):
     running_loss = 0.0
     for i, data in enumerate(trainloader, 0):
         # get the inputs; data is a list of [inputs, labels]
-        inputs, labels = data[0].to(device), data[1].to(data)
+        inputs, labels = data[0].to(device), data[1].to(device)
 
         # zero the parameter gradients
         optimizer.zero_grad()
@@ -73,7 +73,7 @@ def test(model,load_path,testloader,device,bsize=256):
   class_total = list(0. for i in range(len(classes)))
   with torch.no_grad():
       for data in tqdm(testloader):
-          images, labels = data[0].to(device), data[1].to(data)
+          images, labels = data[0].to(device), data[1].to(device)
           outputs = model(images)
           _, predicted = torch.max(outputs, 1)
           total += labels.size(0)
