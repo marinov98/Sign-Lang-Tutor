@@ -36,7 +36,7 @@ def register_user():
 
 
     # create new user
-    users.insert({
+    users.insert_one({
         'firstName': first_name,
         'lastName': last_name,
         'email': email,
