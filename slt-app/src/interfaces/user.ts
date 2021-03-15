@@ -16,3 +16,4 @@ export interface UserContextState {
   checkAuth: () => void;
   fillAuth: (user: IUser) => void;
 }
+
