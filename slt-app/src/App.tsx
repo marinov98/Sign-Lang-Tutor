@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
@@ -8,10 +8,13 @@ import NavBar from './components/NavBar/NavBar';
 import ProtectedRoute from './components/Protected/ProtectedRoute';
 import { authenticate, UserContext } from './utils/auth';
 import { IUser } from './interfaces/user';
+import Account from './components/Account/Account';
 
 const App: React.FunctionComponent = () => {
   const [auth, setAuth] = useState<IUser | null>(null);
-  const [authenticated, makeAuthenticated] = useState<boolean | null>(false);
+  const [authenticated, makeAuthenticated] = useState<boolean | null>(
+    authenticate()
+  );
 
   const checkAuth = (): void => {
     makeAuthenticated(authenticate());
@@ -32,9 +35,12 @@ const App: React.FunctionComponent = () => {
         value={{ auth, authenticated, fillAuth, checkAuth }}
       >
         <NavBar />
-        <ProtectedRoute exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
+        <Switch>
+          <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute path="/account" component={Account} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+        </Switch>
       </UserContext.Provider>
     </BrowserRouter>
   );
