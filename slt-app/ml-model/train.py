@@ -18,6 +18,15 @@ from tqdm import tqdm
 # because they require motion
 
 
+
+def create_dir(dir_name):
+  if not os.path.exists(os.path.join(dir_name)):
+    print('saved_models folder not found, creating...')
+    os.mkdir(os.path.join(dir_name))
+    print('done')
+  else:
+    print('folder exists, good to go...')
+
 def train(epochs, trainloader,save_path,device):
   model = models.alexnet(num_classes=24).to(device)
   criterion = nn.CrossEntropyLoss()
@@ -44,13 +53,13 @@ def train(epochs, trainloader,save_path,device):
         # print statistics
         running_loss += loss.item()
         if epoch % 10 == 0:
-          torch.save({
-            'epoch': epoch,
-            'model_state_dict': model.state_dict(),
-            'optimizer_state_dict': optimizer.state_dict(),
-            'loss': running_loss,
-            }, os.path.join(save_path,
-            f"epoch_{epoch:02d}.pth.tar"))
+          with open(os.path.join(save_path,f"epoch_{epoch:02d}.pth.tar"),'wb') as f:
+            torch.save({
+              'epoch': epoch,
+              'model_state_dict': model.state_dict(),
+              'optimizer_state_dict': optimizer.state_dict(),
+              'loss': running_loss,
+              }, f)
         if i % 2000 == 1999:    # print every 2000 mini-batches
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 2000))
@@ -60,7 +69,8 @@ def train(epochs, trainloader,save_path,device):
             running_loss = 0.0
 
   print('Finished Training')
-  torch.save(model.state_dict(),os.path.join(save_path,'final_model.pth.tar'))
+  with open(os.path.join(save_path,'final_model.pth.tar'),'wb') as f:
+    torch.save(model.state_dict(),f)
 
 
 def test(model,load_path,testloader,device,bsize=256):
@@ -91,15 +101,17 @@ def test(model,load_path,testloader,device,bsize=256):
   print('Total Accuracy of the network: %d %%' % (100 * correct / total))
 
 def main():
-  device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  SAVED_MODELS_FOLDER = 'saved_models'
+  device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
   cudnn.benchmark = True
 
   torch.manual_seed(42)
 
   print(f"Using: {device}")
 
-  data_folder = "data"
-
+  data_folder = 'data'
+  print('checking for saved_models folder...')
+  create_dir(SAVED_MODELS_FOLDER)
   training_transforms = transforms.Compose(
     [
       transforms.GaussianBlur(11,sigma=(0.1, 2.0)),
@@ -116,14 +128,16 @@ def main():
     ]
   )
 
+  EPOCHS = 75
   BATCHSIZE = 256
+  NUM_CLASSES = 24
   training_set = datasets.ImageFolder(os.path.join(data_folder,'train'), transform=training_transforms)
   trainerloader = torch.utils.data.DataLoader(training_set, batch_size=BATCHSIZE, shuffle=True, num_workers=20, pin_memory=True)
 
   test_set = datasets.ImageFolder(os.path.join(data_folder,'test'), transform=testing_transforms)
   testloader = torch.utils.data.DataLoader(test_set, batch_size=BATCHSIZE, shuffle=True, num_workers=20, pin_memory=True)
-  train(50,trainerloader,'saved_models',device)
-  test(models.alexnet(num_classes=24),'saved_models',testloader,device,bsize=BATCHSIZE)
+  train(EPOCHS,trainerloader,SAVED_MODELS_FOLDER,device)
+  test(models.alexnet(num_classes=NUM_CLASSES),SAVED_MODELS_FOLDER,testloader,device,bsize=BATCHSIZE)
 
 
 
