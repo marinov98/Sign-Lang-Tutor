@@ -4,10 +4,7 @@ import torchvision.datasets as datasets
 import torch.optim as optim
 import torch.nn as nn
 import torch
-# import albumentations as A
-# from albumentations.pytorch import ToTensorV2
 import torchvision.transforms as transforms
-#import albumentations.augmentations.transforms as AT
 
 import os
 from tqdm import tqdm
@@ -16,7 +13,6 @@ from tqdm import tqdm
 #note about data set,a = 00, b = 01, ... 
 # 10 and 25 are missing because j and z are skipped
 # because they require motion
-
 
 
 def create_dir(dir_name):
@@ -65,17 +61,23 @@ def train(epochs, trainloader,save_path,device):
                   (epoch + 1, i + 1, running_loss / 2000))
             # also save model
 
-
             running_loss = 0.0
 
   print('Finished Training')
   with open(os.path.join(save_path,'final_model.pth.tar'),'wb') as f:
     torch.save(model.state_dict(),f)
 
-
 def test(model,load_path,testloader,device,bsize=256):
   classes = [chr(i+65) for i in range(26) if i != 25 and i != 9]
-  model.load_state_dict(torch.load(os.path.join(load_path, 'final_model.pth.tar'))).to(device)
+
+  # load model
+  model.load_state_dict(torch.load(os.path.join(load_path, 'final_model.pth.tar')))
+  model.to(device)
+
+  # call evail() to set dropout and batch normalization layers to evaluation mode before running inference. 
+  # Failing to do this will yield inconsistent inference results. 
+  # If you wish to resuming training, call model.train() to ensure these layers are in training mode.
+  model.eval()
 
   correct = 0
   total = 0
@@ -138,11 +140,6 @@ def main():
   testloader = torch.utils.data.DataLoader(test_set, batch_size=BATCHSIZE, shuffle=True, num_workers=20, pin_memory=True)
   train(EPOCHS,trainerloader,SAVED_MODELS_FOLDER,device)
   test(models.alexnet(num_classes=NUM_CLASSES),SAVED_MODELS_FOLDER,testloader,device,bsize=BATCHSIZE)
-
-
-
-
-
 
 
 if __name__ == "__main__":
