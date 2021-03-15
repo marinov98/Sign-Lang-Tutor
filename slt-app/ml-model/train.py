@@ -4,8 +4,9 @@ import torchvision.datasets as datasets
 import torch.optim as optim
 import torch.nn as nn
 import torch
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
+# import albumentations as A
+# from albumentations.pytorch import ToTensorV2
+import torchvision.transforms as transforms
 #import albumentations.augmentations.transforms as AT
 
 import os
@@ -99,20 +100,19 @@ def main():
 
   data_folder = "data"
 
-  training_transforms = A.Compose(
+  training_transforms = transforms.Compose(
     [
-      A.RandomBrightnessContrast(p=0.5),
-      A.GaussianBlur(),
-      A.ColorJitter(),
-      A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-      ToTensorV2()
+      transforms.GaussianBlur(),
+      transforms.ColorJitter(),
+      transforms.ToTensor(),
+      transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
     ]
   )
 
-  testing_transforms = A.Compose(
+  testing_transforms = transforms.Compose(
     [
-      A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-      ToTensorV2()
+      transforms.ToTensor(),
+      transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
     ]
   )
 
