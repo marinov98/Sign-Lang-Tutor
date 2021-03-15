@@ -17,41 +17,8 @@ from tqdm import tqdm
 # 10 and 25 are missing because j and z are skipped
 # because they require motion
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-cudnn.benchmark = True
 
-torch.manual_seed(42)
-
-print(f"Using: {device}")
-
-data_folder = "data"
-
-training_transforms = A.Compose(
-  [
-    A.RandomBrightnessContrast(p=0.5),
-    A.GaussianBlur(),
-    A.ColorJitter(),
-    A.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-    ToTensorV2()
-  ]
-)
-
-testing_transforms = A.Compose(
-  [
-    A.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-    ToTensorV2()
-  ]
-)
-
-BATCHSIZE = 256
-training_set = datasets.ImageFolder(os.path.join(data_folder,'train'), transform=training_transforms)
-trainerloader = torch.utils.data.DataLoader(training_set, batch_size=BATCHSIZE, shuffle=True, num_workers=20, pin_memory=True)
-
-test_set = datasets.ImageFolder(os.path.join(data_folder,'test'), transform=testing_transforms)
-testloader = torch.utils.data.DataLoader(test_set, batch_size=BATCHSIZE, shuffle=True, num_workers=20, pin_memory=True)
-
-
-def train(epochs, trainloader,save_path):
+def train(epochs, trainloader,save_path,device):
   model = models.alexnet(num_classes=24).to(device)
   criterion = nn.CrossEntropyLoss()
   optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
@@ -63,7 +30,7 @@ def train(epochs, trainloader,save_path):
     running_loss = 0.0
     for i, data in enumerate(trainloader, 0):
         # get the inputs; data is a list of [inputs, labels]
-        inputs, labels = data[0].to(device), data[1].to(device)
+        inputs, labels = data[0].to(device), data[1]
 
         # zero the parameter gradients
         optimizer.zero_grad()
@@ -96,7 +63,7 @@ def train(epochs, trainloader,save_path):
   torch.save(model.state_dict(),os.path.join(save_path,'final_model.pth.tar'))
 
 
-def test(model,load_path,testloader,bsize=BATCHSIZE):
+def test(model,load_path,testloader,device,bsize=256):
   classes = [chr(i+65) for i in range(26) if i != 25 and i != 9]
   model.load_state_dict(torch.load(os.path.join(load_path, 'final_model.pth.tar'))).to(device)
 
@@ -106,7 +73,7 @@ def test(model,load_path,testloader,bsize=BATCHSIZE):
   class_total = list(0. for i in range(len(classes)))
   with torch.no_grad():
       for data in tqdm(testloader):
-          images, labels = data[0].to(device), data[1].to(device)
+          images, labels = data[0].to(device), data[1]
           outputs = model(images)
           _, predicted = torch.max(outputs, 1)
           total += labels.size(0)
@@ -123,9 +90,47 @@ def test(model,load_path,testloader,bsize=BATCHSIZE):
 
   print('Total Accuracy of the network: %d %%' % (100 * correct / total))
 
+def main():
+  device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  cudnn.benchmark = True
+
+  torch.manual_seed(42)
+
+  print(f"Using: {device}")
+
+  data_folder = "data"
+
+  training_transforms = A.Compose(
+    [
+      A.RandomBrightnessContrast(p=0.5),
+      A.GaussianBlur(),
+      A.ColorJitter(),
+      A.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+      ToTensorV2()
+    ]
+  )
+
+  testing_transforms = A.Compose(
+    [
+      A.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+      ToTensorV2()
+    ]
+  )
+
+  BATCHSIZE = 256
+  training_set = datasets.ImageFolder(os.path.join(data_folder,'train'), transform=training_transforms)
+  trainerloader = torch.utils.data.DataLoader(training_set, batch_size=BATCHSIZE, shuffle=True, num_workers=20, pin_memory=True)
+
+  test_set = datasets.ImageFolder(os.path.join(data_folder,'test'), transform=testing_transforms)
+  testloader = torch.utils.data.DataLoader(test_set, batch_size=BATCHSIZE, shuffle=True, num_workers=20, pin_memory=True)
+  train(50,trainerloader,'saved_models',device)
+  test(models.alexnet(num_classes=24).to(device),'saved_models',testloader,device,bsize=BATCHSIZE)
 
 
 
-if __name__ == "__main__":  
-    train(50,trainerloader,'saved_models')
-    test(models.alexnet(num_classes=24).to(device),'saved_models',testloader)
+
+
+
+
+if __name__ == "__main__":
+  main()
