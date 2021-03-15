@@ -18,19 +18,38 @@ import argparse
 
 def create_dir(dir_name):
     if not os.path.exists(os.path.join(dir_name)):
-        print("saved_models folder not found, creating...")
+        print(f"{dir_name} folder not found, creating...")
         os.mkdir(os.path.join(dir_name))
         print("done")
     else:
         print("folder exists, good to go...")
 
 
-def train(epochs, trainloader, save_path, device):
-    model = models.alexnet(num_classes=24).to(device)
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+def select_model(model_type: str, num_classes: int, pretrained: bool = False):
+    if model_type == "alexnet":
+        return models.alexnet(num_classes=num_classes, pretrained=pretrained)
+    elif model_type == "resnet":
+        return models.resnet50(num_classes=num_classes, pretrained=pretrained)
+    elif model_type == "densenet":
+        return models.densenet121(num_classes=num_classes, pretrained=pretrained)
+    elif model_type == "vgg":
+        return models.vgg16(num_classes=num_classes, pretrained=pretrained)
+    else:
+        return None
 
-    # use torchvision.datasets.ImageFolder prob
+
+# train(MODEL_TYPE,NUM_CLASSES,EPOCHS, trainerloader, SAVED_MODELS_FOLDER, device)
+def train(
+    model_type: str, num_classes: int, epochs: int, trainloader, save_path: str, device
+):
+    model = select_model(model_type, num_classes)
+    assert model is not None, "Invalid model type selected"
+    model = model.to(device)
+    print(f"training {model_type}")
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=1e-4)
+    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.1)
+
     for epoch in tqdm(range(1, epochs + 1)):  # loop over the dataset multiple times
 
         running_loss = 0.0
@@ -49,33 +68,35 @@ def train(epochs, trainloader, save_path, device):
 
             # print statistics
             running_loss += loss.item()
-            if epoch % 10 == 0:
-                with open(
-                    os.path.join(save_path, f"epoch_{epoch:02d}.pth.tar"), "wb"
-                ) as f:
-                    torch.save(
-                        {
-                            "epoch": epoch,
-                            "model_state_dict": model.state_dict(),
-                            "optimizer_state_dict": optimizer.state_dict(),
-                            "loss": running_loss,
-                        },
-                        f,
-                    )
-            if i % 200 == 199:  # print every 200 mini-batches
-                print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, running_loss / 200))
+
+            if i % 64 == 63:  # print every 200 mini-batches
+                print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, running_loss / 64))
                 # also save model
 
                 running_loss = 0.0
+
+        lr_scheduler.step()
+        if epoch % 10 == 0:
+            with open(os.path.join(save_path, f"epoch_{epoch:02d}.pth.tar"), "wb") as f:
+                torch.save(
+                    {
+                        "epoch": epoch,
+                        "model_state_dict": model.state_dict(),
+                        "optimizer_state_dict": optimizer.state_dict(),
+                        "scheduler": lr_scheduler.state_dict(),
+                    },
+                    f,
+                )
 
     print("Finished Training")
     with open(os.path.join(save_path, "final_model.pth.tar"), "wb") as f:
         torch.save(model.state_dict(), f)
 
 
-def test(model, load_path, testloader, device, bsize=256):
+def test(model_type, load_path, testloader, device, bsize=256):
     classes = [chr(i + 65) for i in range(26) if i != 25 and i != 9]
 
+    model = select_model(model_type, 24)
     # load model
     model.load_state_dict(torch.load(os.path.join(load_path, "final_model.pth.tar")))
     model.to(device)
@@ -118,6 +139,7 @@ def main():
     parser.add_argument(
         "mode", type=str, help="whether to train or test", choices=["train", "test"]
     )
+
     parser.add_argument(
         "--data-path",
         type=str,
@@ -153,79 +175,98 @@ def main():
     parser.add_argument(
         "--batch-size",
         type=int,
-        help="size of batches for training/testing. deafult = 256",
+        help="size of batches for training/testing. default = 256",
         default=256,
+    )
+
+    parser.add_argument(
+        "--seed",
+        type=int,
+        help="value to seed random number generator, default = 42",
+        default=42,
     )
 
     args = parser.parse_args()
 
-    SAVED_MODELS_FOLDER = "saved_models"
-    EPOCHS = 75
-    BATCHSIZE = 256
+    SAVED_MODELS_FOLDER = args.saved_models
+    EPOCHS = args.epochs
+    BATCHSIZE = args.batch_size
     NUM_CLASSES = 24
-    DATA_FOLDER = "data"
+    DATA_FOLDER = args.data_path
+    SEED = args.seed
+    MODEL_TYPE = args.model_type
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     cudnn.benchmark = True
 
-    torch.manual_seed(42)
+    torch.manual_seed(SEED)
 
     print(f"Using: {device}")
 
-    print("checking for saved_models folder...")
+    print(f"checking for {SAVED_MODELS_FOLDER} folder...")
     create_dir(SAVED_MODELS_FOLDER)
-    training_transforms = transforms.Compose(
-        [
-            transforms.GaussianBlur(11, sigma=(0.1, 2.0)),
-            transforms.ColorJitter(),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-        ]
-    )
 
-    testing_transforms = transforms.Compose(
-        [
-            transforms.ToTensor(),
-            transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-        ]
-    )
+    if args.mode == "train":
+        training_transforms = transforms.Compose(
+            [
+                transforms.GaussianBlur(11, sigma=(0.1, 2.0)),
+                transforms.ColorJitter(),
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)
+                ),
+            ]
+        )
 
-    training_set = datasets.ImageFolder(
-        os.path.join(DATA_FOLDER, "train"), transform=training_transforms
-    )
-    trainerloader = torch.utils.data.DataLoader(
-        training_set,
-        batch_size=BATCHSIZE,
-        shuffle=True,
-        num_workers=20,
-        pin_memory=True,
-    )
+        training_set = datasets.ImageFolder(
+            os.path.join(DATA_FOLDER, "train"), transform=training_transforms
+        )
+        trainerloader = torch.utils.data.DataLoader(
+            training_set,
+            batch_size=BATCHSIZE,
+            shuffle=True,
+            num_workers=20,
+            pin_memory=True,
+        )
+        if args.train_all:
+            for model_type in ["alexnet", "resnet", "densenet", "vgg"]:
+                save_path = os.path.join(model_type, SAVED_MODELS_FOLDER)
+                os.makedirs(save_path, exist_ok=True)
+                train(model_type, NUM_CLASSES, EPOCHS, trainerloader, save_path, device)
+        else:
+            train(
+                MODEL_TYPE,
+                NUM_CLASSES,
+                EPOCHS,
+                trainerloader,
+                SAVED_MODELS_FOLDER,
+                device,
+            )
+    #testing
+    else:
 
-    test_set = datasets.ImageFolder(
-        os.path.join(DATA_FOLDER, "test"), transform=testing_transforms
-    )
-    testloader = torch.utils.data.DataLoader(
-        test_set, batch_size=BATCHSIZE, shuffle=True, num_workers=20, pin_memory=True
-    )
-    train(EPOCHS, trainerloader, SAVED_MODELS_FOLDER, device)
-    test(
-        models.alexnet(num_classes=NUM_CLASSES),
-        SAVED_MODELS_FOLDER,
-        testloader,
-        device,
-        bsize=BATCHSIZE,
-    )
+        testing_transforms = transforms.Compose(
+            [
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)
+                ),
+            ]
+        )
 
+        test_set = datasets.ImageFolder(
+            os.path.join(DATA_FOLDER, "test"), transform=testing_transforms
+        )
+        testloader = torch.utils.data.DataLoader(
+            test_set,
+            batch_size=BATCHSIZE,
+            shuffle=True,
+            num_workers=20,
+            pin_memory=True,
+        )
 
-# TODO: use arg_parse
-# training or testing -
-# training -
-# specify number of epochs
-# model type
-# save path
-# batch size
-# seed
-# testing
-# load path
+        test(
+            MODEL_TYPE, SAVED_MODELS_FOLDER, testloader, device, bsize=BATCHSIZE,
+        )
 
 
 if __name__ == "__main__":
