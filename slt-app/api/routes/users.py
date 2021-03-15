@@ -14,8 +14,8 @@ def get_all_users():
     limit = request.args.get('limit')
     
     if limit:
-        if not limit.lstrip('-').isdigit():
-            return jsonify({'msg': 'limit parameter is not a number!' }), 409
+        if not limit.isdigit():
+            return jsonify({'msg': 'limit parameter is not positive or not a number!' }), 409
         all_users = mongo.db.users.find(limit=int(limit))
     else:
         all_users = mongo.db.users.find()
