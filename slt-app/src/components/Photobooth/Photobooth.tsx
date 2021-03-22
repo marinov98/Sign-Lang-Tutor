@@ -1,7 +1,7 @@
 import React from 'react';
 import Webcam from 'react-webcam';
 
-const PhotoBooth = () => {
+const Photobooth = () => {
   const webcamRef = React.useRef<Webcam>(null);
   const [imageSrc, setImageSrc] = React.useState<string | null>('');
   const [counter, setCounter] = React.useState(0);
@@ -32,4 +32,4 @@ const PhotoBooth = () => {
   );
 };
 
-export default PhotoBooth;
+export default Photobooth;
