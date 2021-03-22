@@ -188,7 +188,7 @@ def main():
 
     args = parser.parse_args()
 
-    SAVED_MODELS_FOLDER = args.saved_models
+    SAVED_MODELS_FOLDER = args.save_path
     EPOCHS = args.epochs
     BATCHSIZE = args.batch_size
     NUM_CLASSES = 24
