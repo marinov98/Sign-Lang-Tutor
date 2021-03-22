@@ -8,6 +8,7 @@ click==7.1.2
 colorama==0.4.4
 cycler==0.10.0
 decorator==4.4.2
+dnspython==2.1.0  
 flake8==3.8.4
 Flask==1.1.2
 Flask-Bcrypt==0.7.1
