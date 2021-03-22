@@ -12,7 +12,9 @@ import Account from './components/Account/Account';
 
 const App: React.FunctionComponent = () => {
   const [auth, setAuth] = useState<IUser | null>(null);
-  const [authenticated, makeAuthenticated] = useState<boolean | null>(authenticate());
+  const [authenticated, makeAuthenticated] = useState<boolean | null>(
+    authenticate()
+  );
 
   const checkAuth = (): void => {
     makeAuthenticated(authenticate());
@@ -34,10 +36,10 @@ const App: React.FunctionComponent = () => {
       >
         <NavBar />
         <Switch>
-        <ProtectedRoute exact path="/" component={Home} />
-        <ProtectedRoute path="/account" component={Account}/>
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
+          <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute path="/account" component={Account} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
         </Switch>
       </UserContext.Provider>
     </BrowserRouter>
