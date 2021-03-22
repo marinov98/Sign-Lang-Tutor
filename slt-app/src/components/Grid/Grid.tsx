@@ -1,4 +1,3 @@
-import React, { useContext, useState } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 
 interface GridProps {
