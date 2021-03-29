@@ -38,11 +38,17 @@ def select_model(model_type: str, num_classes: int, pretrained: bool = False):
         return None
 
 
-# train(MODEL_TYPE,NUM_CLASSES,EPOCHS, trainerloader, SAVED_MODELS_FOLDER, device)
 def train(
-    model_type: str, num_classes: int, epochs: int, trainloader, save_path: str, device
+    model_type: str,
+    num_classes: int,
+    epochs: int,
+    trainloader,
+    save_path: str,
+    device,
+    pretrain: bool = False,
 ):
-    model = select_model(model_type, num_classes)
+    model = select_model(model_type, num_classes, pretrain)
+    model.train()
     assert model is not None, "Invalid model type selected"
     model = model.to(device)
     print(f"training {model_type}")
@@ -173,6 +179,12 @@ def main():
     )
 
     parser.add_argument(
+        "--pretrain",
+        help="whether or not to train with models pretrained on ImageNet",
+        action="store_true",
+    )
+
+    parser.add_argument(
         "--batch-size",
         type=int,
         help="size of batches for training/testing. default = 256",
@@ -195,6 +207,7 @@ def main():
     DATA_FOLDER = args.data_path
     SEED = args.seed
     MODEL_TYPE = args.model_type
+    PRETRAIN = args.pretrain
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     cudnn.benchmark = True
 
@@ -231,7 +244,15 @@ def main():
             for model_type in ["alexnet", "resnet", "densenet", "vgg"]:
                 save_path = os.path.join(model_type, SAVED_MODELS_FOLDER)
                 os.makedirs(save_path, exist_ok=True)
-                train(model_type, NUM_CLASSES, EPOCHS, trainerloader, save_path, device)
+                train(
+                    model_type,
+                    NUM_CLASSES,
+                    EPOCHS,
+                    trainerloader,
+                    save_path,
+                    device,
+                    PRETRAIN,
+                )
         else:
             train(
                 MODEL_TYPE,
@@ -240,8 +261,9 @@ def main():
                 trainerloader,
                 SAVED_MODELS_FOLDER,
                 device,
+                PRETRAIN,
             )
-    #testing
+    # testing
     else:
 
         testing_transforms = transforms.Compose(

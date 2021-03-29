@@ -8,14 +8,12 @@ from flask_jwt_extended import JWTManager
 load_dotenv()
 
 try:
-    db_url = os.getenv('DB_URL')
-    db_name = os.getenv('DB_NAME')
-    secret = os.getenv('SECRET')
+    db_url = os.getenv("DB_URL")
+    db_name = os.getenv("DB_NAME")
+    secret = os.getenv("SECRET")
     mongo = PyMongo()
     bcrypt = Bcrypt()
     jwt = JWTManager()
 except:
     print("Check your environment variables")
     raise
-
-
