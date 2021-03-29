@@ -16,9 +16,9 @@ export const getModules = async () => {
   }
 };
 
-export const getLessons = async () => {
+export const getLessons = async (moduleName: string) => {
   try {
-    const { data } = await axios.get('/api/lessons/user/Alphabet');
+    const { data } = await axios.get(`/api/lessons/user/${moduleName}`);
     if (data) {
       return data;
     }

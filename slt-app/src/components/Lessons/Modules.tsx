@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { getModules } from '../../utils/lessons';
-import Grid from '../Grid/Grid';
+
 import { Col, Button } from 'reactstrap';
+import GridLessons from '../Grid/Grid';
+import { makeStyles, Paper } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    // height: 100,
+    // width: 100,
+    padding: theme.spacing(2),
+    textAlign: 'center'
+  }
+}));
 
 interface ModuleProps {
   name: string;
-};
+}
 
 const Module: React.FC<ModuleProps> = props => {
+  const classes = useStyles();
   return (
-    <Col>
-      {props.name}
-    </Col>
-  )
+    <Link to={`modules/${props.name}`}>
+      <Paper className={classes.paper}>{props.name}</Paper>
+    </Link>
+  );
 };
 
 const Modules = () => {
@@ -30,7 +43,14 @@ const Modules = () => {
     allModules();
   }, []);
 
-  return <Grid rowSize={3} items={modules.map(m => <Module name={m} />)} />;
+  return (
+    <GridLessons
+      rowSize={3}
+      items={modules.map(m => (
+        <Module name={m} />
+      ))}
+    />
+  );
 };
 
 export default Modules;

@@ -39,7 +39,7 @@ const Lessons = (props: any) => {
   const [lessons, setLessons] = useState<any[]>([]);
 
   const allLessons = async () => {
-    const lessons = await getLessons();
+    const lessons = await getLessons(props.match.params.moduleName);
     if (lessons) {
       setLessons(lessons);
       console.log(lessons);
@@ -50,7 +50,6 @@ const Lessons = (props: any) => {
 
   useEffect(() => {
     allLessons();
-    console.log(props.match.params);
   }, []);
 
   return (
