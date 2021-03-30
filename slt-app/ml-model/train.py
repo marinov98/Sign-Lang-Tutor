@@ -50,27 +50,32 @@ def train(
     model = select_model(model_type, num_classes, pretrain)
     model.train()
     assert model is not None, "Invalid model type selected"
-    model = model.to(device)
+    
     print(f"training {model_type}")
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=1e-4)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.1)
-
+    model = model.to(device)
     for epoch in tqdm(range(1, epochs + 1)):  # loop over the dataset multiple times
-
+        
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
+            print(1)
             inputs, labels = data[0].to(device), data[1].to(device)
-
+            print(2)
             # zero the parameter gradients
             optimizer.zero_grad()
-
+            print(3)
             # forward + backward + optimize
             outputs = model(inputs)
+            print(4)
             loss = criterion(outputs, labels)
+            print(5)
             loss.backward()
+            print(6)
             optimizer.step()
+            print(7)
 
             # print statistics
             running_loss += loss.item()
@@ -208,7 +213,7 @@ def main():
     SEED = args.seed
     MODEL_TYPE = args.model_type
     PRETRAIN = args.pretrain
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     cudnn.benchmark = True
 
     torch.manual_seed(SEED)
@@ -221,6 +226,7 @@ def main():
     if args.mode == "train":
         training_transforms = transforms.Compose(
             [
+                transforms.Resize(224),
                 transforms.GaussianBlur(11, sigma=(0.1, 2.0)),
                 transforms.ColorJitter(),
                 transforms.ToTensor(),
@@ -268,6 +274,7 @@ def main():
 
         testing_transforms = transforms.Compose(
             [
+                transforms.Resize(224),
                 transforms.ToTensor(),
                 transforms.Normalize(
                     mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)
