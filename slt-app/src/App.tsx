@@ -38,10 +38,9 @@ const App: React.FunctionComponent = () => {
       >
         <NavBar />
         <Switch>
-          <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute exact path="/" component={Modules} />
           <ProtectedRoute path="/account" component={Account} />
           <ProtectedRoute path="/modules/:moduleName" component={Lessons} />
-          <ProtectedRoute path="/modules" component={Modules} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
         </Switch>

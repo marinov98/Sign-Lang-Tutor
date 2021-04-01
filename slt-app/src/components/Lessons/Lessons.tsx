@@ -19,7 +19,7 @@ const Lesson: React.FC<ILesson> = props => {
   const classes = useStyles();
 
   return (
-    <Link to="/modules">
+    <Link to="/">
       <Paper className={classes.paper}>
         <div>{props.title}</div>
         <div>
