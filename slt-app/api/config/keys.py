@@ -1,4 +1,5 @@
 import os
+import torch
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
@@ -14,6 +15,7 @@ try:
     mongo = PyMongo()
     bcrypt = Bcrypt()
     jwt = JWTManager()
+    # model = 
 except:
     print("Check your environment variables")
     raise

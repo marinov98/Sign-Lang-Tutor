@@ -27,13 +27,37 @@ def create_dir(dir_name):
 
 def select_model(model_type: str, num_classes: int, pretrained: bool = False):
     if model_type == "alexnet":
-        return models.alexnet(num_classes=num_classes, pretrained=pretrained)
+        if pretrained:
+          model = models.alexnet(pretrained=pretrained)
+          num_ftrs = model.classifier[6].in_features
+          model.classifier[6] = nn.Linear(num_ftrs,num_classes)
+          return model
+        else:
+          return models.alexnet(num_classes=num_classes)
     elif model_type == "resnet":
-        return models.resnet50(num_classes=num_classes, pretrained=pretrained)
+        if pretrained:
+          model = models.resnet50(pretrained=pretrained)
+          num_ftrs = model.fc.in_features
+          model.fc = nn.Linear(num_ftrs, num_classes)
+          return model
+        else:
+          return models.resnet50(num_classes=num_classes)
     elif model_type == "densenet":
-        return models.densenet121(num_classes=num_classes, pretrained=pretrained)
+        if pretrained:
+          model = models.densenet121(pretrained=pretrained)
+          num_ftrs = model.classifier.in_features
+          model.classifier = nn.Linear(num_ftrs, num_classes)
+          return model
+        else:
+          return models.densenet121(num_classes=num_classes)
     elif model_type == "vgg":
-        return models.vgg16(num_classes=num_classes, pretrained=pretrained)
+        if pretrained:
+          model = models.vgg16(pretrained=pretrained)
+          num_ftrs = model.classifier[6].in_features
+          model.classifier[6] = nn.Linear(num_ftrs,num_classes)
+          return model
+        else:
+          return models.vgg16(num_classes=num_classes)
     else:
         return None
 
