@@ -9,6 +9,8 @@ import ProtectedRoute from './components/Protected/ProtectedRoute';
 import { authenticate, UserContext } from './utils/auth';
 import { IUser } from './interfaces/user';
 import Account from './components/Account/Account';
+import Lessons from './components/Lessons/Lessons';
+import Modules from './components/Lessons/Modules';
 
 const App: React.FunctionComponent = () => {
   const [auth, setAuth] = useState<IUser | null>(null);
@@ -36,8 +38,9 @@ const App: React.FunctionComponent = () => {
       >
         <NavBar />
         <Switch>
-          <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute exact path="/" component={Modules} />
           <ProtectedRoute path="/account" component={Account} />
+          <ProtectedRoute path="/modules/:moduleName" component={Lessons} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
         </Switch>
