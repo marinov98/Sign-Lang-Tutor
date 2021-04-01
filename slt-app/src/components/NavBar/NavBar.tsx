@@ -24,9 +24,6 @@ const NavBar: React.FunctionComponent = () => {
             <Link to="/" className="navbar-brand navbar-text ml-auto">
               Home
             </Link>
-            <Link to="/lessons" className="navbar-brand navbar-text ml-auto">
-              Lessons
-            </Link>
             <Link to="/account" className="navbar-brand navbar-text ml-auto">
               Account
             </Link>
