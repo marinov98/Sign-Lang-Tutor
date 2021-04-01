@@ -1,5 +1,6 @@
 import os
 import torch
+import torchvision.models as models
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
@@ -15,7 +16,12 @@ try:
     mongo = PyMongo()
     bcrypt = Bcrypt()
     jwt = JWTManager()
-    # model = 
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    model = models.alexnet(num_classes=24)
+    #TODO: define path
+    model.load_state_dict(torch.load('PATH'))
+    model.eval()
+    model = model.to(device)
 except:
     print("Check your environment variables")
     raise
