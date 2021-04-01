@@ -85,21 +85,14 @@ def train(
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
-            print(1)
             inputs, labels = data[0].to(device), data[1].to(device)
-            print(2)
             # zero the parameter gradients
             optimizer.zero_grad()
-            print(3)
             # forward + backward + optimize
             outputs = model(inputs)
-            print(4)
             loss = criterion(outputs, labels)
-            print(5)
             loss.backward()
-            print(6)
             optimizer.step()
-            print(7)
 
             # print statistics
             running_loss += loss.item()
