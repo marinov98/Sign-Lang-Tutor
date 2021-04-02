@@ -18,8 +18,8 @@ try:
     jwt = JWTManager()
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = models.alexnet(num_classes=24)
-    #TODO: define path
-    model.load_state_dict(torch.load('PATH'))
+    # TODO: define path
+    model.load_state_dict(torch.load("PATH"))
     model.eval()
     model = model.to(device)
 except:
