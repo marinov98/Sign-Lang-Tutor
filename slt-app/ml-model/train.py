@@ -28,36 +28,36 @@ def create_dir(dir_name):
 def select_model(model_type: str, num_classes: int, pretrained: bool = False):
     if model_type == "alexnet":
         if pretrained:
-          model = models.alexnet(pretrained=pretrained)
-          num_ftrs = model.classifier[6].in_features
-          model.classifier[6] = nn.Linear(num_ftrs,num_classes)
-          return model
+            model = models.alexnet(pretrained=pretrained)
+            num_ftrs = model.classifier[6].in_features
+            model.classifier[6] = nn.Linear(num_ftrs, num_classes)
+            return model
         else:
-          return models.alexnet(num_classes=num_classes)
+            return models.alexnet(num_classes=num_classes)
     elif model_type == "resnet":
         if pretrained:
-          model = models.resnet50(pretrained=pretrained)
-          num_ftrs = model.fc.in_features
-          model.fc = nn.Linear(num_ftrs, num_classes)
-          return model
+            model = models.resnet50(pretrained=pretrained)
+            num_ftrs = model.fc.in_features
+            model.fc = nn.Linear(num_ftrs, num_classes)
+            return model
         else:
-          return models.resnet50(num_classes=num_classes)
+            return models.resnet50(num_classes=num_classes)
     elif model_type == "densenet":
         if pretrained:
-          model = models.densenet121(pretrained=pretrained)
-          num_ftrs = model.classifier.in_features
-          model.classifier = nn.Linear(num_ftrs, num_classes)
-          return model
+            model = models.densenet121(pretrained=pretrained)
+            num_ftrs = model.classifier.in_features
+            model.classifier = nn.Linear(num_ftrs, num_classes)
+            return model
         else:
-          return models.densenet121(num_classes=num_classes)
+            return models.densenet121(num_classes=num_classes)
     elif model_type == "vgg":
         if pretrained:
-          model = models.vgg16(pretrained=pretrained)
-          num_ftrs = model.classifier[6].in_features
-          model.classifier[6] = nn.Linear(num_ftrs,num_classes)
-          return model
+            model = models.vgg16(pretrained=pretrained)
+            num_ftrs = model.classifier[6].in_features
+            model.classifier[6] = nn.Linear(num_ftrs, num_classes)
+            return model
         else:
-          return models.vgg16(num_classes=num_classes)
+            return models.vgg16(num_classes=num_classes)
     else:
         return None
 
@@ -74,14 +74,14 @@ def train(
     model = select_model(model_type, num_classes, pretrain)
     model.train()
     assert model is not None, "Invalid model type selected"
-    
+
     print(f"training {model_type}")
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=1e-4)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.1)
     model = model.to(device)
     for epoch in tqdm(range(1, epochs + 1)):  # loop over the dataset multiple times
-        
+
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
