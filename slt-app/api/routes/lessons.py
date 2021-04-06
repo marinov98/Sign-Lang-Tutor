@@ -34,7 +34,6 @@ def get_user_lessons(module="Alphabet"):
     )
     return json.dumps(lesson, indent=4, default=str), 200
 
-
 # /api/lessons/update/<lessonId>
 @lessons.route("/update/<lessonId>", methods=["PUT, PATCH"])
 @jwt_required()
