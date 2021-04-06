@@ -3,6 +3,7 @@ import numpy as np
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
+from torchvision import transforms
 from config.keys import model, device
 from PIL import Image
 import base64
@@ -41,11 +42,20 @@ def infer():
         # img.unsqueeze_(0)
         # img = img.to(device)
 
-        img = pil_to_tensor(image)
-        img = img / 255.0
-        img.unsqueeze_(0)
-        img = img.to(device)
+        # img = pil_to_tensor(image)
+        # img = img / 255.0
+        # img.unsqueeze_(0)
+        # img = img.to(device)
         # .unsqueeze(0)
+        transform = transforms.Compose(
+            [
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],
+                ),
+            ]
+        )
+        img = transform(image)
 
         out = model(img)
         print(out)
