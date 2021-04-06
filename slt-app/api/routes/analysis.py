@@ -36,12 +36,14 @@ def infer():
         image = Image.open(BytesIO(decoded_img))
 
         # use ml model to predict
-        img = torch.as_tensor(np.asarray(image))
-        img = img.permute((2, 0, 1))
-        img.unsqueeze_(0)
-        img = img.to(device)
+        # img = torch.as_tensor(np.asarray(image))
+        # img = img.permute((2, 0, 1))
+        # img.unsqueeze_(0)
+        # img = img.to(device)
 
-        # img = pil_to_tensor(image).unsqueeze(0).to(device)
+        img = pil_to_tensor(image).unsqueeze(0)
+        print(img[0,0,0])
+
 
         out = model(img)
         confidence, predicted = torch.max(out, 1)
