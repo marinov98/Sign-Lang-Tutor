@@ -9,7 +9,7 @@ from io import BytesIO
 
 analysis = Blueprint("analysis", __name__)
 
-
+# /api/analysis/analyze
 @analysis.route("/analyze", methods=["POST"])
 @jwt_required()
 def infer():
