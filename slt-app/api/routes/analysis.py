@@ -19,13 +19,12 @@ def infer():
     classes = [chr(i + 65) for i in range(26) if i != 25 and i != 9]
     image = BytesIO(request.json.get("img"))
     try:
-        with open(image) as img:
-            img = torch.as_tensor(
-                np.expand_dims(np.assarray(Image.fromstring(img)), 0)
-            ).to(device)
-            out = model(img)
-            confidence, predicted = torch.max(out, 1)
-            prediction = classes[predicted]
+        img = torch.as_tensor(
+            np.expand_dims(np.assarray(Image.open(image)), 0)
+        ).to(device)
+        out = model(img)
+        confidence, predicted = torch.max(out, 1)
+        prediction = classes[predicted]
         return jsonify({"pred": prediction, "confidence": confidence}), 200
     except Exception as e:
         print(e)
