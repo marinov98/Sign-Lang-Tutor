@@ -41,11 +41,14 @@ def infer():
         # img.unsqueeze_(0)
         # img = img.to(device)
 
-        img = pil_to_tensor(image).unsqueeze(0)
-        print(img[0,0,0])
-
+        img = pil_to_tensor(image)
+        img = img / 255.0
+        img.unsqueeze_(0)
+        img = img.to(device)
+        # .unsqueeze(0)
 
         out = model(img)
+        print(out)
         confidence, predicted = torch.max(out, 1)
         prediction = classes[predicted]
         return jsonify({"pred": prediction, "confidence": confidence.item()}), 200
