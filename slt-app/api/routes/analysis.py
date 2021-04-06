@@ -10,6 +10,7 @@ from io import BytesIO
 
 analysis = Blueprint("analysis", __name__)
 
+
 def pil_to_tensor(pic):
     # handle PIL Image
     img = torch.as_tensor(np.asarray(pic, dtype=np.float32).copy())
@@ -21,7 +22,7 @@ def pil_to_tensor(pic):
 
 # /api/analysis/analyze
 @analysis.route("/analyze", methods=["POST"])
-#@jwt_required()
+# @jwt_required()
 def infer():
     if not request.data:
         return jsonify({"msg": "No data found in request!"}), 409
@@ -35,10 +36,13 @@ def infer():
         image = Image.open(BytesIO(decoded_img))
 
         # use ml model to predict
-        # img = torch.as_tensor(
-        #     np.expand_dims(np.asarray(image), 0)
-        # ).to(device)
-        img = pil_to_tensor(image).unsqueeze(0).to(device)
+        img = torch.as_tensor(np.asarray(image))
+        image = image.permute((2, 0, 1))
+        image.unsqueeze_(0)
+        image = image.to(device)
+
+        # img = pil_to_tensor(image).unsqueeze(0).to(device)
+
         out = model(img)
         confidence, predicted = torch.max(out, 1)
         prediction = classes[predicted]
