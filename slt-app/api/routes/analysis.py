@@ -1,8 +1,11 @@
 import torch
+import numpy as np
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
-from config.keys import model
+from config.keys import model, device
+from PIL import Image
+from io import BytesIO
 
 analysis = Blueprint("analysis", __name__)
 
@@ -14,12 +17,16 @@ def infer():
         return jsonify({"msg": "No data found in request!"}), 409
     # something like this
     classes = [chr(i + 65) for i in range(26) if i != 25 and i != 9]
-    image = request.json.get("img")
+    image = BytesIO(request.json.get("img"))
     try:
-        image = image.unsqueeze(0)
-        out = model(image)
-        confidence, predicted = torch.max(out, 1)
-        prediction = classes[predicted]
+        with open(image) as img:
+            img = torch.as_tensor(
+                np.expand_dims(np.assarray(Image.fromstring(img)), 0)
+            ).to(device)
+            out = model(img)
+            confidence, predicted = torch.max(out, 1)
+            prediction = classes[predicted]
         return jsonify({"pred": prediction, "confidence": confidence}), 200
-    except:
+    except Exception as e:
+        print(e)
         return jsonify({"msg": "something bad happened"}), 500
