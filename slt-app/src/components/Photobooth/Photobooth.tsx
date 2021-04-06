@@ -1,7 +1,12 @@
 import React from 'react';
 import Webcam from 'react-webcam';
 
-const Photobooth = () => {
+
+interface PhotoboothProps {
+  onChange: any;
+}
+
+const Photobooth = (props: PhotoboothProps) => {
   const webcamRef = React.useRef<Webcam>(null);
   const [imageSrc, setImageSrc] = React.useState<string | null>('');
   const [counter, setCounter] = React.useState(0);
@@ -17,7 +22,7 @@ const Photobooth = () => {
     setCounter(3);
     setTimeout(() => {
       if (webcamRef && webcamRef.current) {
-        setImageSrc(webcamRef.current.getScreenshot());
+        props.onChange(webcamRef.current.getScreenshot());
       }
     }, 3000);
   }, [webcamRef]);
