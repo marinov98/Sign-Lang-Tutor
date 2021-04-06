@@ -30,7 +30,7 @@ def get_user_lessons(module="Alphabet"):
 @jwt_required()
 def get_user_lessons(module="Alphabet"):
     lesson = mongo.db.lessons.find(
-        {_id": ObjectId(lessonId)}
+        {"_id": ObjectId(lessonId)}
     )
     return json.dumps(lesson, indent=4, default=str), 200
 
