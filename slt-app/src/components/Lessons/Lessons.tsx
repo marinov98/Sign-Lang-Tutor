@@ -19,7 +19,7 @@ const Lesson: React.FC<ILesson> = props => {
   const classes = useStyles();
 
   return (
-    <Link to="/">
+    <Link to={`/lesson/${props._id}`}>
       <Paper className={classes.paper}>
         <div>{props.title}</div>
         <div>
@@ -37,9 +37,10 @@ const Lesson: React.FC<ILesson> = props => {
 
 const Lessons = (props: any) => {
   const [lessons, setLessons] = useState<any[]>([]);
+  const moduleName = props.match.params.moduleName;
 
   const allLessons = async () => {
-    const lessons = await getLessons(props.match.params.moduleName);
+    const lessons = await getLessons(moduleName);
     if (lessons) {
       setLessons(lessons);
       console.log(lessons);
