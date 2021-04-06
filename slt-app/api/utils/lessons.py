@@ -1,5 +1,6 @@
 from string import ascii_uppercase
 
+
 def create_alphabet_lessons(user_id):
     lessons = []
     link = "https://www.startasl.com/american-sign-language-alphabet/"
@@ -13,16 +14,12 @@ def create_alphabet_lessons(user_id):
                 "guide": link,
                 "starsAchieved": 0,
                 "totalStars": 3,
-                "completed": False
+                "completed": False,
             }
         )
 
     return lessons
 
 
-
-
 if __name__ == "__main__":
     print(create_alphabet_lessons("123"))
-
-
