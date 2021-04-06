@@ -29,7 +29,7 @@ def get_user_lessons(module="Alphabet"):
 @lessons.route("/user/single/<lessonId>", methods=["GET"])
 @jwt_required()
 def get_single_lesson():
-    lesson = mongo.db.lessons.find(
+    lesson = mongo.db.lessons.find_one_or_404(
         {"_id": ObjectId(lessonId)}
     )
     return json.dumps(lesson, indent=4, default=str), 200
