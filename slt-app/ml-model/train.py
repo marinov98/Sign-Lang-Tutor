@@ -129,7 +129,7 @@ def test(model_type, load_path, testloader, device, bsize=256):
     model.load_state_dict(torch.load(os.path.join(load_path, "final_model.pth.tar")))
     model.to(device)
 
-    # call evail() to set dropout and batch normalization layers to evaluation mode before running inference.
+    # call eval() to set dropout and batch normalization layers to evaluation mode before running inference.
     # Failing to do this will yield inconsistent inference results.
     # If you wish to resuming training, call model.train() to ensure these layers are in training mode.
     model.eval()

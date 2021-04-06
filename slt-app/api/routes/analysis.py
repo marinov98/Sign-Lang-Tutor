@@ -37,9 +37,9 @@ def infer():
 
         # use ml model to predict
         img = torch.as_tensor(np.asarray(image))
-        image = image.permute((2, 0, 1))
-        image.unsqueeze_(0)
-        image = image.to(device)
+        img = img.permute((2, 0, 1))
+        img.unsqueeze_(0)
+        img = img.to(device)
 
         # img = pil_to_tensor(image).unsqueeze(0).to(device)
 
