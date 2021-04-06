@@ -12,7 +12,7 @@ analysis = Blueprint("analysis", __name__)
 
 def pil_to_tensor(pic):
     # handle PIL Image
-    img = torch.as_tensor(np.asarray(pic))
+    img = torch.as_tensor(np.asarray(pic, dtype=np.float32).copy())
     img = img.view(pic.size[1], pic.size[0], len(pic.getbands()))
     # put it from HWC to CHW format
     img = img.permute((2, 0, 1))
@@ -38,11 +38,11 @@ def infer():
         # img = torch.as_tensor(
         #     np.expand_dims(np.asarray(image), 0)
         # ).to(device)
-        img = pil_to_tensor(image).unsqueeze().to(device)
+        img = pil_to_tensor(image).unsqueeze(0).to(device)
         out = model(img)
         confidence, predicted = torch.max(out, 1)
         prediction = classes[predicted]
-        return jsonify({"pred": prediction, "confidence": confidence}), 200
+        return jsonify({"pred": prediction, "confidence": confidence.item()}), 200
     except Exception as e:
         print(e)
         return jsonify({"msg": "something bad happened"}), 500
