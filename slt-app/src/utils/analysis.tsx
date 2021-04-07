@@ -2,9 +2,9 @@ import axios from 'axios';
 
 export async function analyze(imageSrc: any): Promise<any> {
   try {
-    const res = await axios.post('/api/analysis/analyze');
+    const res = await axios.post('/api/analysis/analyze', { img: imageSrc });
     if (res) {
-      return res;
+      return res.data;
     }
     return null;
   } catch (err) {
