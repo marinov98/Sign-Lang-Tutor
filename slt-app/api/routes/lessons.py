@@ -28,7 +28,7 @@ def get_user_lessons(module="Alphabet"):
 # /api/lessons/user/single/<lessonId>
 @lessons.route("/user/single/<lessonId>", methods=["GET"])
 @jwt_required()
-def get_single_lesson():
+def get_single_lesson(lessonId):
     lesson = mongo.db.lessons.find_one_or_404(
         {"_id": ObjectId(lessonId)}
     )

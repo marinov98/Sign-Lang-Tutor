@@ -56,6 +56,9 @@ def infer():
             ]
         )
         img = transform(image)
+        print(img[0,0,0])
+        img.unsqueeze_(0)
+        img = img.to(device)
 
         out = model(img)
         print(out)
