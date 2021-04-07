@@ -72,13 +72,13 @@ def train(
     pretrain: bool = False,
 ):
     model = select_model(model_type, num_classes, pretrain)
-    model.train()
     assert model is not None, "Invalid model type selected"
+    model.train()
 
     print(f"training {model_type}")
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=1e-4)
-    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.1)
+    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9, weight_decay=1e-4)
+    # lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.1)
     model = model.to(device)
     for epoch in tqdm(range(1, epochs + 1)):  # loop over the dataset multiple times
 
@@ -103,7 +103,7 @@ def train(
 
                 running_loss = 0.0
 
-        lr_scheduler.step()
+        # lr_scheduler.step()
         if epoch % 10 == 0:
             with open(os.path.join(save_path, f"epoch_{epoch:02d}.pth.tar"), "wb") as f:
                 torch.save(
@@ -111,7 +111,7 @@ def train(
                         "epoch": epoch,
                         "model_state_dict": model.state_dict(),
                         "optimizer_state_dict": optimizer.state_dict(),
-                        "scheduler": lr_scheduler.state_dict(),
+                        # "scheduler": lr_scheduler.state_dict(),
                     },
                     f,
                 )
@@ -316,4 +316,5 @@ def main():
 
 
 if __name__ == "__main__":
+    torch.autograd.set_detect_anomaly(True)
     main()
