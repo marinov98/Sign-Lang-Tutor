@@ -25,6 +25,7 @@ def get_user_lessons(module="Alphabet"):
     )
     return json.dumps([lesson for lesson in lessons], indent=4, default=str), 200
 
+
 # /api/lessons/user/single/<lessonId>
 @lessons.route("/user/single/<lessonId>", methods=["GET"])
 @jwt_required()
@@ -33,6 +34,7 @@ def get_single_lesson(lessonId):
         {"_id": ObjectId(lessonId)}
     )
     return json.dumps(lesson, indent=4, default=str), 200
+
 
 # /api/lessons/update/<lessonId>
 @lessons.route("/update/<lessonId>", methods=["PUT, PATCH"])
