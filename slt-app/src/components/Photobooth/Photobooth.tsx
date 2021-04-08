@@ -7,7 +7,6 @@ interface PhotoboothProps {
 
 const Photobooth = (props: PhotoboothProps) => {
   const webcamRef = React.useRef<Webcam>(null);
-  const [imageSrc, setImageSrc] = React.useState<string | null>('');
   const [counter, setCounter] = React.useState(0);
 
   React.useEffect(() => {
@@ -29,8 +28,9 @@ const Photobooth = (props: PhotoboothProps) => {
   return (
     <>
       <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
-      <img src={imageSrc!} />
+      <br />
       {counter ? <div>Countdown: {counter} </div> : ''}
+      <br />
       <button onClick={capture}>Capture photo</button>
     </>
   );
