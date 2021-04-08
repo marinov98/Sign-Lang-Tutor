@@ -35,11 +35,16 @@ const Lesson = (props: any) => {
 
   return (
     <div style={{'textAlign': 'center'}}>
-      <h2> {lesson ? lesson.module : ""} </h2>
-      <h4> {lesson ? lesson.title : ""} </h4>
-      <Rating max={lesson ? lesson.totalStars : 0} value={lesson ? lesson.starsAchieved : 0} readOnly/>
-      <br />
-      <a href={lesson ? lesson.guide : ""} target="_blank" rel="noopener noreferrer"> Learn </a>
+      { lesson ?
+        (
+          <>
+            <h2> { lesson.module } </h2>
+            <h4> { lesson.title } </h4>
+            <Rating max={ lesson.totalStars } value={ lesson.starsAchieved } readOnly/>
+            <br />
+            <a href={ lesson.guide } target="_blank" rel="noopener noreferrer"> Learn </a>
+          </>
+        ) : "" }
       <br />
       <Photobooth onChange={handleChange} />
       <button onClick={sendPhoto}>Send Photo</button>
