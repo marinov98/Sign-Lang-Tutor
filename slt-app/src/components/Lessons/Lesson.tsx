@@ -68,7 +68,7 @@ const Lesson = (props: any) => {
                 <button onClick={sendPhoto}>Send Photo</button>
                 <br />
                 { analysis ?
-                  "We predicted that's an " + analysis.pred + ". " + (analysis.pred == lesson.title ? "Nice!" : "Try again!") : "" }
+                  "We predicted that's an " + analysis.pred + ". " + (analysis.pred == lesson.title.substr(-1) ? "Nice!" : "Try again!") : "" }
               </Col>
             ) : "" }
         </Row>
