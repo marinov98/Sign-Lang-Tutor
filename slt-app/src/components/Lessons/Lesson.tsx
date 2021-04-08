@@ -67,7 +67,7 @@ const Lesson = (props: any) => {
                 <button onClick={sendPhoto}>Send Photo</button>
                 <br />
                 { analysis ?
-                  "We predicted that's an " + analysis.pred + " with " + analysis.confidence + "% confidence . " + (analysis.pred == lesson.title ? "Nice!" : "Try again!") : "" }
+                  "We predicted that's an " + analysis.pred + " with " + 100 * analysis.confidence + "% confidence . " + (analysis.pred == lesson.title ? "Nice!" : "Try again!") : "" }
               </Col>
             ) : "" }
         </Row>
