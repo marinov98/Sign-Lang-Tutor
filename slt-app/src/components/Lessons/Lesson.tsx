@@ -10,6 +10,7 @@ const Lesson = (props: any) => {
   const [imageSrc, setImageSrc] = React.useState<string | null>('');
 
   const [lesson, setLesson] = useState<any>();
+  const [analysis, setAnalysis] = useState<any>();
 
   const allLessons = async () => {
     const lessons = await getLesson(props.match.params.lessonId);
@@ -31,6 +32,7 @@ const Lesson = (props: any) => {
 
   const sendPhoto = async () => {
     const res = await analyze(imageSrc);
+    setAnalysis(res);
     console.log(res);
   }
 
@@ -56,11 +58,19 @@ const Lesson = (props: any) => {
           <Col>
             <Photobooth onChange={handleChange} />
           </Col>
-          <Col>
-            <img src={imageSrc!} height={200} width={300}></img>
-            <br />
-            <button onClick={sendPhoto}>Send Photo</button>
-          </Col>
+          {imageSrc ? 
+            (
+              <Col>
+
+                <img src={imageSrc!} height={240} width={320}></img>
+                <br />
+                <br />
+                <button onClick={sendPhoto}>Send Photo</button>
+                <br />
+                { analysis ?
+                  "We predicted that's an " + analysis.pred + ". " + (analysis.pred == lesson.title ? "Nice!" : "Try again!") : "" }
+              </Col>
+            ) : "" }
         </Row>
       </Container>
     </div>
