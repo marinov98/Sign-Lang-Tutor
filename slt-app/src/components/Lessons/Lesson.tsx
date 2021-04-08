@@ -2,6 +2,7 @@ import Photobooth from '../Photobooth/Photobooth';
 import React, { useEffect, useState } from 'react';
 import { analyze } from '../../utils/analysis';
 import { getLesson } from '../../utils/lessons';
+import { Rating } from '@material-ui/lab';
 // import { ILesson } from '../../interfaces/lesson';
 
 const Lesson = (props: any) => {
@@ -33,10 +34,16 @@ const Lesson = (props: any) => {
   }
 
   return (
-    <>
+    <div style={{'textAlign': 'center'}}>
+      <h2> {lesson ? lesson.module : ""} </h2>
+      <h4> {lesson ? lesson.title : ""} </h4>
+      <Rating max={lesson ? lesson.totalStars : 0} value={lesson ? lesson.starsAchieved : 0} readOnly/>
+      <br />
+      <a href={lesson ? lesson.guide : ""} target="_blank" rel="noopener noreferrer"> Learn </a>
+      <br />
       <Photobooth onChange={handleChange} />
       <button onClick={sendPhoto}>Send Photo</button>
-    </>
+    </div>
   );
 };
 
