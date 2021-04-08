@@ -67,8 +67,7 @@ def infer():
         confidence, predicted = torch.max(out, 1)
         prediction = classes[predicted]
         print(confidence.item())
-        res = {"pred": prediction, "confidence": round(random.uniform(0,1),4)}
-        return jsonify(res), 200
+        return jsonify({"pred": prediction, "confidence": round(random.uniform(0,1),4)}), 200
     except Exception as e:
         print(e)
         return jsonify({"msg": "something bad happened"}), 500
