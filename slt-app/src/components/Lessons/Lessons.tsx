@@ -19,19 +19,19 @@ const Lesson: React.FC<ILesson> = props => {
   const classes = useStyles();
 
   return (
-    <Link to={`/lesson/${props._id}`}>
-      <Paper className={classes.paper}>
+    <Paper className={classes.paper}>
+      <Link to={`/lesson/${props._id}`}>
         <div>{props.title}</div>
+      </Link>
+      <div>
+        <a href={props.guide} target="_blank" rel="noopener noreferrer">
+          Guide
+        </a>
         <div>
-          <a href={props.guide} target="_blank" rel="noopener noreferrer">
-            Guide
-          </a>
-          <div>
-            stars: {props.starsAchieved}/{props.totalStars}
-          </div>
+          stars: {props.starsAchieved}/{props.totalStars}
         </div>
-      </Paper>
-    </Link>
+      </div>
+    </Paper>
   );
 };
 
