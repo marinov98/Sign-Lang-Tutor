@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { analyze } from '../../utils/analysis';
 import { getLesson } from '../../utils/lessons';
 import { Rating } from '@material-ui/lab';
+import { Container, Row, Col } from 'reactstrap';
 // import { ILesson } from '../../interfaces/lesson';
 
 const Lesson = (props: any) => {
@@ -35,19 +36,33 @@ const Lesson = (props: any) => {
 
   return (
     <div style={{'textAlign': 'center'}}>
-      { lesson ?
-        (
-          <>
-            <h2> { lesson.module } </h2>
-            <h4> { lesson.title } </h4>
-            <Rating max={ lesson.totalStars } value={ lesson.starsAchieved } readOnly/>
+
+      <div>
+        { lesson ?
+          (
+            <>
+              <h2> { lesson.module } </h2>
+              <h4> { lesson.title } </h4>
+              <Rating max={ lesson.totalStars } value={ lesson.starsAchieved } readOnly/>
+              <br />
+              <a href={ lesson.guide } target="_blank" rel="noopener noreferrer"> Learn </a>
+            </>
+          ) : "" }
+          <br />
+      </div>
+
+      <Container>
+        <Row>
+          <Col>
+            <Photobooth onChange={handleChange} />
+          </Col>
+          <Col>
+            <img src={imageSrc!} height={200} width={300}></img>
             <br />
-            <a href={ lesson.guide } target="_blank" rel="noopener noreferrer"> Learn </a>
-          </>
-        ) : "" }
-      <br />
-      <Photobooth onChange={handleChange} />
-      <button onClick={sendPhoto}>Send Photo</button>
+            <button onClick={sendPhoto}>Send Photo</button>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };
