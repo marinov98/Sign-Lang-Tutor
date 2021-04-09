@@ -34,13 +34,14 @@ const Account = () => {
   }, []);
 
   return (
-    <div className="row">
-      <div className="col m-2">
+    <div className="text-center">
+      <div>
         <h3>
           {firstName} {lastName}
         </h3>
       </div>
-      <div className="text-right col m-2">
+      <br />
+      <div>
         <div>Progress: {progress}</div>
         <div>Lessons Completed: {lessonsCompleted}</div>
         <div>Stars: {stars}</div>

@@ -10,6 +10,7 @@ import { IUser } from './interfaces/user';
 import Account from './components/Account/Account';
 import Lessons from './components/Lessons/Lessons';
 import Modules from './components/Lessons/Modules';
+import Lesson from './components/Lessons/Lesson';
 
 const App: React.FunctionComponent = () => {
   const [auth, setAuth] = useState<IUser | null>(null);
@@ -40,6 +41,7 @@ const App: React.FunctionComponent = () => {
           <ProtectedRoute exact path="/" component={Modules} />
           <ProtectedRoute path="/account" component={Account} />
           <ProtectedRoute path="/modules/:moduleName" component={Lessons} />
+          <ProtectedRoute path="/lesson/:lessonId" component={Lesson} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
         </Switch>

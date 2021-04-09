@@ -5,6 +5,7 @@ from .users import users
 from .lessons import lessons
 from config.keys import mongo
 
+
 def init_app(app):
     with app.app_context():
         # create indexes

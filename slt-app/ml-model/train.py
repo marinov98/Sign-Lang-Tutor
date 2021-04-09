@@ -27,39 +27,67 @@ def create_dir(dir_name):
 
 def select_model(model_type: str, num_classes: int, pretrained: bool = False):
     if model_type == "alexnet":
-        return models.alexnet(num_classes=num_classes, pretrained=pretrained)
+        if pretrained:
+            model = models.alexnet(pretrained=pretrained)
+            num_ftrs = model.classifier[6].in_features
+            model.classifier[6] = nn.Linear(num_ftrs, num_classes)
+            return model
+        else:
+            return models.alexnet(num_classes=num_classes)
     elif model_type == "resnet":
-        return models.resnet50(num_classes=num_classes, pretrained=pretrained)
+        if pretrained:
+            model = models.resnet50(pretrained=pretrained)
+            num_ftrs = model.fc.in_features
+            model.fc = nn.Linear(num_ftrs, num_classes)
+            return model
+        else:
+            return models.resnet50(num_classes=num_classes)
     elif model_type == "densenet":
-        return models.densenet121(num_classes=num_classes, pretrained=pretrained)
+        if pretrained:
+            model = models.densenet121(pretrained=pretrained)
+            num_ftrs = model.classifier.in_features
+            model.classifier = nn.Linear(num_ftrs, num_classes)
+            return model
+        else:
+            return models.densenet121(num_classes=num_classes)
     elif model_type == "vgg":
-        return models.vgg16(num_classes=num_classes, pretrained=pretrained)
+        if pretrained:
+            model = models.vgg16(pretrained=pretrained)
+            num_ftrs = model.classifier[6].in_features
+            model.classifier[6] = nn.Linear(num_ftrs, num_classes)
+            return model
+        else:
+            return models.vgg16(num_classes=num_classes)
     else:
         return None
 
 
-# train(MODEL_TYPE,NUM_CLASSES,EPOCHS, trainerloader, SAVED_MODELS_FOLDER, device)
 def train(
-    model_type: str, num_classes: int, epochs: int, trainloader, save_path: str, device
+    model_type: str,
+    num_classes: int,
+    epochs: int,
+    trainloader,
+    save_path: str,
+    device,
+    pretrain: bool = False,
 ):
-    model = select_model(model_type, num_classes)
+    model = select_model(model_type, num_classes, pretrain)
     assert model is not None, "Invalid model type selected"
-    model = model.to(device)
+    model.train()
+
     print(f"training {model_type}")
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=1e-4)
-    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.1)
-
+    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9, weight_decay=1e-4)
+    # lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.1)
+    model = model.to(device)
     for epoch in tqdm(range(1, epochs + 1)):  # loop over the dataset multiple times
 
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
             inputs, labels = data[0].to(device), data[1].to(device)
-
             # zero the parameter gradients
             optimizer.zero_grad()
-
             # forward + backward + optimize
             outputs = model(inputs)
             loss = criterion(outputs, labels)
@@ -75,7 +103,7 @@ def train(
 
                 running_loss = 0.0
 
-        lr_scheduler.step()
+        # lr_scheduler.step()
         if epoch % 10 == 0:
             with open(os.path.join(save_path, f"epoch_{epoch:02d}.pth.tar"), "wb") as f:
                 torch.save(
@@ -83,7 +111,7 @@ def train(
                         "epoch": epoch,
                         "model_state_dict": model.state_dict(),
                         "optimizer_state_dict": optimizer.state_dict(),
-                        "scheduler": lr_scheduler.state_dict(),
+                        # "scheduler": lr_scheduler.state_dict(),
                     },
                     f,
                 )
@@ -101,7 +129,7 @@ def test(model_type, load_path, testloader, device, bsize=256):
     model.load_state_dict(torch.load(os.path.join(load_path, "final_model.pth.tar")))
     model.to(device)
 
-    # call evail() to set dropout and batch normalization layers to evaluation mode before running inference.
+    # call eval() to set dropout and batch normalization layers to evaluation mode before running inference.
     # Failing to do this will yield inconsistent inference results.
     # If you wish to resuming training, call model.train() to ensure these layers are in training mode.
     model.eval()
@@ -173,6 +201,12 @@ def main():
     )
 
     parser.add_argument(
+        "--pretrain",
+        help="whether or not to train with models pretrained on ImageNet",
+        action="store_true",
+    )
+
+    parser.add_argument(
         "--batch-size",
         type=int,
         help="size of batches for training/testing. default = 256",
@@ -195,7 +229,8 @@ def main():
     DATA_FOLDER = args.data_path
     SEED = args.seed
     MODEL_TYPE = args.model_type
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    PRETRAIN = args.pretrain
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     cudnn.benchmark = True
 
     torch.manual_seed(SEED)
@@ -208,6 +243,7 @@ def main():
     if args.mode == "train":
         training_transforms = transforms.Compose(
             [
+                transforms.Resize(224),
                 transforms.GaussianBlur(11, sigma=(0.1, 2.0)),
                 transforms.ColorJitter(),
                 transforms.ToTensor(),
@@ -231,7 +267,15 @@ def main():
             for model_type in ["alexnet", "resnet", "densenet", "vgg"]:
                 save_path = os.path.join(model_type, SAVED_MODELS_FOLDER)
                 os.makedirs(save_path, exist_ok=True)
-                train(model_type, NUM_CLASSES, EPOCHS, trainerloader, save_path, device)
+                train(
+                    model_type,
+                    NUM_CLASSES,
+                    EPOCHS,
+                    trainerloader,
+                    save_path,
+                    device,
+                    PRETRAIN,
+                )
         else:
             train(
                 MODEL_TYPE,
@@ -240,12 +284,14 @@ def main():
                 trainerloader,
                 SAVED_MODELS_FOLDER,
                 device,
+                PRETRAIN,
             )
-    #testing
+    # testing
     else:
 
         testing_transforms = transforms.Compose(
             [
+                transforms.Resize(224),
                 transforms.ToTensor(),
                 transforms.Normalize(
                     mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)
@@ -270,4 +316,5 @@ def main():
 
 
 if __name__ == "__main__":
+    torch.autograd.set_detect_anomaly(True)
     main()

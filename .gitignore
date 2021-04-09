@@ -34,6 +34,13 @@ MANIFEST
 
 # ML model 
 saved_models/
+resnet/
+alexnet_test/
+alexnet_mvp/
+densenet_test/
+resnet_test/
+vgg_test/
+final-models/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
