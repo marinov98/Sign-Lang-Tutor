@@ -4,6 +4,7 @@ import { analyze } from '../../utils/analysis';
 import { getLesson, updateLesson } from '../../utils/lessons';
 import { Rating } from '@material-ui/lab';
 import { Container, Row, Col } from 'reactstrap';
+import {CircularProgress} from "@material-ui/core"
 // import { ILesson } from '../../interfaces/lesson';
 
 const Lesson = (props: any) => {
@@ -12,6 +13,8 @@ const Lesson = (props: any) => {
   const [lesson, setLesson] = useState<any>();
   const [analysis, setAnalysis] = useState<any>();
   const [stars, setStars] = useState<any>(0);
+  const [loadingAnalysis, setLoadingAnalysis] = useState<any>(false);
+  const [loadingProfile, setLoadingProfile] = useState<any>(true);
 
   const allLessons = async () => {
     const lessons = await getLesson(props.match.params.lessonId);
@@ -19,6 +22,7 @@ const Lesson = (props: any) => {
       setLesson(lessons);
       console.log(lessons);
       setStars(lessons.starsAchieved)
+      setLoadingProfile(false)
       return;
     }
     console.log('Error occured getting lessons');
@@ -34,6 +38,7 @@ const Lesson = (props: any) => {
 
   const sendPhoto = async () => {
     const res = await analyze(imageSrc);
+    setLoadingAnalysis(true)
     setAnalysis(res);
     if (res.pred && lesson.title) {
       if (res.pred == lesson.title[lesson.title.length - 1]) {
@@ -58,11 +63,14 @@ const Lesson = (props: any) => {
           setStars(payload.starsAchieved);
       }
     }
+    setLoadingAnalysis(false)
   }
 
   return (
     <div style={{'textAlign': 'center'}}>
-
+      <div>
+        { loadingProfile ? <CircularProgress/> : ""}
+      </div>
       <div>
         { lesson ?
           (
@@ -91,6 +99,7 @@ const Lesson = (props: any) => {
                 <br />
                 <button onClick={sendPhoto}>Send Photo</button>
                 <br />
+                { loadingAnalysis ? <CircularProgress color="secondary"/> : ""}
                 { analysis ?
                   "We predicted that's an " + analysis.pred + " with " + 100 * analysis.confidence + "% confidence . " + (analysis.pred == lesson.title ? "Nice!" : "Try again!") : "" }
               </Col>
