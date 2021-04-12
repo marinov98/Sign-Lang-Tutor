@@ -35,8 +35,8 @@ const Lesson = (props: any) => {
   };
 
   const sendPhoto = async () => {
-    const res = await analyze(imageSrc);
     setLoadingAnalysis(true);
+    const res = await analyze(imageSrc);
     setAnalysis(res);
     if (res.pred && lesson.title) {
       if (res.pred == lesson.title[lesson.title.length - 1]) {
@@ -94,7 +94,7 @@ const Lesson = (props: any) => {
               <button onClick={sendPhoto}>Send Photo</button>
               <br />
               {loadingAnalysis ? (
-                <CircularProgress color="secondary" />
+                <CircularProgress style={{margin: 10}} color="secondary" />
               ) : analysis ? (
                 "We predicted that's an " +
                 analysis.pred +

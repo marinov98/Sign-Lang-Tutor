@@ -5,6 +5,7 @@ import { Col, Button } from 'reactstrap';
 import GridLessons from '../Grid/Grid';
 import { makeStyles, Paper } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -30,11 +31,13 @@ const Module: React.FC<ModuleProps> = props => {
 
 const Modules = () => {
   const [modules, setModules] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true)
 
   const allModules = async () => {
     const modules = await getModules();
     if (modules) {
       setModules(modules);
+      setLoading(false)
     } else {
       console.log('Error occured');
     }
@@ -47,12 +50,16 @@ const Modules = () => {
   }, []);
 
   return (
-    <GridLessons
-      rowSize={3}
-      items={modules.map(m => (
-        <Module name={m} key={Math.random().toString(36).substr(2, 9)} />
-      ))}
-    />
+    <div style={{ textAlign: 'center' }}>
+      {loading ?  <CircularProgress style={{"marginTop": 20}} size={90}/> : 
+        <GridLessons
+          rowSize={3}
+          items={modules.map(m => (
+            <Module name={m} key={Math.random().toString(36).substr(2, 9)} />
+          ))}
+        />
+      }
+    </div>
   );
 };
 
