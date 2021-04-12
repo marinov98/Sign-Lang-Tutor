@@ -14,7 +14,6 @@ const Lesson = (props: any) => {
   const [analysis, setAnalysis] = useState<any>();
   const [stars, setStars] = useState<any>(0);
   const [loadingAnalysis, setLoadingAnalysis] = useState<any>(false);
-  const [loadingProfile, setLoadingProfile] = useState<any>(true);
 
   const allLessons = async () => {
     const lessons = await getLesson(props.match.params.lessonId);
@@ -22,7 +21,6 @@ const Lesson = (props: any) => {
       setLesson(lessons);
       console.log(lessons);
       setStars(lessons.starsAchieved)
-      setLoadingProfile(false)
       return;
     }
     console.log('Error occured getting lessons');
@@ -69,9 +67,6 @@ const Lesson = (props: any) => {
   return (
     <div style={{'textAlign': 'center'}}>
       <div>
-        { loadingProfile ? <CircularProgress/> : ""}
-      </div>
-      <div>
         { lesson ?
           (
             <>
@@ -81,7 +76,7 @@ const Lesson = (props: any) => {
               <br />
               <a href={ lesson.guide } target="_blank" rel="noopener noreferrer"> Learn </a>
             </>
-          ) : "" }
+          ) : <CircularProgress/> }
           <br />
       </div>
 
@@ -99,8 +94,7 @@ const Lesson = (props: any) => {
                 <br />
                 <button onClick={sendPhoto}>Send Photo</button>
                 <br />
-                { loadingAnalysis ? <CircularProgress color="secondary"/> : ""}
-                { analysis ?
+                { loadingAnalysis ? <CircularProgress color="secondary"/> : analysis ?
                   "We predicted that's an " + analysis.pred + " with " + 100 * analysis.confidence + "% confidence . " + (analysis.pred == lesson.title ? "Nice!" : "Try again!") : "" }
               </Col>
             ) : "" }
