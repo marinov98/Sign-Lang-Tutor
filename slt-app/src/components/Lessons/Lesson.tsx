@@ -94,7 +94,7 @@ const Lesson = (props: any) => {
               <button onClick={sendPhoto}>Send Photo</button>
               <br />
               {loadingAnalysis ? (
-                <CircularProgress style={{margin: 10}} color="secondary" />
+                <CircularProgress style={{ margin: 10 }} color="secondary" />
               ) : analysis ? (
                 "We predicted that's an " +
                 analysis.pred +
