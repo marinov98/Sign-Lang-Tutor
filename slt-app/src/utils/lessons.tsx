@@ -51,8 +51,7 @@ export const getLesson = async (lessonId: string) => {
 export const updateLesson = async (lessonId: string, payload: any) => {
   try {
     await axios.patch(`/api/lessons/update/${lessonId}`, payload);
-  }
-  catch (err) {
+  } catch (err) {
     if (err.response) {
       return err.response.data;
     } else {

@@ -42,10 +42,21 @@ const GridLessons: React.FunctionComponent<GridProps> = props => {
     //     </Grid>
     //   ))}
     // </Container>
-    <Container maxWidth="xl" className={classes.grid}>
+    <Container
+      maxWidth="xl"
+      className={classes.grid}
+      key={Math.random().toString(36).substr(2, 9)}
+    >
       <Grid container justify="flex-start" spacing={2}>
         {props.items.map(x => (
-          <Grid item xs={12} sm={6} md={4} lg={2}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={2}
+            key={Math.random().toString(36).substr(2, 9)}
+          >
             {x}
           </Grid>
         ))}

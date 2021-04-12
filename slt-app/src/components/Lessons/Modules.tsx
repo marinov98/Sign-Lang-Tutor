@@ -35,8 +35,11 @@ const Modules = () => {
     const modules = await getModules();
     if (modules) {
       setModules(modules);
+    } else {
+      console.log('Error occured');
     }
-    console.log('Error occured');
+
+    if (!Array.isArray(modules)) setModules([]);
   };
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const Modules = () => {
     <GridLessons
       rowSize={3}
       items={modules.map(m => (
-        <Module name={m} />
+        <Module name={m} key={Math.random().toString(36).substr(2, 9)} />
       ))}
     />
   );
