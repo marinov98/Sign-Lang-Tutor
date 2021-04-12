@@ -1,7 +1,7 @@
 import Photobooth from '../Photobooth/Photobooth';
 import React, { useEffect, useState } from 'react';
 import { analyze } from '../../utils/analysis';
-import { getLesson } from '../../utils/lessons';
+import { getLesson, updateLesson } from '../../utils/lessons';
 import { Rating } from '@material-ui/lab';
 import { Container, Row, Col } from 'reactstrap';
 // import { ILesson } from '../../interfaces/lesson';
@@ -11,12 +11,14 @@ const Lesson = (props: any) => {
 
   const [lesson, setLesson] = useState<any>();
   const [analysis, setAnalysis] = useState<any>();
+  const [stars, setStars] = useState<any>(0);
 
   const allLessons = async () => {
     const lessons = await getLesson(props.match.params.lessonId);
     if (lessons) {
       setLesson(lessons);
       console.log(lessons);
+      setStars(lessons.starsAchieved)
       return;
     }
     console.log('Error occured getting lessons');
@@ -33,6 +35,29 @@ const Lesson = (props: any) => {
   const sendPhoto = async () => {
     const res = await analyze(imageSrc);
     setAnalysis(res);
+    if (res.pred && lesson.title) {
+      if (res.pred == lesson.title[lesson.title.length - 1]) {
+        const payload: any = {"starsAchieved": 0, "completed": true};
+        const lessonId: any = props.match.params.lessonId;
+        if (res.confidence > 0.5 && res.confidence <= 0.7) {
+          // 1 star
+          payload.starsAchieved = 1;
+          await updateLesson(lessonId, payload);
+        }
+        else if (res.confidence > 0.7 && res.confidence <= 0.9) {
+          // 2 stars
+          payload.starsAchieved = 2;
+          await updateLesson(lessonId, payload);
+        }
+        else if (res.confidence > 0.9) {
+          // 3 stars
+          payload.starsAchieved = 3;
+          await updateLesson(lessonId, payload);
+        }
+        if (stars < payload.starsAchieved) 
+          setStars(payload.starsAchieved);
+      }
+    }
   }
 
   return (
@@ -44,7 +69,7 @@ const Lesson = (props: any) => {
             <>
               <h2> { lesson.module } </h2>
               <h4> { lesson.title } </h4>
-              <Rating max={ lesson.totalStars } value={ lesson.starsAchieved } readOnly/>
+              <Rating max={ lesson.totalStars } value={ stars } readOnly/>
               <br />
               <a href={ lesson.guide } target="_blank" rel="noopener noreferrer"> Learn </a>
             </>

@@ -37,7 +37,7 @@ def get_single_lesson(lessonId):
 
 
 # /api/lessons/update/<lessonId>
-@lessons.route("/update/<lessonId>", methods=["PUT, PATCH"])
+@lessons.route("/update/<lessonId>", methods=["PUT", "PATCH"])
 @jwt_required()
 def update_lesson(lessonId):
     if not request.data:
@@ -54,8 +54,12 @@ def update_lesson(lessonId):
 
     proper_id = ObjectId(lessonId)
     lesson = mongo.db.lessons.find_one_or_404({"_id": proper_id})
-    mongo.db.lessons.update(
-        {"_id": proper_id}, {"$set": {"starsAchieved": stars, "completed": completed}}
-    )
+    if lesson['starsAchieved'] < stars:
+        mongo.db.lessons.update(
+            {"_id": proper_id}, {"$set": {"starsAchieved": stars, "completed": completed}}
+        )
+        return jsonify({"msg": "Lesson successfully updated!"}), 200
+    
+    return jsonify({"msg": "Lesson did not need updating"}), 200
+    
 
-    return jsonify({"msg": "Lesson successfully updated!"}), 200
