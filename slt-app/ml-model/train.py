@@ -1,4 +1,3 @@
-from numpy.core.numeric import indices
 import torch.backends.cudnn as cudnn
 import torchvision.models as models
 import torchvision.datasets as datasets
@@ -151,7 +150,7 @@ def test(model_type, load_path, testloader, device):
             outputs = model(images)
             indices, predicted = torch.max(outputs, 1)
             total += labels.size(0)
-            confusion_matrix[indices][labels] += 1
+            confusion_matrix.iloc[indices.cpu().long().numpy(),labels.cpu().long().numpy()] += 1
             correct += (predicted == labels).sum().item()
             c = (predicted == labels).squeeze()
             for i in range(len(labels)):
