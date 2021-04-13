@@ -1,3 +1,4 @@
+from numpy.core.numeric import indices
 import torch.backends.cudnn as cudnn
 import torchvision.models as models
 import torchvision.datasets as datasets
@@ -138,7 +139,7 @@ def test(model_type, load_path, testloader, device):
     model.eval()
     data = np.zeros((24,24))
     confusion_matrix = pd.DataFrame(data, columns=classes, index=classes)
-    print(confusion_matrix)
+    # print(confusion_matrix)
 
     correct = 0
     total = 0
@@ -148,15 +149,16 @@ def test(model_type, load_path, testloader, device):
         for data in tqdm(testloader):
             images, labels = data[0].to(device), data[1].to(device)
             outputs = model(images)
-            _, predicted = torch.max(outputs, 1)
+            indices, predicted = torch.max(outputs, 1)
             total += labels.size(0)
+            confusion_matrix[indices][labels] += 1
             correct += (predicted == labels).sum().item()
             c = (predicted == labels).squeeze()
             for i in range(len(labels)):
                 label = labels[i]
                 class_correct[label] += c[i].item()
                 class_total[label] += 1
-
+    print(confusion_matrix)
     for i in range(len(classes)):
         print(
             "Accuracy of %5s : %2d %%"
