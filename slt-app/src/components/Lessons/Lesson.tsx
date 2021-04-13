@@ -2,6 +2,7 @@ import Photobooth from '../Photobooth/Photobooth';
 import React, { useEffect, useState } from 'react';
 import { analyze } from '../../utils/analysis';
 import { getLesson, updateLesson } from '../../utils/lessons';
+import { getUserInfo, updateUser } from '../../utils/user';
 import { Rating } from '@material-ui/lab';
 import { Container, Row, Col } from 'reactstrap';
 import { CircularProgress } from '@material-ui/core';
@@ -13,7 +14,7 @@ const Lesson = (props: any) => {
   const [lesson, setLesson] = useState<any>();
   const [analysis, setAnalysis] = useState<any>();
   const [stars, setStars] = useState<any>(0);
-  const [loadingAnalysis, setLoadingAnalysis] = useState<any>(false);
+  const [loadingAnalysis, setLoadingAnalysis] = useState<boolean>(false);
 
   const allLessons = async () => {
     const lessons = await getLesson(props.match.params.lessonId);
@@ -38,24 +39,41 @@ const Lesson = (props: any) => {
     setLoadingAnalysis(true);
     const res = await analyze(imageSrc);
     setAnalysis(res);
+    const firstTime : boolean = lesson.completed
     if (res.pred && lesson.title) {
       if (res.pred == lesson.title[lesson.title.length - 1]) {
         const payload: any = { starsAchieved: 0, completed: true };
         const lessonId: any = props.match.params.lessonId;
+
+        // determine stars
         if (res.confidence > 0.5 && res.confidence <= 0.7) {
           // 1 star
           payload.starsAchieved = 1;
-          await updateLesson(lessonId, payload);
         } else if (res.confidence > 0.7 && res.confidence <= 0.9) {
           // 2 stars
           payload.starsAchieved = 2;
-          await updateLesson(lessonId, payload);
         } else if (res.confidence > 0.9) {
           // 3 stars
           payload.starsAchieved = 3;
-          await updateLesson(lessonId, payload);
         }
-        if (stars < payload.starsAchieved) setStars(payload.starsAchieved);
+
+        // update lesson and user
+        if (stars < payload.starsAchieved) {
+          const user = await getUserInfo()
+          if (user) {
+            const updateInfo = {"lessonsCompleted": user.lessonsCompleted, "stars": user.stars, "progress": user.progress}
+            if (firstTime) {
+              updateInfo.lessonsCompleted += 1
+              updateInfo.stars += payload.starsAchieved
+            }
+            else {
+              updateInfo.stars +=  (payload.starsAchieved - stars)
+            }
+            await updateLesson(lessonId, payload);
+            await updateUser(user._id, updateInfo)            
+            setStars(payload.starsAchieved);
+          }
+        }
       }
     }
     setLoadingAnalysis(false);

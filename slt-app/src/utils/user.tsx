@@ -15,3 +15,15 @@ export const getUserInfo = async () => {
     }
   }
 };
+
+export const updateUser = async (userId: string, payload: any) => {
+  try {
+    await axios.patch(`/api/users/update?id=${userId}`, payload)
+  } catch (err) {
+    if (err.response) {
+      return err.response.data;
+    } else {
+      console.error(err);
+    }
+  }
+}
