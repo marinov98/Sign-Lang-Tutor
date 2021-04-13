@@ -18,7 +18,7 @@ export const getUserInfo = async () => {
 
 export const updateUser = async (userId: string, payload: any) => {
   try {
-    await axios.patch(`/api/users/update?id=${userId}`, payload)
+    await axios.patch(`/api/users/update?id=${userId}`, payload);
   } catch (err) {
     if (err.response) {
       return err.response.data;
@@ -26,4 +26,4 @@ export const updateUser = async (userId: string, payload: any) => {
       console.error(err);
     }
   }
-}
+};

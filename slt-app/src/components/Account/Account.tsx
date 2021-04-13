@@ -10,7 +10,7 @@ const Account = () => {
   const [lessonsCompleted, setlessonsCompleted] = useState<number>(0);
   const [stars, setStars] = useState<number>(0);
   const [dateJoined, setDateJoined] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true);
 
   const userInfo = async () => {
     const user: IUser = await getUserInfo();
@@ -37,22 +37,24 @@ const Account = () => {
 
   return (
     <div className="text-center">
-      {loading ? <CircularProgress size={70} style={{"marginTop": 10}}/> :
-      <div style={{"marginTop": 5}}>
-        <div>
-          <h3>
-            {firstName} {lastName}
-          </h3>
+      {loading ? (
+        <CircularProgress size={70} style={{ marginTop: 10 }} />
+      ) : (
+        <div style={{ marginTop: 5 }}>
+          <div>
+            <h3>
+              {firstName} {lastName}
+            </h3>
+          </div>
+          <br />
+          <div>
+            <div>Progress: {progress}</div>
+            <div>Lessons Completed: {lessonsCompleted}</div>
+            <div>Stars: {stars}</div>
+            <div>Date Joined: {dateJoined}</div>
+          </div>
         </div>
-        <br />
-        <div>
-          <div>Progress: {progress}</div>
-          <div>Lessons Completed: {lessonsCompleted}</div>
-          <div>Stars: {stars}</div>
-          <div>Date Joined: {dateJoined}</div>
-        </div>
-      </div>
-      }
+      )}
     </div>
   );
 };
