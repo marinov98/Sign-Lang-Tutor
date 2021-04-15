@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { getModules } from '../../utils/lessons';
 
 import { Col, Button } from 'reactstrap';
 import GridLessons from '../Grid/Grid';
 import { makeStyles, Paper } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { CircularProgress } from '@material-ui/core';
+import { UserContext, logout } from './../../utils/auth';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -30,13 +32,34 @@ const Module: React.FC<ModuleProps> = props => {
 
 const Modules = () => {
   const [modules, setModules] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const { checkAuth } = useContext(UserContext);
 
   const allModules = async () => {
     const modules = await getModules();
     if (modules) {
-      setModules(modules);
+      if (!modules.msg) {
+        setModules(modules);
+        setLoading(false);
+      }
+      else {
+        // remove cookies 
+        document.cookie.split(";").forEach((c) => {
+        document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+        });
+
+        // make app redirect to login
+        await logout();
+        checkAuth();
+      }
+    } else {
+      console.log('Error occured');
     }
-    console.log('Error occured');
+
+    // worst-case safety check
+    if (!Array.isArray(modules)) setModules([]);
   };
 
   useEffect(() => {
@@ -44,12 +67,18 @@ const Modules = () => {
   }, []);
 
   return (
-    <GridLessons
-      rowSize={3}
-      items={modules.map(m => (
-        <Module name={m} />
-      ))}
-    />
+    <div style={{ textAlign: 'center' }}>
+      {loading ? (
+        <CircularProgress style={{ marginTop: 20 }} size={90} />
+      ) : (
+        <GridLessons
+          rowSize={3}
+          items={modules.map((m, index) => (
+            <Module name={m} key={index} />
+          ))}
+        />
+      )}
+    </div>
   );
 };
 
