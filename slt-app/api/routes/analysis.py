@@ -4,7 +4,13 @@ import numpy as np
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from torchvision import transforms
-from config.keys import model, device, USE_ML
+from config.keys import USE_ML
+
+try:
+  from config.keys import model, device
+except ImportError:
+  model = None
+
 from PIL import Image
 import base64
 import json
