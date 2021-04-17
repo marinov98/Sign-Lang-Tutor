@@ -39,7 +39,7 @@ const Lesson = (props: any) => {
     setLoadingAnalysis(true);
     const res = await analyze(imageSrc);
     setAnalysis(res);
-    const firstTime: boolean = lesson.completed;
+    const firstTime: boolean = !lesson.completed;
     if (res.pred && lesson.title) {
       if (res.pred == lesson.title[lesson.title.length - 1]) {
         const payload: any = { starsAchieved: 0, completed: true };
@@ -70,7 +70,7 @@ const Lesson = (props: any) => {
               updateInfo.lessonsCompleted += 1;
               updateInfo.stars += payload.starsAchieved;
             } else {
-              updateInfo.stars += payload.starsAchieved - stars;
+              updateInfo.stars += (payload.starsAchieved - stars);
             }
             await updateLesson(lessonId, payload);
             await updateUser(user._id, updateInfo);
