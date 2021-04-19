@@ -2,6 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { IUser } from '../../interfaces/user';
 import { getUserInfo } from '../../utils/user';
 import { CircularProgress } from '@material-ui/core';
+import {
+Button
+} from '@material-ui/core';
+
+const styles_parent = {
+  "borderStyle": "outset",
+  "padding": "10px",
+  "marginLeft": "100px",
+  "marginRight": "100px",
+  "verticalAlign": "middle"
+};
+
+const styles_inner = {
+  "borderStyle": "dotted",
+  "marginTop": "5px"
+};
+
+const button_styles = {
+  "margin": "10px",
+};
 
 const Account = () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -31,31 +51,46 @@ const Account = () => {
     console.log('Error occured');
   };
 
+  const handleClick = () => {
+    const msg = 'Are you sure? all progress will be lost...'
+    if (window.confirm(msg))
+      console.log("confirmed")
+    else
+      console.log("unconfirmed")
+  };
+
   useEffect(() => {
     userInfo();
   }, []);
 
   return (
-    <div className="text-center">
-      {loading ? (
-        <CircularProgress size={70} style={{ marginTop: 10 }} />
-      ) : (
-        <div style={{ marginTop: 5 }}>
-          <div>
-            <h3>
-              {firstName} {lastName}
-            </h3>
+      <div className="text-center" style={styles_parent}>
+        {loading ? (
+          <CircularProgress size={70} style={{ marginTop: 10 }} />
+        ) : (
+          <div style={styles_inner}>
+            <div>
+              <h3 style={{"borderStyle": "inset", "margin": "20px"}}>
+                {firstName} {lastName}
+              </h3>
+            </div>
+            <br />
+            <div>
+              <div style={{"borderStyle": "outset", "margin": "10px 50px 10px 50px"}}>
+                <h4 style={{"textAlign": "left", "textIndent": "20px"}}>Accomplishments</h4>
+                <div>Lessons Completed: {lessonsCompleted}</div>
+                <div>Stars: {stars}</div>
+              </div>
+              <div style={{"borderStyle": "outset", "margin": "10px 50px 10px 50px"}}>
+                <h4 style={{"textAlign": "left", "textIndent": "20px"}}>Experience</h4>
+              <div>Progress: {progress}</div>
+              <div>Date Joined: {dateJoined}</div>
+              </div>
+            </div>
+            <Button variant="contained" style={button_styles} color="secondary" onClick={handleClick}>Delete Account</Button>
           </div>
-          <br />
-          <div>
-            <div>Progress: {progress}</div>
-            <div>Lessons Completed: {lessonsCompleted}</div>
-            <div>Stars: {stars}</div>
-            <div>Date Joined: {dateJoined}</div>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
   );
 };
 
