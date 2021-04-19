@@ -4,7 +4,13 @@ import numpy as np
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from torchvision import transforms
-from config.keys import model, device
+from config.keys import USE_ML
+
+try:
+  from config.keys import model, device
+except ImportError:
+  model = None
+
 from PIL import Image
 import base64
 import json
@@ -27,47 +33,52 @@ def pil_to_tensor(pic):
 @analysis.route("/analyze", methods=["POST"])
 # @jwt_required()
 def infer():
-    if not request.data:
-        return jsonify({"msg": "No data found in request!"}), 409
-    # define classes
     classes = [chr(i + 65) for i in range(26) if i != 25 and i != 9]
-    try:
-        # decode image from frontend
-        url = request.json.get("img")
-        base_str = url.replace("data:image/jpeg;base64,", "")
-        decoded_img = base64.b64decode(base_str)
-        image = Image.open(BytesIO(decoded_img))
+    if USE_ML:
+      if not request.data:
+          return jsonify({"msg": "No data found in request!"}), 409
+      # define classes
+      try:
+          # decode image from frontend
+          url = request.json.get("img")
+          base_str = url.replace("data:image/jpeg;base64,", "")
+          decoded_img = base64.b64decode(base_str)
+          image = Image.open(BytesIO(decoded_img))
 
-        # use ml model to predict
-        # img = torch.as_tensor(np.asarray(image))
-        # img = img.permute((2, 0, 1))
-        # img.unsqueeze_(0)
-        # img = img.to(device)
+          # use ml model to predict
+          # img = torch.as_tensor(np.asarray(image))
+          # img = img.permute((2, 0, 1))
+          # img.unsqueeze_(0)
+          # img = img.to(device)
 
-        # img = pil_to_tensor(image)
-        # img = img / 255.0
-        # img.unsqueeze_(0)
-        # img = img.to(device)
-        # .unsqueeze(0)
-        transform = transforms.Compose(
-            [
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],
-                ),
-            ]
-        )
-        img = transform(image)
-        print(img[0,0,0])
-        img.unsqueeze_(0)
-        img = img.to(device)
+          # img = pil_to_tensor(image)
+          # img = img / 255.0
+          # img.unsqueeze_(0)
+          # img = img.to(device)
+          # .unsqueeze(0)
+          transform = transforms.Compose(
+              [
+                  transforms.ToTensor(),
+                  transforms.Normalize(
+                      mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],
+                  ),
+              ]
+          )
+          img = transform(image)
+          print(img[0,0,0])
+          img.unsqueeze_(0)
+          img = img.to(device)
 
-        out = model(img)
-        print(out)
-        confidence, predicted = torch.max(out, 1)
-        prediction = classes[predicted]
-        print(confidence.item())
-        return jsonify({"pred": prediction, "confidence": round(random.uniform(0,1),4)}), 200
-    except Exception as e:
-        print(e)
-        return jsonify({"msg": "something bad happened"}), 500
+          out = model(img)
+          print(out)
+          confidence, predicted = torch.max(out, 1)
+          prediction = classes[predicted]
+          print(confidence.item())
+          return jsonify({"pred": prediction, "confidence": round(random.uniform(0,1),4)}), 200
+      except Exception as e:
+          print(e)
+          return jsonify({"msg": "something bad happened"}), 500
+    else:
+      pred = random.randint(0,24)
+      return jsonify({"pred": classes[pred], "confidence": round(random.uniform(0,1),4)}), 200
+
