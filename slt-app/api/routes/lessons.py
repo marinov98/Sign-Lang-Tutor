@@ -28,9 +28,7 @@ def get_user_lessons(module="Alphabet"):
 @lessons.route("/user/single/<lessonId>", methods=["GET"])
 @jwt_required()
 def get_single_lesson(lessonId):
-    lesson = mongo.db.lessons.find_one_or_404(
-        {"_id": ObjectId(lessonId)}
-    )
+    lesson = mongo.db.lessons.find_one_or_404({"_id": ObjectId(lessonId)})
     return json.dumps(lesson, indent=4, default=str), 200
 
 # /api/lessons/update/<lessonId>
@@ -51,11 +49,13 @@ def update_lesson(lessonId):
 
     proper_id = ObjectId(lessonId)
     lesson = mongo.db.lessons.find_one_or_404({"_id": proper_id})
-    if lesson['starsAchieved'] < stars:
+    if lesson["starsAchieved"] < stars:
         mongo.db.lessons.update(
-            {"_id": proper_id}, {"$set": {"starsAchieved": stars, "completed": completed}}
+            {"_id": proper_id},
+            {"$set": {"starsAchieved": stars, "completed": completed}},
         )
         return jsonify({"msg": "Lesson successfully updated!"}), 200
+<<<<<<< HEAD
     
     return jsonify({"msg": "Lesson did not need updating"}), 200
 
@@ -72,4 +72,7 @@ def reset_lessons():
 
     return jsonify({"msg": "User lessons progress reset"}), 200
     
+=======
+>>>>>>> 9e4f3b541fd7622dae48a8598be2498b7a0e5135
 
+    return jsonify({"msg": "Lesson did not need updating"}), 200
