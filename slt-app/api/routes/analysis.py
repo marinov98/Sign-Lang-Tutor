@@ -4,7 +4,7 @@ import numpy as np
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from torchvision import transforms
-from config.keys import USE_ML
+from config.keys import ml
 
 try:
   from config.keys import model, device
@@ -34,7 +34,7 @@ def pil_to_tensor(pic):
 # @jwt_required()
 def infer():
     classes = [chr(i + 65) for i in range(26) if i != 25 and i != 9]
-    if USE_ML:
+    if ml:
       if not request.data:
           return jsonify({"msg": "No data found in request!"}), 409
       # define classes

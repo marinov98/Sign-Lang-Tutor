@@ -18,9 +18,8 @@ try:
     mongo = PyMongo()
     bcrypt = Bcrypt()
     jwt = JWTManager()
-    # Change this to False if you are NOT marin
-    USE_ML = False
-    if USE_ML:
+    ml = True if os.getenv("USE_ML") == "yes" else False
+    if ml:
       device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
       model = models.alexnet(num_classes=24)
       PATH = os.path.realpath(os.path.join(os.getcwd(), "../ml-model","final-models", "model_weights","alexnet_model_weights","alexnet_final_model.pth.tar"))
