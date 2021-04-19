@@ -114,6 +114,9 @@ def delete_user_account():
 
     if delete_lesson:
         mongo.db.lessons.remove({"userId": proper_id})
+    else: # mark lesson with a nonexistant user
+        mongo.db.lessons.update_many({"userId": proper_id}, 
+                                {"$set": {"userId": "Nonexistant"}})
 
     mongo.db.users.remove({"_id": proper_id})
 

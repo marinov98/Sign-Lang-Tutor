@@ -64,7 +64,7 @@ def update_lesson(lessonId):
 def reset_lessons():
     auth_identity = get_jwt_identity()
     proper_id = ObjectId(auth_identity)
-    mongo.db.lessons.update({"userId": proper_id}, 
+    mongo.db.lessons.update_many({"userId": proper_id}, 
                             {"$set": {"starsAchieved": 0, "completed": False}})
     mongo.db.users.update({"_id": proper_id},
                           {"$set": {"lessonsCompleted": 0, "stars": 0, "progress": "Just started"}})
@@ -73,3 +73,10 @@ def reset_lessons():
     
 
     return jsonify({"msg": "Lesson did not need updating"}), 200
+
+# /api/lessons/clean
+@lessons.route("/clean", methods=["DELETE"])
+@jwt_required()
+def clean_lessons():
+    mongo.db.lessons.remove({"userId": "Nonexistant"})
+    return jsonify({"msg": "Lesson documents have been cleaned"}), 200
