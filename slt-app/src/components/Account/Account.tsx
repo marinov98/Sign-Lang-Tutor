@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { IUser } from '../../interfaces/user';
 import { getUserInfo } from '../../utils/user';
 import { CircularProgress } from '@material-ui/core';
 import {
 Button
 } from '@material-ui/core';
+import { removeUser } from "../../utils/user"
+import { UserContext, logout } from "../../utils/auth"
 
 const styles_parent = {
   "borderStyle": "outset",
@@ -31,6 +33,7 @@ const Account = () => {
   const [stars, setStars] = useState<number>(0);
   const [dateJoined, setDateJoined] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const { checkAuth } = useContext(UserContext);
 
   const userInfo = async () => {
     const user: IUser = await getUserInfo();
@@ -51,12 +54,13 @@ const Account = () => {
     console.log('Error occured');
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     const msg = 'Are you sure? all progress will be lost...'
-    if (window.confirm(msg))
-      console.log("confirmed")
-    else
-      console.log("unconfirmed")
+    if (window.confirm(msg)) {
+      await removeUser()
+      await logout()
+      checkAuth()
+    }
   };
 
   useEffect(() => {
@@ -64,30 +68,32 @@ const Account = () => {
   }, []);
 
   return (
-      <div className="text-center" style={styles_parent}>
+      <div className="text-center" style={{"border": "3px"}}>
         {loading ? (
           <CircularProgress size={70} style={{ marginTop: 10 }} />
         ) : (
-          <div style={styles_inner}>
-            <div>
-              <h3 style={{"borderStyle": "inset", "margin": "20px"}}>
-                {firstName} {lastName}
-              </h3>
-            </div>
-            <br />
-            <div>
-              <div style={{"borderStyle": "outset", "margin": "10px 50px 10px 50px"}}>
-                <h4 style={{"textAlign": "left", "textIndent": "20px"}}>Accomplishments</h4>
-                <div>Lessons Completed: {lessonsCompleted}</div>
-                <div>Stars: {stars}</div>
+          <div style={styles_parent}>
+            <div style={styles_inner}>
+              <div>
+                <h3 style={{"borderStyle": "inset", "margin": "20px"}}>
+                  {firstName} {lastName}
+                </h3>
               </div>
-              <div style={{"borderStyle": "outset", "margin": "10px 50px 10px 50px"}}>
-                <h4 style={{"textAlign": "left", "textIndent": "20px"}}>Experience</h4>
-              <div>Progress: {progress}</div>
-              <div>Date Joined: {dateJoined}</div>
+              <br />
+              <div>
+                <div style={{"borderStyle": "outset", "margin": "10px 50px 10px 50px"}}>
+                  <h4 style={{"textAlign": "left", "textIndent": "20px"}}>Accomplishments</h4>
+                  <div>Lessons Completed: {lessonsCompleted}</div>
+                  <div>Stars: {stars}</div>
+                </div>
+                <div style={{"borderStyle": "outset", "margin": "10px 50px 10px 50px"}}>
+                  <h4 style={{"textAlign": "left", "textIndent": "20px"}}>Experience</h4>
+                <div>Progress: {progress}</div>
+                <div>Date Joined: {dateJoined}</div>
+                </div>
               </div>
+              <Button variant="contained" style={button_styles} color="secondary" onClick={handleClick}>Delete Account</Button>
             </div>
-            <Button variant="contained" style={button_styles} color="secondary" onClick={handleClick}>Delete Account</Button>
           </div>
         )}
       </div>

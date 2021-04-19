@@ -111,6 +111,7 @@ def delete_user_account():
     auth_identity = get_jwt_identity()
     mongo.db.users.remove({"_id": ObjectId(auth_identity)})
     # TODO: delete user's lessons?
+    # mongo.db.lessons.remove({"userId": ObjectId(auth_identity)})
 
     return jsonify({"msg": "Deletion applied successfully!"}), 200
 
