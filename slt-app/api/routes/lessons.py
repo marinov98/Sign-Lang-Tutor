@@ -55,7 +55,6 @@ def update_lesson(lessonId):
             {"$set": {"starsAchieved": stars, "completed": completed}},
         )
         return jsonify({"msg": "Lesson successfully updated!"}), 200
-<<<<<<< HEAD
     
     return jsonify({"msg": "Lesson did not need updating"}), 200
 
@@ -72,7 +71,5 @@ def reset_lessons():
 
     return jsonify({"msg": "User lessons progress reset"}), 200
     
-=======
->>>>>>> 9e4f3b541fd7622dae48a8598be2498b7a0e5135
 
     return jsonify({"msg": "Lesson did not need updating"}), 200
