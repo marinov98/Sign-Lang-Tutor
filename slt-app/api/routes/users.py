@@ -25,7 +25,6 @@ def get_all_users():
 
     return json.dumps([learner for learner in all_users], indent=4, default=str), 200
 
-
 # /api/users/single or /api/users/single?id=A_USER_ID
 @users.route("/single", methods=["GET", "POST"])
 @jwt_required()
@@ -46,7 +45,6 @@ def get_user():
         return jsonify({"msg": "User not found!"}), 404
 
     return json.dumps(user, indent=4, default=str), 200
-
 
 # /api/users/update or /api/users/update?id=A_USER_ID
 @users.route("/update", methods=["PUT", "PATCH"])
@@ -91,7 +89,6 @@ def update_user():
         )
 
     return jsonify({"msg": "User successfully updated!"}), 200
-
 
 # /api/users/delete or /api/users/delete?id=A_USER_ID
 @users.route("/delete", methods=["DELETE"])

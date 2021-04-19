@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { createNoSubstitutionTemplateLiteral } from 'typescript';
 
 export const getModules = async () => {
   try {
@@ -56,6 +57,19 @@ export const updateLesson = async (lessonId: string, payload: any) => {
       return err.response.data;
     } else {
       console.error(err);
+    }
+  }
+};
+
+export const resetProgress = async () => {
+  try {
+    await axios.put('/api/lessons/reset')
+  }
+  catch (err) {
+    if (err.response) {
+      return err.response.data;
+    } else {
+      console.error(err)
     }
   }
 };

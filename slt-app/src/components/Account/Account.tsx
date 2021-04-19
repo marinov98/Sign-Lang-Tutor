@@ -6,7 +6,9 @@ import {
 Button
 } from '@material-ui/core';
 import { removeUser } from "../../utils/user"
+import { resetProgress } from "../../utils/lessons"
 import { UserContext, logout } from "../../utils/auth"
+import { useHistory } from 'react-router-dom';
 
 const styles_parent = {
   "borderStyle": "outset",
@@ -34,6 +36,7 @@ const Account = () => {
   const [dateJoined, setDateJoined] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const { checkAuth } = useContext(UserContext);
+  const history = useHistory()
 
   const userInfo = async () => {
     const user: IUser = await getUserInfo();
@@ -54,12 +57,20 @@ const Account = () => {
     console.log('Error occured');
   };
 
-  const handleClick = async () => {
+  const handleDelete = async () => {
     const msg = 'Are you sure? all progress will be lost...'
     if (window.confirm(msg)) {
       await removeUser()
       await logout()
       checkAuth()
+    }
+  };
+
+  const handleReset = async () => {
+    const msg = 'Are you sure? All accomplishments will be removed...'
+    if (window.confirm(msg)) {
+      await resetProgress()
+      history.push('/')
     }
   };
 
@@ -92,7 +103,8 @@ const Account = () => {
                 <div>Date Joined: {dateJoined}</div>
                 </div>
               </div>
-              <Button variant="contained" style={button_styles} color="secondary" onClick={handleClick}>Delete Account</Button>
+              <Button variant="contained" style={button_styles} color="primary" onClick={handleReset}>Reset Progress</Button>
+              <Button variant="contained" style={button_styles} color="secondary" onClick={handleDelete}>Delete Account</Button>
             </div>
           </div>
         )}
