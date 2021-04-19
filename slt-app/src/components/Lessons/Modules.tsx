@@ -25,7 +25,9 @@ const Module: React.FC<ModuleProps> = props => {
   const classes = useStyles();
   return (
     <Link to={`modules/${props.name}`}>
-      <Paper className={classes.paper}>{props.name}</Paper>
+      <Paper elevation={5} className={classes.paper}>
+        {props.name}
+      </Paper>
     </Link>
   );
 };
@@ -41,13 +43,15 @@ const Modules = () => {
       if (!modules.msg) {
         setModules(modules);
         setLoading(false);
-      }
-      else {
-        // remove cookies 
-        document.cookie.split(";").forEach((c) => {
-        document.cookie = c
-        .replace(/^ +/, "")
-        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      } else {
+        // remove cookies
+        document.cookie.split(';').forEach(c => {
+          document.cookie = c
+            .replace(/^ +/, '')
+            .replace(
+              /=.*/,
+              '=;expires=' + new Date().toUTCString() + ';path=/'
+            );
         });
 
         // make app redirect to login
