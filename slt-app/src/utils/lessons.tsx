@@ -63,13 +63,12 @@ export const updateLesson = async (lessonId: string, payload: any) => {
 
 export const resetProgress = async () => {
   try {
-    await axios.put('/api/lessons/reset')
-  }
-  catch (err) {
+    await axios.put('/api/lessons/reset');
+  } catch (err) {
     if (err.response) {
       return err.response.data;
     } else {
-      console.error(err)
+      console.error(err);
     }
   }
 };

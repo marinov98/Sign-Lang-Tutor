@@ -30,13 +30,12 @@ export const updateUser = async (userId: string, payload: any) => {
 
 export const removeUser = async () => {
   try {
-    await axios.delete(`api/auth/delete`)
-  }
-  catch (err) {
+    await axios.delete(`api/auth/delete`);
+  } catch (err) {
     if (err.response) {
       return err.response.data;
     } else {
       console.error(err);
     }
   }
-}
+};
