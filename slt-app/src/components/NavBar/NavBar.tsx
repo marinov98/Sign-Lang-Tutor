@@ -44,8 +44,10 @@ const NavBar: React.FunctionComponent = () => {
   const { authenticated, checkAuth } = useContext(UserContext);
 
   const handleLogout = async (e: React.MouseEvent<HTMLElement>) => {
-    await logout();
-    checkAuth();
+    if (window.confirm('Are you sure you want to log out?')) {
+      await logout();
+      checkAuth();
+    }
   };
 
   return (

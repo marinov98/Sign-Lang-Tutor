@@ -49,14 +49,7 @@ const GridLessons: React.FunctionComponent<GridProps> = props => {
     >
       <Grid container justify="flex-start" spacing={2}>
         {props.items.map((x, index) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={2}
-            key={index}
-          >
+          <Grid item xs={12} sm={6} md={4} lg={2} key={index}>
             {x}
           </Grid>
         ))}

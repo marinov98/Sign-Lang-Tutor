@@ -5,6 +5,9 @@ import torch.optim as optim
 import torch.nn as nn
 import torch
 import torchvision.transforms as transforms
+import numpy as np
+import pandas as pd
+
 
 import os
 from tqdm import tqdm
@@ -121,7 +124,7 @@ def train(
         torch.save(model.state_dict(), f)
 
 
-def test(model_type, load_path, testloader, device, bsize=256):
+def test(model_type, load_path, testloader, device):
     classes = [chr(i + 65) for i in range(26) if i != 25 and i != 9]
 
     model = select_model(model_type, 24)
@@ -133,6 +136,9 @@ def test(model_type, load_path, testloader, device, bsize=256):
     # Failing to do this will yield inconsistent inference results.
     # If you wish to resuming training, call model.train() to ensure these layers are in training mode.
     model.eval()
+    data = np.zeros((24, 24))
+    confusion_matrix = pd.DataFrame(data, columns=classes, index=classes)
+    # print(confusion_matrix)
 
     correct = 0
     total = 0
@@ -141,17 +147,19 @@ def test(model_type, load_path, testloader, device, bsize=256):
     with torch.no_grad():
         for data in tqdm(testloader):
             images, labels = data[0].to(device), data[1].to(device)
-            print(labels.shape)
             outputs = model(images)
-            _, predicted = torch.max(outputs, 1)
+            indices, predicted = torch.max(outputs, 1)
             total += labels.size(0)
+            confusion_matrix.iloc[
+                indices.cpu().long().numpy(), labels.cpu().long().numpy()
+            ] += 1
             correct += (predicted == labels).sum().item()
             c = (predicted == labels).squeeze()
-            for i in range(bsize):
+            for i in range(len(labels)):
                 label = labels[i]
                 class_correct[label] += c[i].item()
                 class_total[label] += 1
-
+    print(confusion_matrix)
     for i in range(len(classes)):
         print(
             "Accuracy of %5s : %2d %%"
@@ -310,9 +318,7 @@ def main():
             pin_memory=True,
         )
 
-        test(
-            MODEL_TYPE, SAVED_MODELS_FOLDER, testloader, device, bsize=BATCHSIZE,
-        )
+        test(MODEL_TYPE, SAVED_MODELS_FOLDER, testloader, device)
 
 
 if __name__ == "__main__":

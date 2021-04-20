@@ -70,7 +70,7 @@ const Lesson = (props: any) => {
               updateInfo.lessonsCompleted += 1;
               updateInfo.stars += payload.starsAchieved;
             } else {
-              updateInfo.stars += (payload.starsAchieved - stars);
+              updateInfo.stars += payload.starsAchieved - stars;
             }
             await updateLesson(lessonId, payload);
             await updateUser(user._id, updateInfo);
