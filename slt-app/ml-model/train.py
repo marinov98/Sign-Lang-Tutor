@@ -1,3 +1,6 @@
+import base64
+from io import BytesIO
+from PIL.Image import Image
 import torch.backends.cudnn as cudnn
 import torchvision.models as models
 import torchvision.datasets as datasets
@@ -148,15 +151,13 @@ def test(model_type, load_path, testloader, device):
         for data in tqdm(testloader):
             images, labels = data[0].to(device), data[1].to(device)
             outputs = model(images)
-            indices, predicted = torch.max(outputs, 1)
+            _, predicted = torch.max(outputs, 1)
             total += labels.size(0)
-            confusion_matrix.iloc[
-                indices.cpu().long().numpy(), labels.cpu().long().numpy()
-            ] += 1
             correct += (predicted == labels).sum().item()
             c = (predicted == labels).squeeze()
             for i in range(len(labels)):
                 label = labels[i]
+                confusion_matrix.iat[label, c[i]] += 1
                 class_correct[label] += c[i].item()
                 class_total[label] += 1
     print(confusion_matrix)
@@ -168,12 +169,53 @@ def test(model_type, load_path, testloader, device):
 
     print("Total Accuracy of the network: %d %%" % (100 * correct / total))
 
+# function to run a prediction on a jpeg string or fileowo
+
+def infer(image, image_type, model_type, load_path, device):
+  classes = [chr(i + 65) for i in range(26) if i != 25 and i != 9]
+  #
+  model = select_model(model_type, 24)
+  # load model
+  model.load_state_dict(torch.load(os.path.join(load_path, "final_model.pth.tar")))
+  model.to(device)
+  if image_type == "string":
+    base_str = image.replace("data:image/jpeg;base64,", "")
+    decoded_img = base64.b64decode(base_str)
+    image = Image.open(BytesIO(decoded_img))
+  elif image_type == "image":
+    image = Image.open(image)
+  else:
+    raise ValueError(f"image type invalid: Must be \"string\" or \"image\", got {image_type}")
+
+  transform = transforms.Compose(
+      [
+          transforms.ToTensor(),
+          transforms.Normalize(
+              mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],
+          ),
+      ]
+  )
+  img = transform(image)
+  # print(img[0, 0, 0])
+  img.unsqueeze_(0)
+  img = img.to(device)
+
+  out = model(img)
+  print(out)
+  confidence, predicted = torch.max(out, 1)
+  prediction = classes[predicted]
+  print(f'prediction: {prediction}, confidence: {confidence}')
 
 def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "mode", type=str, help="whether to train or test", choices=["train", "test"]
+        "mode", type=str, help="whether to train, test, or infer from jepg string", choices=["train", "test", "infer"]
+    )
+
+    parser.add_argument(
+      "--infer-path",
+      
     )
 
     parser.add_argument(
@@ -295,7 +337,7 @@ def main():
                 PRETRAIN,
             )
     # testing
-    else:
+    elif args.mode == "test":
 
         testing_transforms = transforms.Compose(
             [
@@ -319,6 +361,10 @@ def main():
         )
 
         test(MODEL_TYPE, SAVED_MODELS_FOLDER, testloader, device)
+    elif args.mode == 'infer':
+      
+    else:
+      print('unknown mode')
 
 
 if __name__ == "__main__":
