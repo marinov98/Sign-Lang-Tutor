@@ -210,12 +210,20 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "mode", type=str, help="whether to train, test, or infer from jepg string", choices=["train", "test", "infer"]
+        "mode", type=str, help="whether to train, test, or infer from a single image", choices=["train", "test", "infer"]
     )
 
     parser.add_argument(
       "--infer-path",
-      
+      type=str,
+      help="path to image to infer"
+    )
+
+    parser.add_argument(
+      "--image-type",
+      type=str,
+      help="type of image to infer. can infer image file or file with jpeg string",
+      choices=["image","string"]
     )
 
     parser.add_argument(
@@ -362,7 +370,7 @@ def main():
 
         test(MODEL_TYPE, SAVED_MODELS_FOLDER, testloader, device)
     elif args.mode == 'infer':
-      
+      infer(args.infer_path, args.image_type, MODEL_TYPE, SAVED_MODELS_FOLDER,device)
     else:
       print('unknown mode')
 
