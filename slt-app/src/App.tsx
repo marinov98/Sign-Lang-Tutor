@@ -11,6 +11,7 @@ import Account from './components/Account/Account';
 import Lessons from './components/Lessons/Lessons';
 import Modules from './components/Lessons/Modules';
 import Lesson from './components/Lessons/Lesson';
+// import FrontPage from "./components/FrontPage/FrontPageContainer";
 
 const App: React.FunctionComponent = () => {
   const [auth, setAuth] = useState<IUser | null>(null);

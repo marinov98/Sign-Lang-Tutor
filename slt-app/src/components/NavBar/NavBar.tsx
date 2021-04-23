@@ -55,7 +55,11 @@ const NavBar: React.FunctionComponent = () => {
       <AppBar position="static" className={classes.bar}>
         <Toolbar>
           <Typography className={classes.title}>
-            <Button size="large" color="inherit">
+            <Button
+              size="large"
+              color="inherit"
+              onClick={() => history.push('/')}
+            >
               Sign Language Tutor
             </Button>
           </Typography>
@@ -76,9 +80,6 @@ const NavBar: React.FunctionComponent = () => {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Button color="inherit" onClick={() => history.push('/register')}>
-                Register
-              </Button>
               <Button color="inherit" onClick={() => history.push('/login')}>
                 Login
               </Button>
@@ -87,43 +88,6 @@ const NavBar: React.FunctionComponent = () => {
         </Toolbar>
       </AppBar>
     </div>
-
-    // <div>
-    //   <nav className="navbar navbar-dark bg-dark">
-    //     <Link
-    //       to={authenticated ? '/' : '/login'}
-    //       className="navbar-brand mr-auto"
-    //     >
-    //       Sign Language Tutor
-    //     </Link>
-    //     {authenticated ? (
-    //       <div>
-    //         <Link to="/" className="navbar-brand navbar-text ml-auto">
-    //           Home
-    //         </Link>
-    //         <Link to="/account" className="navbar-brand navbar-text ml-auto">
-    //           Account
-    //         </Link>
-    //         <Link
-    //           to=""
-    //           className="navbar-brand navbar-text ml-auto"
-    //           onClick={handleLogout}
-    //         >
-    //           Logout
-    //         </Link>
-    //       </div>
-    //     ) : (
-    //       <div>
-    //         <Link to="/login" className="navbar-brand navbar-text">
-    //           Login
-    //         </Link>
-    //         <Link to="/register" className="navbar-brand navbar-text">
-    //           Register
-    //         </Link>
-    //       </div>
-    //     )}
-    //   </nav>
-    // </div>
   );
 };
 
