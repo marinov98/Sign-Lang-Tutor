@@ -50,22 +50,29 @@ const NavBar: React.FunctionComponent = () => {
     }
   };
 
+  const handleHome = () => {
+    if (authenticated) {
+      history.push('/home');
+    } else {
+      history.push('/');
+    }
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.bar}>
         <Toolbar>
           <Typography className={classes.title}>
-            <Button
-              size="large"
-              color="inherit"
-              onClick={() => history.push('/')}
-            >
+            <Button size="large" color="inherit" onClick={() => handleHome()}>
               Sign Language Tutor
             </Button>
           </Typography>
           {authenticated ? (
             <React.Fragment>
               <Button color="inherit" onClick={() => history.push('/')}>
+                About
+              </Button>
+              <Button color="inherit" onClick={() => history.push('/home')}>
                 Home
               </Button>
               <Button color="inherit" onClick={() => history.push('/account')}>
@@ -80,6 +87,9 @@ const NavBar: React.FunctionComponent = () => {
             </React.Fragment>
           ) : (
             <React.Fragment>
+              <Button color="inherit" onClick={() => history.push('/')}>
+                About
+              </Button>
               <Button color="inherit" onClick={() => history.push('/login')}>
                 Login
               </Button>
