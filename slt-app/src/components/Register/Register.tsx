@@ -3,8 +3,8 @@ import { Grid } from '@material-ui/core';
 import { Container } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
 import { useHistory, Link as RouterLink } from 'react-router-dom';
-import useStyles from '@styles/authStyles';
-import { registerUser, UserContext } from '@utils/auth';
+import useStyles from 'src/styles/authStyles';
+import { registerUser, UserContext } from 'src/utils/auth';
 
 const Register: React.FunctionComponent = () => {
   const classes = useStyles();

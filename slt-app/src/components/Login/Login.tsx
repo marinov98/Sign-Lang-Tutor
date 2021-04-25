@@ -9,8 +9,8 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import { loginUser, UserContext } from '@utils/auth';
-import useStyles from '@styles/authStyles';
+import { loginUser, UserContext } from 'src/utils/auth';
+import useStyles from 'src/styles/authStyles';
 
 const Login: React.FunctionComponent = () => {
   const classes = useStyles();
