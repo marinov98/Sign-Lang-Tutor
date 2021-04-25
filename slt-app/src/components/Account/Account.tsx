@@ -82,7 +82,7 @@ const Account = () => {
     <Container className={classes.root}>
       {loading ? (
         <Grid container item justify="center">
-          <CircularProgress size={70} style={{ marginTop: 10 }} />
+          <CircularProgress size={70} />
         </Grid>
       ) : (
         <Paper className={classes.rootPaper} elevation={7}>
