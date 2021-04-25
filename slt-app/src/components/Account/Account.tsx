@@ -56,16 +56,17 @@ const Account = () => {
   };
 
   const handleDelete = async () => {
-    const msg = 'Are you sure? all progress will be lost...';
-    if (window.confirm(msg)) {
-      const msg2 =
-        'Would you like to delete your lessons? (Lessons are used to get feedback on well people using the application are doing';
+    const msg =
+      'Would you like to delete your lessons? (Lessons are used to get feedback on well people using the application are doing.';
+    const msg2 = 'Are you sure? Final warning before all data is deleted.';
+    let removeLessons = false;
 
-      if (window.confirm(msg2)) {
-        await removeUser(true);
-      } else {
-        await removeUser();
-      }
+    if (window.confirm(msg)) {
+      removeLessons = true;
+    }
+
+    if (window.confirm(msg2)) {
+      await removeUser(removeLessons);
       await logout();
       checkAuth();
     }

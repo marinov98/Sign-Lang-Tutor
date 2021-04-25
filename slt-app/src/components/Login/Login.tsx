@@ -33,7 +33,7 @@ const Login: React.FunctionComponent = () => {
       else if (res.email) {
         // user was successfully pulled
         fillAuth(res);
-        history.push('/');
+        history.push('/home');
       } else {
         // an unexpected error occurred
         setLoginError('Unexpected error occurred try again later...');
@@ -44,49 +44,6 @@ const Login: React.FunctionComponent = () => {
   };
 
   return (
-    // <div className="mt-5">
-    //   <h1 className="text-center">Login</h1>
-    //   <Form
-    //     onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
-    //     className="login-form"
-    //   >
-    //     {loginError !== '' ? (
-    //       <p className="text-danger text-center">{loginError}</p>
-    //     ) : null}
-    //     <FormGroup>
-    //       <Label for="email">Email</Label>
-    //       <Input
-    //         value={email}
-    //         type="email"
-    //         placeholder="Email"
-    //         onChange={(text: React.ChangeEvent<HTMLInputElement>) =>
-    //           changeEmail(text.target.value)
-    //         }
-    //         required={true}
-    //       />
-    //     </FormGroup>
-
-    //     <FormGroup>
-    //       <Label for="password">Password</Label>
-    //       <Input
-    //         value={password}
-    //         type="password"
-    //         placeholder="Password"
-    //         onChange={(text: React.ChangeEvent<HTMLInputElement>) =>
-    //           changePassword(text.target.value)
-    //         }
-    //         required={true}
-    //       />
-    //     </FormGroup>
-    //     <Button className="btn-lg btn-dark btn-block">Login</Button>
-    //   </Form>
-    //   <div justify-content={'center'}>
-    //     <Link component={RouterLink} to="/register">
-    //       Don't have an account? Sign up here.
-    //     </Link>
-    //   </div>
-    // </div>
-
     <Container maxWidth="xs">
       <Paper>
         <form onSubmit={e => handleSubmit(e)}>
