@@ -3,10 +3,11 @@ import { Grid } from '@material-ui/core';
 import { Container } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
 import { useHistory, Link as RouterLink } from 'react-router-dom';
-import { registerUser, UserContext } from '../../utils/auth';
-import './Register.css';
+import useStyles from '@styles/authStyles';
+import { registerUser, UserContext } from '@utils/auth';
 
 const Register: React.FunctionComponent = () => {
+  const classes = useStyles();
   const history = useHistory();
   const [firstName, changeFirstName] = useState<string | undefined>('');
   const [lastName, changeLastName] = useState<string | undefined>('');
@@ -58,8 +59,8 @@ const Register: React.FunctionComponent = () => {
 
   return (
     <Container maxWidth="xs">
-      <Paper>
-        <form onSubmit={e => handleSubmit(e)}>
+      <Paper className={classes.paper} elevation={5}>
+        <form className={classes.form} onSubmit={e => handleSubmit(e)}>
           <Grid container spacing={3} direction="row">
             <Grid item xs={12}>
               <Typography align="center" variant="h5">
