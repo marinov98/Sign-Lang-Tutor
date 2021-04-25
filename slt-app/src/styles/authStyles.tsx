@@ -1,6 +1,13 @@
-import { makeStyles } from '@material-ui/core';
+import { createMuiTheme, makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+export const muiTheme = createMuiTheme({
+  palette: { secondary: { main: '#333333' } }
+});
+
+export const useStyles = makeStyles(theme => ({
+  root: {
+    minWidth: theme.spacing(40)
+  },
   paper: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5)
@@ -9,5 +16,3 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(5)
   }
 }));
-
-export default useStyles;

@@ -7,12 +7,14 @@ import {
   Grid,
   Paper,
   TextField,
+  ThemeProvider,
   Typography
 } from '@material-ui/core';
 import { loginUser, UserContext } from 'src/utils/auth';
-import useStyles from 'src/styles/authStyles';
+import { useStyles, muiTheme } from 'src/styles/authStyles';
 
 const Login: React.FunctionComponent = () => {
+  const theme = muiTheme;
   const classes = useStyles();
   const history = useHistory();
   const [email, changeEmail] = useState<string>('');
@@ -44,7 +46,7 @@ const Login: React.FunctionComponent = () => {
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container className={classes.root} maxWidth="xs">
       <Paper className={classes.paper} elevation={5}>
         <form className={classes.form} onSubmit={e => handleSubmit(e)}>
           <Grid container spacing={3} direction="row">
@@ -92,9 +94,16 @@ const Login: React.FunctionComponent = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button fullWidth variant="contained" type="submit">
-                Login
-              </Button>
+              <ThemeProvider theme={theme}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  type="submit"
+                  color="secondary"
+                >
+                  Login
+                </Button>
+              </ThemeProvider>
             </Grid>
             <Grid item xs={12}>
               <Typography align="center">
