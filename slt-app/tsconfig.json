@@ -6,6 +6,12 @@
       "dom.iterable",
       "esnext"
     ],
+    "paths" : {
+      "@components/*": ["./src/components/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@utils/*" : ["./src/utils/*"],
+      "@interfaces/*": ["./src/interfaces/*"]
+    },
 	"outDir": "dist",
     "allowJs": true,
     "skipLibCheck": true,
