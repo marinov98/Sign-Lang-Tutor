@@ -50,18 +50,29 @@ const NavBar: React.FunctionComponent = () => {
     }
   };
 
+  const handleHome = () => {
+    if (authenticated) {
+      history.push('/home');
+    } else {
+      history.push('/');
+    }
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.bar}>
         <Toolbar>
           <Typography className={classes.title}>
-            <Button size="large" color="inherit">
+            <Button size="large" color="inherit" onClick={() => handleHome()}>
               Sign Language Tutor
             </Button>
           </Typography>
           {authenticated ? (
             <React.Fragment>
               <Button color="inherit" onClick={() => history.push('/')}>
+                About
+              </Button>
+              <Button color="inherit" onClick={() => history.push('/home')}>
                 Home
               </Button>
               <Button color="inherit" onClick={() => history.push('/account')}>
@@ -76,8 +87,8 @@ const NavBar: React.FunctionComponent = () => {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Button color="inherit" onClick={() => history.push('/register')}>
-                Register
+              <Button color="inherit" onClick={() => history.push('/')}>
+                About
               </Button>
               <Button color="inherit" onClick={() => history.push('/login')}>
                 Login
@@ -87,43 +98,6 @@ const NavBar: React.FunctionComponent = () => {
         </Toolbar>
       </AppBar>
     </div>
-
-    // <div>
-    //   <nav className="navbar navbar-dark bg-dark">
-    //     <Link
-    //       to={authenticated ? '/' : '/login'}
-    //       className="navbar-brand mr-auto"
-    //     >
-    //       Sign Language Tutor
-    //     </Link>
-    //     {authenticated ? (
-    //       <div>
-    //         <Link to="/" className="navbar-brand navbar-text ml-auto">
-    //           Home
-    //         </Link>
-    //         <Link to="/account" className="navbar-brand navbar-text ml-auto">
-    //           Account
-    //         </Link>
-    //         <Link
-    //           to=""
-    //           className="navbar-brand navbar-text ml-auto"
-    //           onClick={handleLogout}
-    //         >
-    //           Logout
-    //         </Link>
-    //       </div>
-    //     ) : (
-    //       <div>
-    //         <Link to="/login" className="navbar-brand navbar-text">
-    //           Login
-    //         </Link>
-    //         <Link to="/register" className="navbar-brand navbar-text">
-    //           Register
-    //         </Link>
-    //       </div>
-    //     )}
-    //   </nav>
-    // </div>
   );
 };
 
