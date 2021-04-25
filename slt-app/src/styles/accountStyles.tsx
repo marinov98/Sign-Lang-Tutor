@@ -1,10 +1,6 @@
 import { createMuiTheme, makeStyles } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
-export const buttonStyle = createMuiTheme({
-  palette: { secondary: red }
-});
-
 export const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(5),
@@ -27,5 +23,12 @@ export const useStyles = makeStyles(theme => ({
   items: {
     justifySelf: 'center',
     textAlign: 'center'
+  },
+  button: {
+    background: red[500],
+    color: 'white',
+    '&:hover': {
+      background: red[700]
+    }
   }
 }));

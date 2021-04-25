@@ -6,7 +6,6 @@ import {
   Container,
   Grid,
   Paper,
-  ThemeProvider,
   Typography
 } from '@material-ui/core';
 import { IUser } from 'src/interfaces/user';
@@ -14,11 +13,10 @@ import { getUserInfo } from 'src/utils/user';
 import { removeUser } from 'src/utils/user';
 import { resetProgress } from 'src/utils/lessons';
 import { UserContext, logout } from 'src/utils/auth';
-import { buttonStyle, useStyles } from 'src/styles/accountStyles';
+import { useStyles } from 'src/styles/accountStyles';
 
 const Account = () => {
   const classes = useStyles();
-  const theme = buttonStyle;
 
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
@@ -128,15 +126,14 @@ const Account = () => {
               </Button>
             </Grid>
             <Grid container item xs={12} sm={6} justify="center">
-              <ThemeProvider theme={theme}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleDelete}
-                >
-                  Delete Account
-                </Button>
-              </ThemeProvider>
+              <Button
+                variant="contained"
+                className={classes.button}
+                color="primary"
+                onClick={handleDelete}
+              >
+                Delete Account
+              </Button>
             </Grid>
           </Grid>
         </Paper>
