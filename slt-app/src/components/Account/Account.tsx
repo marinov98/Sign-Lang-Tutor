@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { IUser } from '../../interfaces/user';
-import { getUserInfo } from '../../utils/user';
-import { CircularProgress } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import { removeUser } from '../../utils/user';
-import { resetProgress } from '../../utils/lessons';
-import { UserContext, logout } from '../../utils/auth';
 import { useHistory } from 'react-router-dom';
+import { Button, CircularProgress } from '@material-ui/core';
+import { IUser } from 'src/interfaces/user';
+import { getUserInfo } from 'src/utils/user';
+import { removeUser } from 'src/utils/user';
+import { resetProgress } from 'src/utils/lessons';
+import { UserContext, logout } from 'src/utils/auth';
 
 const styles_parent = {
   borderStyle: 'outset',

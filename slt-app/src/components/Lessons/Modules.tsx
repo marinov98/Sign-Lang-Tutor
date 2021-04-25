@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { getModules } from '../../utils/lessons';
+import { getModules } from 'src/utils/lessons';
 
 import { Col, Button } from 'reactstrap';
 import GridLessons from '../Grid/Grid';
 import { makeStyles, Paper } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
-import { UserContext, logout } from './../../utils/auth';
+import { UserContext, logout } from 'src/utils/auth';
 
 const useStyles = makeStyles(theme => ({
   paper: {

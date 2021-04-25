@@ -1,8 +1,8 @@
 import Photobooth from '../Photobooth/Photobooth';
 import React, { useEffect, useState } from 'react';
-import { analyze } from '../../utils/analysis';
-import { getLesson, updateLesson } from '../../utils/lessons';
-import { getUserInfo, updateUser } from '../../utils/user';
+import { analyze } from 'src/utils/analysis';
+import { getLesson, updateLesson } from 'src/utils/lessons';
+import { getUserInfo, updateUser } from 'src/utils/user';
 import { Rating } from '@material-ui/lab';
 import { Container, Row, Col } from 'reactstrap';
 import { CircularProgress } from '@material-ui/core';

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import ProtectedRouteProps from '../../interfaces/protected';
-import { UserContext } from '../../utils/auth';
+import ProtectedRouteProps from 'src/interfaces/protected';
+import { UserContext } from 'src/utils/auth';
 
 /**
  *   ProtectedRoute
