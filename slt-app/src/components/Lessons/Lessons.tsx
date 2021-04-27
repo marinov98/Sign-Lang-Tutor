@@ -11,7 +11,8 @@ const useStyles = makeStyles(theme => ({
     // height: 100,
     // width: 100,
     padding: theme.spacing(2),
-    textAlign: 'center'
+    textAlign: 'center',
+    minWidth: theme.spacing(20)
   }
 }));
 
