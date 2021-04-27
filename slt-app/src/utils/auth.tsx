@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createContext } from 'react';
-import { UserContextState } from './../interfaces/user';
+import { UserContextState } from 'src/interfaces/user';
 
 export const UserContext = createContext<UserContextState>({
   authenticated: false,

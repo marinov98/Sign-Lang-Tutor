@@ -1,31 +1,23 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { IUser } from '../../interfaces/user';
-import { getUserInfo } from '../../utils/user';
-import { CircularProgress } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import { removeUser } from '../../utils/user';
-import { resetProgress } from '../../utils/lessons';
-import { UserContext, logout } from '../../utils/auth';
 import { useHistory } from 'react-router-dom';
-
-const styles_parent = {
-  borderStyle: 'outset',
-  padding: '10px',
-  marginLeft: '100px',
-  marginRight: '100px',
-  verticalAlign: 'middle'
-};
-
-const styles_inner = {
-  borderStyle: 'dotted',
-  marginTop: '5px'
-};
-
-const button_styles = {
-  margin: '10px'
-};
+import {
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Paper,
+  Typography
+} from '@material-ui/core';
+import { IUser } from 'src/interfaces/user';
+import { getUserInfo } from 'src/utils/user';
+import { removeUser } from 'src/utils/user';
+import { resetProgress } from 'src/utils/lessons';
+import { UserContext, logout } from 'src/utils/auth';
+import { useStyles } from 'src/styles/accountStyles';
 
 const Account = () => {
+  const classes = useStyles();
+
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [progress, setProgress] = useState<string>('');
@@ -85,58 +77,68 @@ const Account = () => {
   }, []);
 
   return (
-    <div className="text-center" style={{ border: '3px' }}>
+    <Container className={classes.root}>
       {loading ? (
-        <CircularProgress size={70} style={{ marginTop: 10 }} />
+        <Grid container item justify="center">
+          <CircularProgress size={70} />
+        </Grid>
       ) : (
-        <div style={styles_parent}>
-          <div style={styles_inner}>
-            <div>
-              <h3 style={{ borderStyle: 'inset', margin: '20px' }}>
-                {firstName} {lastName}
-              </h3>
-            </div>
-            <br />
-            <div>
-              <div
-                style={{ borderStyle: 'outset', margin: '10px 50px 10px 50px' }}
-              >
-                <h4 style={{ textAlign: 'left', textIndent: '20px' }}>
+        <Paper className={classes.rootPaper} elevation={7}>
+          <Grid container spacing={4} justify="center">
+            <Grid item xs={12}>
+              <Paper elevation={3}>
+                <Typography className={classes.headers} variant="h4">
+                  {firstName} {lastName}
+                </Typography>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Paper className={classes.paper} elevation={3}>
+                <Typography className={classes.titles} variant="h5">
                   Accomplishments
-                </h4>
-                <div>Lessons Completed: {lessonsCompleted}</div>
-                <div>Stars: {stars}</div>
-              </div>
-              <div
-                style={{ borderStyle: 'outset', margin: '10px 50px 10px 50px' }}
-              >
-                <h4 style={{ textAlign: 'left', textIndent: '20px' }}>
+                </Typography>
+                <Typography className={classes.items}>
+                  Stars: {stars}
+                </Typography>
+                <Typography className={classes.items}>
+                  Lessons Completed: {lessonsCompleted}
+                </Typography>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Paper className={classes.paper} elevation={3}>
+                <Typography className={classes.titles} variant="h5">
                   Experience
-                </h4>
-                <div>Progress: {progress}</div>
-                <div>Date Joined: {dateJoined}</div>
-              </div>
-            </div>
-            <Button
-              variant="contained"
-              style={button_styles}
-              color="primary"
-              onClick={handleReset}
-            >
-              Reset Progress
-            </Button>
-            <Button
-              variant="contained"
-              style={button_styles}
-              color="secondary"
-              onClick={handleDelete}
-            >
-              Delete Account
-            </Button>
-          </div>
-        </div>
+                </Typography>
+
+                <Typography className={classes.items}>
+                  Progess: {progress}
+                </Typography>
+                <Typography className={classes.items}>
+                  Date Joined: {dateJoined}
+                </Typography>
+              </Paper>
+            </Grid>
+
+            <Grid container item xs={12} sm={6} justify="center">
+              <Button variant="contained" color="primary" onClick={handleReset}>
+                Reset Progress
+              </Button>
+            </Grid>
+            <Grid container item xs={12} sm={6} justify="center">
+              <Button
+                variant="contained"
+                className={classes.button}
+                color="primary"
+                onClick={handleDelete}
+              >
+                Delete Account
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
       )}
-    </div>
+    </Container>
   );
 };
 

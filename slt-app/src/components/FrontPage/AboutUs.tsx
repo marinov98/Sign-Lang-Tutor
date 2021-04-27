@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { UserContext } from '../../utils/auth';
+import { UserContext } from 'src/utils/auth';
 import { Button } from '@material-ui/core';
 import sign_lang from './../images/sign-lang.jpg';
 

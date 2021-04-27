@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { UserContext, logout } from './../../utils/auth';
+import { UserContext, logout } from 'src/utils/auth';
 import MenuIcon from '@material-ui/icons/Menu';
 
 const useStyles = makeStyles((theme: Theme) => ({

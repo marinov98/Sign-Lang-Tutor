@@ -1,8 +1,8 @@
 import { Grid, makeStyles, Paper } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { Col, Container } from 'reactstrap';
-import { ILesson } from '../../interfaces/lesson';
-import { getLessons } from '../../utils/lessons';
+import { ILesson } from 'src/interfaces/lesson';
+import { getLessons } from 'src/utils/lessons';
 import GridLessons from '../Grid/Grid';
 import { Link } from 'react-router-dom';
 

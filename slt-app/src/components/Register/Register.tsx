@@ -1,12 +1,21 @@
-import { Link, Paper, TextField, Typography, Button } from '@material-ui/core';
+import {
+  Link,
+  Paper,
+  TextField,
+  Typography,
+  Button,
+  ThemeProvider
+} from '@material-ui/core';
 import { Grid } from '@material-ui/core';
 import { Container } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
 import { useHistory, Link as RouterLink } from 'react-router-dom';
-import { registerUser, UserContext } from '../../utils/auth';
-import './Register.css';
+import { muiTheme, useStyles } from 'src/styles/authStyles';
+import { registerUser, UserContext } from 'src/utils/auth';
 
 const Register: React.FunctionComponent = () => {
+  const classes = useStyles();
+  const theme = muiTheme;
   const history = useHistory();
   const [firstName, changeFirstName] = useState<string | undefined>('');
   const [lastName, changeLastName] = useState<string | undefined>('');
@@ -57,9 +66,9 @@ const Register: React.FunctionComponent = () => {
   };
 
   return (
-    <Container maxWidth="xs">
-      <Paper>
-        <form onSubmit={e => handleSubmit(e)}>
+    <Container className={classes.root} maxWidth="xs">
+      <Paper className={classes.paper} elevation={5}>
+        <form className={classes.form} onSubmit={e => handleSubmit(e)}>
           <Grid container spacing={3} direction="row">
             <Grid item xs={12}>
               <Typography align="center" variant="h5">
@@ -147,9 +156,16 @@ const Register: React.FunctionComponent = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button fullWidth variant="contained" type="submit">
-                Register
-              </Button>
+              <ThemeProvider theme={theme}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  type="submit"
+                  color="secondary"
+                >
+                  Register
+                </Button>
+              </ThemeProvider>
             </Grid>
             <Grid item xs={12}>
               <Typography align="center">

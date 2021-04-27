@@ -1,8 +1,5 @@
 import React, { useContext, useState } from 'react';
-
 import { useHistory, Link as RouterLink } from 'react-router-dom';
-import { loginUser, UserContext } from '../../utils/auth';
-import './Login.css';
 import Link from '@material-ui/core/Link';
 import {
   Button,
@@ -10,10 +7,15 @@ import {
   Grid,
   Paper,
   TextField,
+  ThemeProvider,
   Typography
 } from '@material-ui/core';
+import { loginUser, UserContext } from 'src/utils/auth';
+import { useStyles, muiTheme } from 'src/styles/authStyles';
 
 const Login: React.FunctionComponent = () => {
+  const theme = muiTheme;
+  const classes = useStyles();
   const history = useHistory();
   const [email, changeEmail] = useState<string>('');
   const [password, changePassword] = useState<string | undefined>('');
@@ -44,9 +46,9 @@ const Login: React.FunctionComponent = () => {
   };
 
   return (
-    <Container maxWidth="xs">
-      <Paper>
-        <form onSubmit={e => handleSubmit(e)}>
+    <Container className={classes.root} maxWidth="xs">
+      <Paper className={classes.paper} elevation={5}>
+        <form className={classes.form} onSubmit={e => handleSubmit(e)}>
           <Grid container spacing={3} direction="row">
             <Grid item xs={12}>
               <Typography align="center" variant="h5">
@@ -92,9 +94,16 @@ const Login: React.FunctionComponent = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button fullWidth variant="contained" type="submit">
-                Login
-              </Button>
+              <ThemeProvider theme={theme}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  type="submit"
+                  color="secondary"
+                >
+                  Login
+                </Button>
+              </ThemeProvider>
             </Grid>
             <Grid item xs={12}>
               <Typography align="center">
