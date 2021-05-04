@@ -62,6 +62,7 @@ def register_user():
 
     return jsonify({"msg": "User successfully created!"}), 201
 
+
 # /api/auth/login
 @auth.route("/login", methods=["POST"])
 def login_user():
@@ -91,6 +92,7 @@ def login_user():
     set_access_cookies(response, access_token)  # implicit refreshing
     return response
 
+
 # /api/auth/user
 @auth.route("/user", methods=["GET", "POST"])
 @jwt_required()
@@ -101,6 +103,7 @@ def get_authenticated_user():
 
     return json.dumps(user, indent=4, default=str), 200
 
+
 # /api/auth/delete
 @auth.route("/delete", methods=["DELETE"])
 @jwt_required()
@@ -110,17 +113,19 @@ def delete_user_account():
     delete_lesson = False
 
     if request.data:
-        delete_lesson = request.json.get('deleteLesson')
+        delete_lesson = request.json.get("deleteLesson")
 
     if delete_lesson:
         mongo.db.lessons.remove({"userId": proper_id})
-    else: # mark lesson with a nonexistant user
-        mongo.db.lessons.update_many({"userId": proper_id}, 
-                                {"$set": {"userId": "Nonexistant"}})
+    else:  # mark lesson with a nonexistant user
+        mongo.db.lessons.update_many(
+            {"userId": proper_id}, {"$set": {"userId": "Nonexistant"}}
+        )
 
     mongo.db.users.remove({"_id": proper_id})
 
     return jsonify({"msg": "Deletion applied successfully!"}), 200
+
 
 # /api/auth/logout
 @auth.route("/logout", methods=["POST"])

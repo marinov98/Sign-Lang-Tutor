@@ -17,7 +17,7 @@ try:
     mongo = PyMongo()
     bcrypt = Bcrypt()
     jwt = JWTManager()
-    ml = (os.getenv("USE_ML") == "yes")
+    ml = os.getenv("USE_ML") == "yes"
     if ml:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         model = models.alexnet(num_classes=24)
