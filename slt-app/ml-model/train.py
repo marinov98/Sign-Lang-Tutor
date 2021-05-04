@@ -67,12 +67,12 @@ def select_model(model_type: str, num_classes: int, pretrained: bool = False):
             return models.vgg16(num_classes=num_classes)
     elif model_type == "mobilenet":
       if pretrained:
-            model = models.mobilenet_v3_small(pretrained=pretrained)
-            num_ftrs = model.classifier[3].in_features
-            model.classifier[3] = nn.Linear(num_ftrs, num_classes)
+            model = models.mobilenet_v2l(pretrained=pretrained)
+            num_ftrs = model.classifier[1].in_features
+            model.classifier[3] = nn.Linear(num_ftrs, num_classes, bias=True)
             return model
       else:
-          return models.mobilenet_v3_small(num_classes=num_classes)
+          return models.mobilenet_v2(num_classes=num_classes)
     else:
         return None
 
