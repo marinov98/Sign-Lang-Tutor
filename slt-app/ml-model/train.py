@@ -69,7 +69,7 @@ def select_model(model_type: str, num_classes: int, pretrained: bool = False):
       if pretrained:
             model = models.mobilenet_v2(pretrained=pretrained)
             num_ftrs = model.classifier[1].in_features
-            model.classifier[3] = nn.Linear(num_ftrs, num_classes, bias=True)
+            model.classifier[1] = nn.Linear(num_ftrs, num_classes, bias=True)
             return model
       else:
           return models.mobilenet_v2(num_classes=num_classes)
