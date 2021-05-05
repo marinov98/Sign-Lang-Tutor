@@ -149,8 +149,6 @@ def test(model_type, load_path, testloader, device):
     # If you wish to resuming training, call model.train() to ensure these layers are in training mode.
     model.eval()
     data = np.zeros((24, 24))
-    confusion_matrix = pd.DataFrame(data, columns=classes, index=classes)
-    # print(confusion_matrix)
 
     correct = 0
     total = 0
@@ -166,10 +164,8 @@ def test(model_type, load_path, testloader, device):
             c = (predicted == labels).squeeze()
             for i in range(len(labels)):
                 label = labels[i]
-                confusion_matrix.iat[label, c[i]] += 1
                 class_correct[label] += c[i].item()
                 class_total[label] += 1
-    print(confusion_matrix)
     for i in range(len(classes)):
         print(
             "Accuracy of %5s : %2d %%"
