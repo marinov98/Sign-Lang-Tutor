@@ -9,7 +9,6 @@ import torch.nn as nn
 import torch
 import torchvision.transforms as transforms
 import numpy as np
-import pandas as pd
 
 
 import os
