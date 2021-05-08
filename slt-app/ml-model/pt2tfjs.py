@@ -9,6 +9,8 @@ import tensorflow as tf
 import argparse
 
 
+# Function below copied from here:
+# https://stackoverflow.com/questions/45466020/how-to-export-keras-h5-to-tensorflow-pb 
 def freeze_session(session, keep_var_names=None, output_names=None, clear_devices=True):
     """
     Freezes the state of a session into a pruned computation graph.
@@ -24,68 +26,73 @@ def freeze_session(session, keep_var_names=None, output_names=None, clear_device
     @param clear_devices Remove the device directives from the graph for better portability.
     @return The frozen graph definition.
     """
-    
+
     graph = session.graph
     with graph.as_default():
-        freeze_var_names = \
-            list(set(v.op.name for v in tf.global_variables()).difference(keep_var_names or []))
+        freeze_var_names = list(
+            set(v.op.name for v in tf.global_variables()).difference(
+                keep_var_names or []
+            )
+        )
         output_names = output_names or []
         output_names += [v.op.name for v in tf.global_variables()]
         input_graph_def = graph.as_graph_def()
         if clear_devices:
             for node in input_graph_def.node:
                 node.device = ""
-        frozen_graph = convert_variables_to_constants(session, input_graph_def,
-                                                      output_names, freeze_var_names)
+        frozen_graph = convert_variables_to_constants(
+            session, input_graph_def, output_names, freeze_var_names
+        )
         return frozen_graph
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-      "model-path",
-      type=str,
-      help="path to pretrained model to load. folder must contain final_model.pth.tar"
+        "model_path",
+        type=str,
+        help="path to pretrained model to load. folder must contain final_model.pth.tar",
     )
 
     parser.add_argument(
-          "model-type",
-          type=str,
-          help="type of model to train or test",
-          choices=MODEL_TYPES,
-          default="alexnet"
+        "model_type",
+        type=str,
+        help="type of model to train or test",
+        choices=MODEL_TYPES,
+        default="alexnet",
     )
 
     parser.add_argument(
-      "num-classes",
-      type=int,
-      help="number of classes in the model",
-      default=24
+        "num_classes", type=int, help="number of classes in the model", default=24
     )
 
-    parser.add_argument(
-      "output-path",
-      type=str,
-      help="output path"
-    )
+    parser.add_argument("output_path", type=str, help="output path")
 
     args = parser.parse_args()
 
-    MODEL_PATH  = args.model_path
-    MODEL_TYPE  = args.model_type
+    MODEL_PATH = os.path.abspath(args.model_path)
+    MODEL_TYPE = args.model_type
     NUM_CLASSES = args.num_classes
-    OUTPUT_PATH = args.output_path
+    OUTPUT_PATH = os.path.abspath(args.output_path)
 
     model = select_model(MODEL_TYPE, NUM_CLASSES)
-    model.load_state_dict(torch.load(os.path.join(MODEL_PATH, "final_model.pth.tar")))
+    model.load_state_dict(torch.load(os.path.join(MODEL_PATH, "final_model.pth.tar"),map_location=torch.device('cpu')))
+    model.eval()
 
     input_np = np.random.uniform(0, 1, (1, 3, 224, 224))
-    input_var = torch.Variable(torch.FloatTensor(input_np))
+    input_var = torch.autograd.Variable(torch.FloatTensor(input_np))
     # we should specify shape of the input tensor
-    k_model = pytorch_to_keras(model, input_var, [(3, 224, 224,)], verbose=True, names='short')
-    frozen_graph = freeze_session(K.get_session(), output_names=[out.op.name for out in k_model.outputs]) 
+    k_model = pytorch_to_keras(
+        model, input_var, [(3, 224, 224,)], verbose=True, name_policy="short"
+    )
+    print(f"saving keras model to {OUTPUT_PATH}")
+    k_model.save(OUTPUT_PATH)
+    # frozen_graph = freeze_session(
+    #     K.get_session(), output_names=[out.op.name for out in k_model.outputs]
+    # )
 
-    tf.train.write_graph(frozen_graph, ".", OUTPUT_PATH, as_text=False)
-    print([i for i in k_model.outputs])
+    # tf.train.write_graph(frozen_graph, ".", OUTPUT_PATH, as_text=False)
+    # print([i for i in k_model.outputs])
 
 
 if __name__ == "__main__":

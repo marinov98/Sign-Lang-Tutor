@@ -22,6 +22,7 @@ import argparse
 
 MODEL_TYPES = ["alexnet", "resnet", "densenet", "vgg", "mobilenet"]
 
+
 def create_dir(dir_name):
     if not os.path.exists(os.path.join(dir_name)):
         print(f"{dir_name} folder not found, creating...")
@@ -65,13 +66,13 @@ def select_model(model_type: str, num_classes: int, pretrained: bool = False):
         else:
             return models.vgg16(num_classes=num_classes)
     elif model_type == "mobilenet":
-      if pretrained:
+        if pretrained:
             model = models.mobilenet_v2(pretrained=pretrained)
             num_ftrs = model.classifier[1].in_features
             model.classifier[1] = nn.Linear(num_ftrs, num_classes, bias=True)
             return model
-      else:
-          return models.mobilenet_v2(num_classes=num_classes)
+        else:
+            return models.mobilenet_v2(num_classes=num_classes)
     else:
         return None
 
@@ -289,15 +290,15 @@ def main():
     args = parser.parse_args()
 
     SAVED_MODELS_FOLDER = args.save_path
-    EPOCHS = args.epochs
-    BATCHSIZE = args.batch_size
-    NUM_CLASSES = 24
-    DATA_FOLDER = args.data_path
-    SEED = args.seed
-    MODEL_TYPE = args.model_type
-    PRETRAIN = args.pretrain
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    cudnn.benchmark = True
+    EPOCHS              = args.epochs
+    BATCHSIZE           = args.batch_size
+    NUM_CLASSES         = 24
+    DATA_FOLDER         = args.data_path
+    SEED                = args.seed
+    MODEL_TYPE          = args.model_type
+    PRETRAIN            = args.pretrain
+    device              = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    cudnn.benchmark     = True
 
     torch.manual_seed(SEED)
 
