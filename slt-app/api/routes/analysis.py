@@ -82,9 +82,10 @@ def infer():
             200,
         )
 
-
-@analysis.route("/get_model", methods=["GET"])
+# api/analysis/tensorModel
+@analysis.route("/tensorModel", methods=["GET"])
 def serve_model():
-  with open('model.json', 'r') as f:
+  path = os.path.realpath(os.path.join("routes", "model.json"))
+  with open(path, 'r') as f:
     j = json.load(f)
-  return jsonify(j), 200
+  return json.dumps(j), 200

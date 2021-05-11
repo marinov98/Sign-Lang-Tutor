@@ -1,11 +1,12 @@
 import Photobooth from '../Photobooth/Photobooth';
 import React, { useEffect, useState, useRef } from 'react';
-import { analyze, handDetect } from 'src/utils/analysis';
+import { analyze, handDetect, getTensorFlowModel  } from 'src/utils/analysis';
 import { getLesson, updateLesson } from 'src/utils/lessons';
 import { getUserInfo, updateUser } from 'src/utils/user';
 import { Rating } from '@material-ui/lab';
 import { Container, Row, Col } from 'reactstrap';
 import { CircularProgress } from '@material-ui/core';
+import * as tf from "@tensorflow/tfjs"
 // import { ILesson } from '../../interfaces/lesson';
 
 const Lesson = (props: any) => {
@@ -15,9 +16,16 @@ const Lesson = (props: any) => {
   const [analysis, setAnalysis] = useState<any>();
   const [stars, setStars] = useState<any>(0);
   const [loadingAnalysis, setLoadingAnalysis] = useState<boolean>(false);
+  const [model, setModel]  = useState<any>(false)
   const imgId = useRef(null);
 
   const allLessons = async () => {
+    console.log("LOADING from axios")
+    const model1 = await getTensorFlowModel()
+    console.log(model1)
+    console.log("LOADING from tensorflow")
+    const model  = await tf.loadLayersModel("http://127.0.0.1:5000/api/analysis/tensorModel")
+    console.log(model)
     const lessons = await getLesson(props.match.params.lessonId);
     if (lessons) {
       setLesson(lessons);
@@ -29,6 +37,7 @@ const Lesson = (props: any) => {
   };
 
   useEffect(() => {
+    // const model = await getTensorFlowModel()
     allLessons();
   }, []);
 

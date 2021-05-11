@@ -1724,7 +1724,7 @@
   "resolved" "https://registry.npmjs.org/@tensorflow/tfjs-layers/-/tfjs-layers-3.3.0.tgz"
   "version" "3.3.0"
 
-"@tensorflow/tfjs@3.3.0":
+"@tensorflow/tfjs@^3.3.0", "@tensorflow/tfjs@3.3.0":
   "integrity" "sha512-xo22GCUCGcPtNGIdDpLPrp9ms3atXmzX8AF4y3aIBEwK5KlvGe+ZhcoQ2xEOCPQGBr7NB7AO6rwT8gRoziAHVg=="
   "resolved" "https://registry.npmjs.org/@tensorflow/tfjs/-/tfjs-3.3.0.tgz"
   "version" "3.3.0"

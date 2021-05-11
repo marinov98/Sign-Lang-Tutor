@@ -24,13 +24,25 @@ export async function handDetect(imageSrc: any): Promise<any> {
     let hand = false;
     for (const prediction of predictions) {
       if (prediction.label !== "face") {
-        console.log("NOT FACE!")
         hand = true
         break
       }
     }
     
     return hand
+  }
+  catch (err) {
+    if (err.response) {
+      return err.response.data;
+    } else {
+      console.error(err);
+    }
+  }
+}
+
+export async function getTensorFlowModel(): Promise<any> {
+  try {
+    return await axios('api/analysis/tensorModel')
   }
   catch (err) {
     if (err.response) {
