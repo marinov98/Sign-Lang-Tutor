@@ -1,5 +1,7 @@
 import torch
 import numpy as np
+import json
+import os
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
@@ -79,3 +81,10 @@ def infer():
             ),
             200,
         )
+
+
+@analysis.route("/get_model", methods=["GET"])
+def serve_model():
+  with open('model.json', 'r') as f:
+    j = json.load(f)
+  return jsonify(j), 200
