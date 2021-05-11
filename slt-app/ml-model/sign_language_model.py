@@ -9,7 +9,6 @@ import torch.nn as nn
 import torch
 import torchvision.transforms as transforms
 import numpy as np
-import pandas as pd
 
 
 import os
@@ -20,6 +19,8 @@ import argparse
 # note about data set,a = 00, b = 01, ...
 # 10 and 25 are missing because j and z are skipped
 # because they require motion
+
+MODEL_TYPES = ["alexnet", "resnet", "densenet", "vgg", "mobilenet"]
 
 
 def create_dir(dir_name):
@@ -64,6 +65,14 @@ def select_model(model_type: str, num_classes: int, pretrained: bool = False):
             return model
         else:
             return models.vgg16(num_classes=num_classes)
+    elif model_type == "mobilenet":
+        if pretrained:
+            model = models.mobilenet_v2(pretrained=pretrained)
+            num_ftrs = model.classifier[1].in_features
+            model.classifier[1] = nn.Linear(num_ftrs, num_classes, bias=True)
+            return model
+        else:
+            return models.mobilenet_v2(num_classes=num_classes)
     else:
         return None
 
@@ -140,8 +149,6 @@ def test(model_type, load_path, testloader, device):
     # If you wish to resuming training, call model.train() to ensure these layers are in training mode.
     model.eval()
     data = np.zeros((24, 24))
-    confusion_matrix = pd.DataFrame(data, columns=classes, index=classes)
-    # print(confusion_matrix)
 
     correct = 0
     total = 0
@@ -157,10 +164,8 @@ def test(model_type, load_path, testloader, device):
             c = (predicted == labels).squeeze()
             for i in range(len(labels)):
                 label = labels[i]
-                confusion_matrix.iat[label, c[i]] += 1
                 class_correct[label] += c[i].item()
                 class_total[label] += 1
-    print(confusion_matrix)
     for i in range(len(classes)):
         print(
             "Accuracy of %5s : %2d %%"
@@ -169,53 +174,65 @@ def test(model_type, load_path, testloader, device):
 
     print("Total Accuracy of the network: %d %%" % (100 * correct / total))
 
+
 # function to run a prediction on a jpeg string or fileowo
 
+
 def infer(image, image_type, model_type, load_path, device):
-  classes = [chr(i + 65) for i in range(26) if i != 25 and i != 9]
-  #
-  model = select_model(model_type, 24)
-  # load model
-  model.load_state_dict(torch.load(os.path.join(load_path, "final_model.pth.tar")))
-  model.to(device)
-  if image_type == "string":
-    base_str = image.replace("data:image/jpeg;base64,", "")
-    decoded_img = base64.b64decode(base_str)
-    image = Image.open(BytesIO(decoded_img))
-  elif image_type == "image":
-    image = Image.open(image)
-  else:
-    raise ValueError(f"image type invalid: Must be \"string\" or \"image\", got {image_type}")
+    classes = [chr(i + 65) for i in range(26) if i != 25 and i != 9]
+    #
+    model = select_model(model_type, 24)
+    # load model
+    model.load_state_dict(torch.load(os.path.join(load_path, "final_model.pth.tar")))
+    model.to(device)
+    if image_type == "string":
+        base_str = image.replace("data:image/jpeg;base64,", "")
+        decoded_img = base64.b64decode(base_str)
+        image = Image.open(BytesIO(decoded_img))
+    elif image_type == "image":
+        image = Image.open(image)
+    else:
+        raise ValueError(
+            f'image type invalid: Must be "string" or "image", got {image_type}'
+        )
 
-  transform = transforms.Compose(
-      [
-          transforms.ToTensor(),
-          transforms.Normalize(
-              mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],
-          ),
-      ]
-  )
-  img = transform(image)
-  # print(img[0, 0, 0])
-  img.unsqueeze_(0)
-  img = img.to(device)
+    transform = transforms.Compose(
+        [
+            transforms.ToTensor(),
+            transforms.Normalize(
+                mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],
+            ),
+        ]
+    )
+    img = transform(image)
+    # print(img[0, 0, 0])
+    img.unsqueeze_(0)
+    img = img.to(device)
 
-  out = model(img)
-  print(out)
-  confidence, predicted = torch.max(out, 1)
-  prediction = classes[predicted]
-  print(f'prediction: {prediction}, confidence: {confidence}')
+    out = model(img)
+    print(out)
+    confidence, predicted = torch.max(out, 1)
+    prediction = classes[predicted]
+    print(f"prediction: {prediction}, confidence: {confidence.item()}")
+
 
 def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "mode", type=str, help="whether to train, test, or infer from jepg string", choices=["train", "test", "infer"]
+        "mode",
+        type=str,
+        help="whether to train, test, or infer from a single image",
+        choices=["train", "test", "infer"],
     )
 
+    parser.add_argument("--infer-path", type=str, help="path to image to infer")
+
     parser.add_argument(
-      "--infer-path",
-      
+        "--image-type",
+        type=str,
+        help="type of image to infer. can infer image file or file with jpeg string",
+        choices=["image", "string"],
     )
 
     parser.add_argument(
@@ -240,7 +257,7 @@ def main():
         "--model-type",
         type=str,
         help="type of model to train or test",
-        choices=["alexnet", "resnet", "densenet", "vgg"],
+        choices=MODEL_TYPES,
         default="alexnet",
     )
 
@@ -273,15 +290,15 @@ def main():
     args = parser.parse_args()
 
     SAVED_MODELS_FOLDER = args.save_path
-    EPOCHS = args.epochs
-    BATCHSIZE = args.batch_size
-    NUM_CLASSES = 24
-    DATA_FOLDER = args.data_path
-    SEED = args.seed
-    MODEL_TYPE = args.model_type
-    PRETRAIN = args.pretrain
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    cudnn.benchmark = True
+    EPOCHS              = args.epochs
+    BATCHSIZE           = args.batch_size
+    NUM_CLASSES         = 24
+    DATA_FOLDER         = args.data_path
+    SEED                = args.seed
+    MODEL_TYPE          = args.model_type
+    PRETRAIN            = args.pretrain
+    device              = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    cudnn.benchmark     = True
 
     torch.manual_seed(SEED)
 
@@ -314,7 +331,7 @@ def main():
             pin_memory=True,
         )
         if args.train_all:
-            for model_type in ["alexnet", "resnet", "densenet", "vgg"]:
+            for model_type in MODEL_TYPES:
                 save_path = os.path.join(model_type, SAVED_MODELS_FOLDER)
                 os.makedirs(save_path, exist_ok=True)
                 train(
@@ -361,10 +378,10 @@ def main():
         )
 
         test(MODEL_TYPE, SAVED_MODELS_FOLDER, testloader, device)
-    elif args.mode == 'infer':
-      
+    elif args.mode == "infer":
+        infer(args.infer_path, args.image_type, MODEL_TYPE, SAVED_MODELS_FOLDER, device)
     else:
-      print('unknown mode')
+        print("unknown mode")
 
 
 if __name__ == "__main__":
