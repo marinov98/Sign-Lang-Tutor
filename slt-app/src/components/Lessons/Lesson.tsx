@@ -10,35 +10,11 @@ import {
   CircularProgress,
   Container,
   Grid,
-  makeStyles,
   Paper,
   Typography
 } from '@material-ui/core';
-import classes from '*.module.css';
+import { useStyles } from 'src/styles/lessonStyles';
 import { images } from 'src/images/alphabet';
-import Lessons from './Lessons';
-import { idText } from 'typescript';
-// import { ILesson } from '../../interfaces/lesson';
-
-const useStyles = makeStyles(theme => ({
-  title: {
-    textAlign: 'center',
-    paddingTop: theme.spacing(1),
-    paddingBotton: theme.spacing(1)
-  },
-  img: {
-    maxHeight: '50%',
-
-    marginTop: 10,
-    transform: 'scaleX(-1)'
-  },
-  maxHeight: {
-    height: '100%'
-  },
-  progress: {
-    marginBottom: 5
-  }
-}));
 
 const Lesson = (props: any) => {
   const classes = useStyles();
