@@ -23,18 +23,20 @@ import { idText } from 'typescript';
 const useStyles = makeStyles(theme => ({
   title: {
     textAlign: 'center',
-    padding: theme.spacing(4)
+    paddingTop: theme.spacing(1),
+    paddingBotton: theme.spacing(1)
   },
   img: {
     maxHeight: '50%',
 
-    marginTop: 5
+    marginTop: 10,
+    transform: 'scaleX(-1)'
   },
   maxHeight: {
     height: '100%'
   },
-  maxWidth: {
-    width: '100%'
+  progress: {
+    marginBottom: 5
   }
 }));
 
@@ -70,6 +72,7 @@ const Lesson = (props: any) => {
 
   const resetPhoto = () => {
     setImageSrc(null);
+    setAnalysis(null);
   };
 
   const sendPhoto = async () => {
@@ -122,19 +125,24 @@ const Lesson = (props: any) => {
   return (
     <Container maxWidth="lg">
       {lesson ? (
-        <Grid container direction="column" spacing={4}>
-          <Grid item xs={12} sm={6}>
+        <Grid container direction="column" alignItems="center" spacing={4}>
+          <Grid container item xs={12} sm={6}>
             <Container disableGutters>
               <Paper className={classes.title}>
                 <Typography>{lesson.module}</Typography>
                 <Typography>{lesson.title}</Typography>
-                <Rating max={lesson.totalStars} value={stars} readOnly />
+                <Rating
+                  size="large"
+                  max={lesson.totalStars}
+                  value={stars}
+                  readOnly
+                />
               </Paper>
             </Container>
           </Grid>
           <Grid container direction="row" spacing={4}>
             <Grid item xs={12} sm={6}>
-              <Paper elevation={5}>
+              <Paper elevation={5} className={classes.maxHeight}>
                 <Photobooth onChange={handleChange} />
               </Paper>
             </Grid>
@@ -152,25 +160,35 @@ const Lesson = (props: any) => {
                     <React.Fragment>
                       <Container>
                         <img className={classes.img} src={imageSrc!} />
+
+                        <Grid container justify="center" direction="row">
+                          <Grid item xs={12} sm={6}>
+                            <Button onClick={sendPhoto} fullWidth>
+                              Send Photo
+                            </Button>
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Button onClick={resetPhoto} fullWidth>
+                              Reset
+                            </Button>
+                          </Grid>
+                          <Grid container item justify="center" xs={12}>
+                            {loadingAnalysis ? (
+                              <CircularProgress
+                                className={classes.progress}
+                                color="secondary"
+                              />
+                            ) : analysis ? (
+                              <Typography>
+                                We predicted that's an {analysis.pred} with{' '}
+                                {100 * analysis.confidence}% confidence
+                              </Typography>
+                            ) : (
+                              <div></div>
+                            )}
+                          </Grid>
+                        </Grid>
                       </Container>
-                      <Grid container justify="space-around" direction="row">
-                        <Grid item xs={12} sm={6}>
-                          <Button
-                            className={classes.maxWidth}
-                            onClick={sendPhoto}
-                          >
-                            Send Photo
-                          </Button>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Button
-                            className={classes.maxWidth}
-                            onClick={resetPhoto}
-                          >
-                            Reset
-                          </Button>
-                        </Grid>
-                      </Grid>
                     </React.Fragment>
                   ) : (
                     <React.Fragment>
@@ -184,22 +202,6 @@ const Lesson = (props: any) => {
                 </Grid>
               </Paper>
             </Grid>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper>
-              {loadingAnalysis ? (
-                <CircularProgress color="secondary" />
-              ) : analysis ? (
-                <React.Fragment>
-                  <Typography>
-                    We predicted that's an {analysis.pred} with{' '}
-                    {100 * analysis.confidence}% confidence
-                  </Typography>
-                </React.Fragment>
-              ) : (
-                <div></div>
-              )}
-            </Paper>
           </Grid>
         </Grid>
       ) : (
