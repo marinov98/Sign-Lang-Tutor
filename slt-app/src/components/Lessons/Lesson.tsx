@@ -24,7 +24,7 @@ const Lesson = (props: any) => {
     const model1 = await getTensorFlowModel()
     console.log(model1)
     console.log("LOADING from tensorflow")
-    const model  = await tf.loadLayersModel("http://127.0.0.1:5000/api/analysis/tensorModel")
+    const model  = await tf.loadGraphModel("http://127.0.0.1:5000/api/analysis/tensorModel")
     console.log(model)
     const lessons = await getLesson(props.match.params.lessonId);
     if (lessons) {
