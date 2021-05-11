@@ -1,6 +1,6 @@
 import Photobooth from '../Photobooth/Photobooth';
-import React, { useEffect, useState } from 'react';
-import { analyze } from 'src/utils/analysis';
+import React, { useEffect, useState, useRef } from 'react';
+import { analyze, handDetect } from 'src/utils/analysis';
 import { getLesson, updateLesson } from 'src/utils/lessons';
 import { getUserInfo, updateUser } from 'src/utils/user';
 import { Rating } from '@material-ui/lab';
@@ -15,6 +15,7 @@ const Lesson = (props: any) => {
   const [analysis, setAnalysis] = useState<any>();
   const [stars, setStars] = useState<any>(0);
   const [loadingAnalysis, setLoadingAnalysis] = useState<boolean>(false);
+  const imgId = useRef(null);
 
   const allLessons = async () => {
     const lessons = await getLesson(props.match.params.lessonId);
@@ -37,10 +38,15 @@ const Lesson = (props: any) => {
 
   const sendPhoto = async () => {
     setLoadingAnalysis(true);
-    const res = await analyze(imageSrc);
-    setAnalysis(res);
+     // const res = await analyze(imageSrc);
+    //setAnalysis(res);
+    const res: any = {pred: "No!"}
+    const hand = await handDetect(imgId.current) 
+    if (hand) {
+      // tensorflow stuff  
+    }
     const firstTime: boolean = !lesson.completed;
-    if (res.pred && lesson.title) {
+    if (res.pred !== "No!" && lesson.title) {
       if (res.pred == lesson.title[lesson.title.length - 1]) {
         const payload: any = { starsAchieved: 0, completed: true };
         const lessonId: any = props.match.params.lessonId;
@@ -109,7 +115,7 @@ const Lesson = (props: any) => {
           </Col>
           {imageSrc ? (
             <Col>
-              <img src={imageSrc!} height={240} width={320}></img>
+              <img ref={imgId} src={imageSrc!} height={240} width={320}></img>
               <br />
               <br />
               <button onClick={sendPhoto}>Send Photo</button>

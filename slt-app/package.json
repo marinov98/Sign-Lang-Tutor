@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "axios-auth-refresh": "^3.1.0",
     "bootstrap": "^4.6.0",
+    "handtrackjs": "^0.1.5",
     "jwt-decode": "^3.1.2",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
