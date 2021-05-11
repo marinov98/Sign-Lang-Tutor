@@ -3,7 +3,6 @@ import {
   Container,
   Grid,
   makeStyles,
-  Paper,
   Typography
 } from '@material-ui/core';
 import React from 'react';
@@ -16,7 +15,29 @@ interface PhotoboothProps {
 const useStyles = makeStyles(theme => ({
   webcam: {
     height: '100%',
+    width: '100%',
+    transform: 'scaleX(-1)',
+    marginTop: 10
+  },
+  countDown: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    color: '#FFFFFF99',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    height: '100%',
     width: '100%'
+  },
+  maxWidth: {
+    width: '100%'
+  },
+  container: {
+    textAlign: 'center',
+    position: 'relative'
   }
 }));
 
@@ -42,24 +63,25 @@ const Photobooth = (props: PhotoboothProps) => {
   }, [webcamRef]);
 
   return (
-    <Grid container item direction="column">
-      <Container>
+    <Grid item direction="column">
+      <Container className={classes.container}>
         <Webcam
           className={classes.webcam}
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
         />
-      </Container>
-      {counter ? (
-        <React.Fragment>
-          <Typography>Countdown: {counter} </Typography>{' '}
-        </React.Fragment>
-      ) : null}
 
-      <Button color="primary" onClick={capture}>
-        Capture photo
-      </Button>
+        {counter ? (
+          <div className={classes.countDown}>
+            <Typography variant="h1">{counter}</Typography>
+          </div>
+        ) : null}
+
+        <Button color="primary" onClick={capture} fullWidth>
+          Capture photo
+        </Button>
+      </Container>
     </Grid>
   );
 };
