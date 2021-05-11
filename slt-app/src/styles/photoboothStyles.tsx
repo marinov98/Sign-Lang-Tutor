@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { blue } from '@material-ui/core/colors';
 
 export const useStyles = makeStyles(theme => ({
   webcam: {
@@ -20,11 +21,16 @@ export const useStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%'
   },
-  maxWidth: {
-    width: '100%'
-  },
   container: {
     textAlign: 'center',
-    position: 'relative'
+    position: 'relative',
+    marginBottom: 5
+  },
+  button: {
+    color: 'white',
+    background: blue[700],
+    '&:hover': {
+      background: blue[900]
+    }
   }
 }));

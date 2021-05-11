@@ -44,7 +44,7 @@ const Photobooth = (props: PhotoboothProps) => {
           </div>
         ) : null}
 
-        <Button color="primary" onClick={capture} fullWidth>
+        <Button className={classes.button} onClick={capture} fullWidth>
           Capture photo
         </Button>
       </Container>

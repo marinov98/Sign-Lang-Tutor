@@ -104,7 +104,7 @@ const Lesson = (props: any) => {
         <Grid container direction="column" alignItems="center" spacing={4}>
           <Grid container item xs={12} sm={6}>
             <Container disableGutters>
-              <Paper className={classes.title}>
+              <Paper className={classes.title} elevation={5}>
                 <Typography>{lesson.module}</Typography>
                 <Typography>{lesson.title}</Typography>
                 <Rating
@@ -134,18 +134,31 @@ const Lesson = (props: any) => {
                 >
                   {imageSrc ? (
                     <React.Fragment>
-                      <Container>
+                      <Container className={classes.container}>
                         <img className={classes.img} src={imageSrc!} />
 
-                        <Grid container justify="center" direction="row">
+                        <Grid
+                          container
+                          justify="center"
+                          direction="row"
+                          spacing={2}
+                        >
                           <Grid item xs={12} sm={6}>
-                            <Button onClick={sendPhoto} fullWidth>
-                              Send Photo
+                            <Button
+                              className={classes.resetButton}
+                              onClick={resetPhoto}
+                              fullWidth
+                            >
+                              Reset
                             </Button>
                           </Grid>
                           <Grid item xs={12} sm={6}>
-                            <Button onClick={resetPhoto} fullWidth>
-                              Reset
+                            <Button
+                              className={classes.button}
+                              onClick={sendPhoto}
+                              fullWidth
+                            >
+                              Send Photo
                             </Button>
                           </Grid>
                           <Grid container item justify="center" xs={12}>
@@ -155,7 +168,7 @@ const Lesson = (props: any) => {
                                 color="secondary"
                               />
                             ) : analysis ? (
-                              <Typography>
+                              <Typography variant="h6">
                                 We predicted that's an {analysis.pred} with{' '}
                                 {100 * analysis.confidence}% confidence
                               </Typography>
