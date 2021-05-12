@@ -19,7 +19,7 @@ export async function analyze(imageSrc: any): Promise<any> {
 
 export async function handDetect(imageSrc: any): Promise<any> {
   try {
-    const model = await load({ scoreThreshold: 0.45 })
+    const model = await load({ scoreThreshold: 0.46 })
     const predictions = await model.detect(imageSrc);
     let hand = false;
     for (const prediction of predictions) {

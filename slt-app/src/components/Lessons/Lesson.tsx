@@ -27,6 +27,7 @@ const Lesson = (props: any) => {
   const [analysis, setAnalysis] = useState<any>();
   const [stars, setStars] = useState<any>(0);
   const [loadingAnalysis, setLoadingAnalysis] = useState<boolean>(false);
+  const [hand, sethand] = useState<boolean>(true)
   const imgId: any = useRef(null);
 
   const allLessons = async () => {
@@ -51,6 +52,7 @@ const Lesson = (props: any) => {
   }, []);
 
   const handleChange = (value: string) => {
+    sethand(true)
     setImageSrc(value);
   };
 
@@ -64,12 +66,14 @@ const Lesson = (props: any) => {
      // const res = await analyze(imageSrc);
     //setAnalysis(res);
     const res: any = {pred: "No!"}
-    const hand: Boolean = await handDetect(imgId.current) 
-    console.log(hand)
-    if (hand) {
-      // tensorflow stuff  
+    const handres = await handDetect(imgId.current)
+    sethand(handres)
+    console.log(handres)
+    if (handres) {
+      // Grab image for classification
       const img: any = await tf.browser.fromPixelsAsync(imgId.current)
       console.log({img})
+
       // get tensorflow model
       const model: any = new MobileNet()
       await model.load()
@@ -197,9 +201,9 @@ const Lesson = (props: any) => {
                                 We predicted that's an {analysis.pred} with{' '}
                                 {100 * analysis.confidence}% confidence
                               </Typography>
-                            ) : (
-                              <div>Hand was not detected, please try again</div>
-                            )}
+                            ) : !hand ? (
+                              <div style={{"fontWeight": "bold"}}>Hand was not detected, please try again</div>
+                            ) : <div></div>}
                           </Grid>
                         </Grid>
                       </Container>
