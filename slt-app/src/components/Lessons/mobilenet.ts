@@ -43,9 +43,12 @@ export default class MobileNet {
 
   public async predict(input: any): Promise<any> {
     const preprocessedInput = tf.transpose(
-      this.normalize(input, this.IMAGENET_MEAN, this.IMAGENET_STD),[2,0,1]);
+      this.normalize(input, this.IMAGENET_MEAN, this.IMAGENET_STD),[2,0,1]
+      );
+
     const reshapedInput =
         preprocessedInput.reshape([1, ...preprocessedInput.shape]);
+
     return this.model.executeAsync(
         {[this.INPUT_NODE_NAME]: reshapedInput}, this.OUTPUT_NODE_NAME);
   }

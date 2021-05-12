@@ -65,6 +65,7 @@ const Lesson = (props: any) => {
     //setAnalysis(res);
     const res: any = {pred: "No!"}
     const hand: Boolean = await handDetect(imgId.current) 
+    console.log(hand)
     if (hand) {
       // tensorflow stuff  
       const img: any = await tf.browser.fromPixelsAsync(imgId.current)
@@ -74,7 +75,7 @@ const Lesson = (props: any) => {
       await model.load()
       const zeros = tf.zeros([224, 224,3]);
       model.predict(zeros)
-      let prediction: any = await model.predict()
+      let prediction: any = await model.predict(img)
       console.log({prediction})
       const res = model.getTopKClasses(prediction, 1)
       console.log({res})
