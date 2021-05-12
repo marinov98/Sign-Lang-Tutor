@@ -37,4 +37,15 @@ def get_all_reviews(limit=50):
 
     return json.dumps([review for review in reviews], indent=4, default=str), 200
 
+# /api/reviews/delete
+@reviews.route("/delete", methods=["DELETE"])
+@jwt_required()
+def delete_review():
+    if not request.data:
+        return jsonify({"msg": "No data found in request!"}), 409
+
+    mongo.db.reviews.delete_one({"userId": ObjectId(get_jwt_identity()), "_id": ObjectId(request.json.get("reviewId"))})
+
+    return jsonify({"msg": "Review successfully deleted!"})
+
 
