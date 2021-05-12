@@ -83,11 +83,11 @@ def main():
     input_var = torch.autograd.Variable(torch.FloatTensor(input_np))
     # we should specify shape of the input tensor
     k_model = pytorch_to_keras(
-        model, input_var, [(3, 224, 224,)], verbose=False, name_policy="short"
+        model, input_var, (3, 224, 224,), verbose=False, name_policy="short"
     )
     print(k_model.summary())
     print(f"saving keras model to {OUTPUT_PATH}")
-    k_model.save('test',save_format='tf')
+    k_model.save('keras_model_2.h5',save_format='h5')
     # frozen_graph = freeze_session(
     #     K.get_session(), output_names=[out.op.name for out in k_model.outputs]
     # )

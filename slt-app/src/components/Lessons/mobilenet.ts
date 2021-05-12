@@ -15,13 +15,13 @@ export default class MobileNet {
   private MODEL_CLASSES: any = MODEL_CLASSES
   private model: any;
 
-  constructor(modelDir: string = 'tfjs_model', modelFile: string = 'model.json') {
+  constructor(modelDir: string = 'keras_web_model', modelFile: string = 'model.json') {
     this.MODEL_DIR = modelDir;
     this.MODEL_FILE_URL = modelFile;
   }
 
   public async load(): Promise<void> {
-    this.model = await tf.loadGraphModel(
+    this.model = await tf.loadLayersModel(
         this.MODEL_URL + this.MODEL_DIR + "/" + this.MODEL_FILE_URL);
   }
 
@@ -45,14 +45,14 @@ export default class MobileNet {
    * @return The softmax logits.
    */
 
-  public async predict(input: any): Promise<any> {
+  public predict(input: any): Promise<any> {
     const preprocessedInput = tf.transpose(
       this.normalize(input, this.IMAGENET_MEAN, this.IMAGENET_STD),[2,0,1]
       );
 
     const reshapedInput = preprocessedInput.expandDims(0);
 
-    return await this.model.executeAsync(reshapedInput)
+    return this.model.predict(reshapedInput)
     // {[this.INPUT_NODE_NAME]: reshapedInput}, this.OUTPUT_NODE_NAME);
   }
 
