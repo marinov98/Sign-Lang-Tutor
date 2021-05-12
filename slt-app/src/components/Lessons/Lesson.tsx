@@ -4,31 +4,37 @@ import { analyze, handDetect, getTensorFlowModel  } from 'src/utils/analysis';
 import { getLesson, updateLesson } from 'src/utils/lessons';
 import { getUserInfo, updateUser } from 'src/utils/user';
 import { Rating } from '@material-ui/lab';
-import { Container, Row, Col } from 'reactstrap';
-import { CircularProgress } from '@material-ui/core';
 import * as tf from "@tensorflow/tfjs"
 // import { ILesson } from '../../interfaces/lesson';
+import {
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Paper,
+  Typography
+} from '@material-ui/core';
+import { useStyles } from 'src/styles/lessonStyles';
+import { images } from 'src/images/alphabet';
 
 const Lesson = (props: any) => {
+  const classes = useStyles();
   const [imageSrc, setImageSrc] = React.useState<string | null>('');
 
   const [lesson, setLesson] = useState<any>();
+
   const [analysis, setAnalysis] = useState<any>();
   const [stars, setStars] = useState<any>(0);
   const [loadingAnalysis, setLoadingAnalysis] = useState<boolean>(false);
-  const [model, setModel]  = useState<any>(false)
   const imgId = useRef(null);
 
   const allLessons = async () => {
-    console.log("LOADING from axios")
-    const model1 = await getTensorFlowModel()
-    console.log(model1)
-    console.log("LOADING from tensorflow")
     const model  = await tf.loadGraphModel("http://127.0.0.1:5000/api/analysis/tensorModel")
     console.log(model)
     const lessons = await getLesson(props.match.params.lessonId);
     if (lessons) {
       setLesson(lessons);
+
       console.log(lessons);
       setStars(lessons.starsAchieved);
       return;
@@ -43,6 +49,11 @@ const Lesson = (props: any) => {
 
   const handleChange = (value: string) => {
     setImageSrc(value);
+  };
+
+  const resetPhoto = () => {
+    setImageSrc(null);
+    setAnalysis(null);
   };
 
   const sendPhoto = async () => {
@@ -98,56 +109,103 @@ const Lesson = (props: any) => {
   };
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <div>
-        {lesson ? (
-          <>
-            <h2> {lesson.module} </h2>
-            <h4> {lesson.title} </h4>
-            <Rating max={lesson.totalStars} value={stars} readOnly />
-            <br />
-            <a href={lesson.guide} target="_blank" rel="noopener noreferrer">
-              {' '}
-              Learn{' '}
-            </a>
-          </>
-        ) : (
-          <CircularProgress />
-        )}
-        <br />
-      </div>
-
-      <Container>
-        <Row>
-          <Col>
-            <Photobooth onChange={handleChange} />
-          </Col>
-          {imageSrc ? (
-            <Col>
-              <img ref={imgId} src={imageSrc!} height={240} width={320}></img>
-              <br />
-              <br />
-              <button onClick={sendPhoto}>Send Photo</button>
-              <br />
-              {loadingAnalysis ? (
-                <CircularProgress style={{ margin: 10 }} color="secondary" />
-              ) : analysis ? (
-                "We predicted that's an " +
-                analysis.pred +
-                ' with ' +
-                100 * analysis.confidence +
-                '% confidence . ' +
-                (analysis.pred == lesson.title ? 'Nice!' : 'Try again!')
-              ) : (
-                ''
-              )}
-            </Col>
-          ) : (
-            ''
-          )}
-        </Row>
-      </Container>
-    </div>
+    <Container maxWidth="lg">
+      {lesson ? (
+        <Grid container direction="column" alignItems="center" spacing={4}>
+          <Grid container item xs={12} sm={6}>
+            <Container disableGutters>
+              <Paper className={classes.title} elevation={5}>
+                <Typography>{lesson.module}</Typography>
+                <Typography>{lesson.title}</Typography>
+                <Rating
+                  size="large"
+                  max={lesson.totalStars}
+                  value={stars}
+                  readOnly
+                />
+              </Paper>
+            </Container>
+          </Grid>
+          <Grid container direction="row" spacing={4}>
+            <Grid item xs={12} sm={6}>
+              <Paper elevation={5} className={classes.maxHeight}>
+                <Photobooth onChange={handleChange} />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Paper className={classes.maxHeight} elevation={5}>
+                <Grid
+                  className={classes.maxHeight}
+                  container
+                  item
+                  direction="column"
+                  justify="center"
+                  alignItems="center"
+                >
+                  {imageSrc ? (
+                    <React.Fragment>
+                      <Container className={classes.container}>
+                        <img ref={imgId} className={classes.img} src={imageSrc!} />
+                        <Grid
+                          container
+                          justify="center"
+                          direction="row"
+                          spacing={2}
+                        >
+                          <Grid item xs={12} sm={6}>
+                            <Button
+                              className={classes.resetButton}
+                              onClick={resetPhoto}
+                              fullWidth
+                            >
+                              Reset
+                            </Button>
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Button
+                              className={classes.button}
+                              onClick={sendPhoto}
+                              fullWidth
+                            >
+                              Send Photo
+                            </Button>
+                          </Grid>
+                          <Grid container item justify="center" xs={12}>
+                            {loadingAnalysis ? (
+                              <CircularProgress
+                                className={classes.progress}
+                                color="secondary"
+                              />
+                            ) : analysis ? (
+                              <Typography variant="h6">
+                                We predicted that's an {analysis.pred} with{' '}
+                                {100 * analysis.confidence}% confidence
+                              </Typography>
+                            ) : (
+                              <div></div>
+                            )}
+                          </Grid>
+                        </Grid>
+                      </Container>
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <img
+                        className={classes.img}
+                        alt="Sign language B"
+                        src={images[lesson.title.slice(-1)]}
+                      />
+                    </React.Fragment>
+                  )}
+                </Grid>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Grid>
+      ) : (
+        <div></div>
+      )}
+    </Container>
   );
 };
 
