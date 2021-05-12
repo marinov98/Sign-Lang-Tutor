@@ -5,7 +5,7 @@ import { getLesson, updateLesson } from 'src/utils/lessons';
 import { getUserInfo, updateUser } from 'src/utils/user';
 import { Rating } from '@material-ui/lab';
 import * as tf from "@tensorflow/tfjs"
-// import { ILesson } from '../../interfaces/lesson';
+import { ILesson } from '../../interfaces/lesson';
 import {
   Button,
   CircularProgress,
@@ -26,12 +26,12 @@ const Lesson = (props: any) => {
   const [analysis, setAnalysis] = useState<any>();
   const [stars, setStars] = useState<any>(0);
   const [loadingAnalysis, setLoadingAnalysis] = useState<boolean>(false);
-  const imgId = useRef(null);
+  const imgId: React.MutableRefObject<null> = useRef(null);
 
   const allLessons = async () => {
-    const model  = await tf.loadGraphModel("http://127.0.0.1:5000/api/analysis/model/model.json")
-    console.log(model)
-    const lessons = await getLesson(props.match.params.lessonId);
+    const model: any = await tf.loadGraphModel("http://127.0.0.1:5000/api/analysis/model/model.json")
+    //console.log(model.summary())
+    const lessons: ILesson = await getLesson(props.match.params.lessonId);
     if (lessons) {
       setLesson(lessons);
 

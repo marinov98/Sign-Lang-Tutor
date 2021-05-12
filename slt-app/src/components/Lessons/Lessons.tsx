@@ -32,7 +32,7 @@ const Lessons = (props: any) => {
   const moduleName = props.match.params.moduleName;
 
   const allLessons = async () => {
-    const lessons = await getLessons(moduleName);
+    const lessons: Array<ILesson> = await getLessons(moduleName);
     if (lessons) {
       setLessons(lessons);
       console.log(lessons);
