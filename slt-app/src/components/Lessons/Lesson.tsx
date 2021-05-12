@@ -29,8 +29,8 @@ const Lesson = (props: any) => {
   const imgId = useRef(null);
 
   const allLessons = async () => {
-    //const model  = await tf.loadGraphModel("http://127.0.0.1:5000/api/analysis/tensorModel")
-    // console.log(model)
+    const model  = await tf.loadGraphModel("http://127.0.0.1:5000/api/analysis/model/model.json")
+    console.log(model)
     const lessons = await getLesson(props.match.params.lessonId);
     if (lessons) {
       setLesson(lessons);
