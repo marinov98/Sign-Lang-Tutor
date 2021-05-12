@@ -198,7 +198,7 @@ const Lesson = (props: any) => {
                                 {100 * analysis.confidence}% confidence
                               </Typography>
                             ) : (
-                              <div></div>
+                              <div>Hand was not detected, please try again</div>
                             )}
                           </Grid>
                         </Grid>

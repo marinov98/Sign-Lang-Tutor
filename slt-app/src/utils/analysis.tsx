@@ -42,7 +42,7 @@ export async function handDetect(imageSrc: any): Promise<any> {
 
 export async function getTensorFlowModel(): Promise<any> {
   try {
-    return await axios('api/analysis/tensorModel')
+    return await axios('api/analysis/model/model.json')
   }
   catch (err) {
     if (err.response) {
