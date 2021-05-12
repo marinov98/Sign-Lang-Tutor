@@ -48,7 +48,7 @@ export default class MobileNet {
 
     const reshapedInput = preprocessedInput.expandDims(0);
 
-    return this.model.executeAsync(reshapedInput)
+    return await this.model.executeAsync(reshapedInput)
     // {[this.INPUT_NODE_NAME]: reshapedInput}, this.OUTPUT_NODE_NAME);
   }
 
