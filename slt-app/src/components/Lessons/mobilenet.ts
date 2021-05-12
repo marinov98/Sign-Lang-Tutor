@@ -5,7 +5,8 @@ import { MODEL_CLASSES } from './MODEL_CLASSES';
 
 
 export default class MobileNet {
-  private MODEL_DIR: string ='http://127.0.0.1:5000/api/analysis/model/';
+  private MODEL_URL: string ='http://127.0.0.1:5000/api/analysis/model/';
+  private MODEL_DIR: string = "tfjs_model"
   private MODEL_FILE_URL: string = 'model.json';
   private INPUT_NODE_NAME: string = 'input_0';
   private OUTPUT_NODE_NAME: string = 'output_0';
@@ -14,11 +15,14 @@ export default class MobileNet {
   private MODEL_CLASSES: any = MODEL_CLASSES
   private model: any;
 
-  constructor() {}
+  constructor(modelDir: string = 'tfjs_model', modelFile: string = 'model.json') {
+    this.MODEL_DIR = modelDir;
+    this.MODEL_FILE_URL = modelFile;
+  }
 
   public async load(): Promise<void> {
     this.model = await tf.loadGraphModel(
-        this.MODEL_DIR + this.MODEL_FILE_URL);
+        this.MODEL_URL + this.MODEL_DIR + "/" + this.MODEL_FILE_URL);
   }
 
   public dispose(): void {

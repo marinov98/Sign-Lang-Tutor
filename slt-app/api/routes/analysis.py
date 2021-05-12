@@ -82,11 +82,11 @@ def infer():
             200,
         )
 
-# api/analysis/model/<file>
-@analysis.route("/model/<file>", methods=["GET"])
-def serve_model(file="model.json"):
+# api/analysis/model/<folder>/<file>
+@analysis.route("/model/<folder>/<file>", methods=["GET"])
+def serve_model(folder="tfjs_model", file="model.json"):
     try:
-        path = os.path.realpath(os.path.join("../ml-model", "tfjs_model", file))
+        path = os.path.realpath(os.path.join("../ml-model", folder, file))
         if file == "model.json":
             with open(path, 'r') as f:
                 j = json.load(f)

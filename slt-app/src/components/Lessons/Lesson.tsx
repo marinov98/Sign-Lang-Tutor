@@ -75,7 +75,7 @@ const Lesson = (props: any) => {
       console.log({img})
 
       // get tensorflow model
-      const model: any = new MobileNet()
+      const model: any = new MobileNet("test_web_model")
       await model.load()
 //     const zeros = tf.zeros([224, 224,3]);
 //     model.predict(zeros)
