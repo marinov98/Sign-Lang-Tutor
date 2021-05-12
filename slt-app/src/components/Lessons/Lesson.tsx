@@ -73,8 +73,9 @@ const Lesson = (props: any) => {
       // get tensorflow model
       const model: any = new MobileNet()
       await model.load()
-      const zeros = tf.zeros([224, 224,3]);
-      model.predict(zeros)
+//     const zeros = tf.zeros([224, 224,3]);
+//     model.predict(zeros)
+//     console.log("initial prediction finished")
       let prediction: any = await model.predict(img)
       console.log({prediction})
       const res = model.getTopKClasses(prediction, 1)

@@ -49,8 +49,8 @@ export default class MobileNet {
     const reshapedInput =
         preprocessedInput.reshape([1, ...preprocessedInput.shape]);
 
-    return this.model.executeAsync(
-        {[this.INPUT_NODE_NAME]: reshapedInput}, this.OUTPUT_NODE_NAME);
+    return this.model.executeAsync(reshapedInput)
+    // {[this.INPUT_NODE_NAME]: reshapedInput}, this.OUTPUT_NODE_NAME);
   }
 
   public getTopKClasses(logits: any, topK: number): any[] {
