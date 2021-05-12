@@ -46,8 +46,7 @@ export default class MobileNet {
       this.normalize(input, this.IMAGENET_MEAN, this.IMAGENET_STD),[2,0,1]
       );
 
-    const reshapedInput =
-        preprocessedInput.reshape([1, ...preprocessedInput.shape]);
+    const reshapedInput = preprocessedInput.expandDims(0);
 
     return this.model.executeAsync(reshapedInput)
     // {[this.INPUT_NODE_NAME]: reshapedInput}, this.OUTPUT_NODE_NAME);
