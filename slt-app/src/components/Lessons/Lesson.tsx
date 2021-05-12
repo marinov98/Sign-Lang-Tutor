@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 import { useStyles } from 'src/styles/lessonStyles';
 import { images } from 'src/images/alphabet';
+import MobileNet from "./mobilenet"
 
 const Lesson = (props: any) => {
   const classes = useStyles();
@@ -26,19 +27,22 @@ const Lesson = (props: any) => {
   const [analysis, setAnalysis] = useState<any>();
   const [stars, setStars] = useState<any>(0);
   const [loadingAnalysis, setLoadingAnalysis] = useState<boolean>(false);
-  const imgId: React.MutableRefObject<null> = useRef(null);
+  const imgId: any = useRef(null);
 
   const allLessons = async () => {
-    const model: any = await tf.loadGraphModel("http://127.0.0.1:5000/api/analysis/model/model.json")
-    //console.log(model.summary())
+
     const lessons: ILesson = await getLesson(props.match.params.lessonId);
+
     if (lessons) {
       setLesson(lessons);
 
       console.log(lessons);
       setStars(lessons.starsAchieved);
+
+
       return;
     }
+    // lessons could not fetched error handling
     console.log('Error occured getting lessons');
   };
 
@@ -60,9 +64,20 @@ const Lesson = (props: any) => {
      // const res = await analyze(imageSrc);
     //setAnalysis(res);
     const res: any = {pred: "No!"}
-    const hand = await handDetect(imgId.current) 
+    const hand: Boolean = await handDetect(imgId.current) 
     if (hand) {
       // tensorflow stuff  
+      const img: any = await tf.browser.fromPixelsAsync(imgId.current)
+      console.log({img})
+      // get tensorflow model
+      const model: any = new MobileNet()
+      await model.load()
+      const zeros = tf.zeros([224, 224,3]);
+      model.predict(zeros)
+      let prediction: any = await model.predict()
+      console.log({prediction})
+      const res = model.getTopKClasses(prediction, 1)
+      console.log({res})
     }
     const firstTime: boolean = !lesson.completed;
     if (res.pred !== "No!" && lesson.title) {

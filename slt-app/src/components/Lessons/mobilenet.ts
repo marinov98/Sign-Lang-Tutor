@@ -1,30 +1,34 @@
 import * as tf from '@tensorflow/tfjs';
+import { Tensor1D } from '@tensorflow/tfjs';
 
 import { MODEL_CLASSES } from './MODEL_CLASSES';
 
-const MODEL_DIR ='http://127.0.0.1:5000/api/analysis/model';
-const MODEL_FILE_URL = 'model.json';
-const INPUT_NODE_NAME = 'input_0';
-const OUTPUT_NODE_NAME = 'output_0';
-const IMAGENET_MEAN = tf.tensor1d([0.485, 0.456, 0.406])
-const IMAGENET_STD = tf.tensor1d([0.229, 0.224, 0.225])
 
-export class MobileNet {
+export default class MobileNet {
+  private MODEL_DIR: string ='http://127.0.0.1:5000/api/analysis/model/';
+  private MODEL_FILE_URL: string = 'model.json';
+  private INPUT_NODE_NAME: string = 'input_0';
+  private OUTPUT_NODE_NAME: string = 'output_0';
+  private IMAGENET_MEAN: Tensor1D = tf.tensor1d([0.485, 0.456, 0.406])
+  private IMAGENET_STD: Tensor1D = tf.tensor1d([0.229, 0.224, 0.225])
+  private MODEL_CLASSES: any = MODEL_CLASSES
+  private model: any;
+
   constructor() {}
 
-  async load() {
+  public async load(): Promise<void> {
     this.model = await tf.loadGraphModel(
-        MODEL_DIR + MODEL_FILE_URL);
+        this.MODEL_DIR + this.MODEL_FILE_URL);
   }
 
-  dispose() {
+  public dispose(): void {
     if (this.model) {
       this.model.dispose();
     }
   }
   
   // convert image 
-  normalize(input, mean, std) {
+  public normalize(input: any, mean: Tensor1D, std: Tensor1D): any {
     return tf.cast(input,'float32').div(255.0).sub(mean).div(std)
   }
 
@@ -37,16 +41,16 @@ export class MobileNet {
    * @return The softmax logits.
    */
 
-  predict(input) {
+  public async predict(input: any): Promise<any> {
     const preprocessedInput = tf.transpose(
-      this.normalize(input, IMAGENET_MEAN, IMAGENET_STD),[2,0,1]);
+      this.normalize(input, this.IMAGENET_MEAN, this.IMAGENET_STD),[2,0,1]);
     const reshapedInput =
         preprocessedInput.reshape([1, ...preprocessedInput.shape]);
-    return this.model.execute(
-        {[INPUT_NODE_NAME]: reshapedInput}, OUTPUT_NODE_NAME);
+    return this.model.executeAsync(
+        {[this.INPUT_NODE_NAME]: reshapedInput}, this.OUTPUT_NODE_NAME);
   }
 
-  getTopKClasses(logits, topK) {
+  public getTopKClasses(logits: any, topK: number): any[] {
     const predictions = tf.tidy(() => {
       return tf.softmax(logits);
     });
@@ -54,7 +58,7 @@ export class MobileNet {
     const values = predictions.dataSync();
     predictions.dispose();
 
-    let predictionList = [];
+    let predictionList: any[] = [];
     for (let i = 0; i < values.length; i++) {
       predictionList.push({value: values[i], index: i});
     }
@@ -65,7 +69,7 @@ export class MobileNet {
                          .slice(0, topK);
 
     return predictionList.map(x => {
-      return {label: MODEL_CLASSES[x.index], value: x.value};
+      return {label: this.MODEL_CLASSES[x.index], value: x.value};
     });
   }
 }
