@@ -8,20 +8,20 @@ export default class MobileNet {
   private MODEL_URL: string ='http://127.0.0.1:5000/api/analysis/model/';
   private MODEL_DIR: string = "tfjs_model"
   private MODEL_FILE_URL: string = 'model.json';
-  private INPUT_NODE_NAME: string = 'input_0';
-  private OUTPUT_NODE_NAME: string = 'output_0';
+  // private INPUT_NODE_NAME: string = 'image';
+  // private OUTPUT_NODE_NAME: string = 'logits';
   private IMAGENET_MEAN: Tensor1D = tf.tensor1d([0.485, 0.456, 0.406])
   private IMAGENET_STD: Tensor1D = tf.tensor1d([0.229, 0.224, 0.225])
   private MODEL_CLASSES: any = MODEL_CLASSES
   private model: any;
 
-  constructor(modelDir: string = 'keras_web_model', modelFile: string = 'model.json') {
+  constructor(modelDir: string = 'test_web_model_2', modelFile: string = 'model.json') {
     this.MODEL_DIR = modelDir;
     this.MODEL_FILE_URL = modelFile;
   }
 
   public async load(): Promise<void> {
-    this.model = await tf.loadLayersModel(
+    this.model = await tf.loadGraphModel(
         this.MODEL_URL + this.MODEL_DIR + "/" + this.MODEL_FILE_URL);
   }
 

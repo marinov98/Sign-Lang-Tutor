@@ -490,3 +490,24 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+
+
+
+slt-app/ml-model/keras_model
+slt-app/ml-model/keras_model_2.h5
+slt-app/ml-model/saved_model.pb
+slt-app/ml-model/mobile_net_model_weights/epoch_10.pth.tar
+slt-app/ml-model/mobile_net_model_weights/epoch_20.pth.tar
+slt-app/ml-model/mobile_net_model_weights/epoch_30.pth.tar
+slt-app/ml-model/mobile_net_model_weights/epoch_40.pth.tar
+slt-app/ml-model/mobile_net_model_weights/epoch_50.pth.tar
+slt-app/ml-model/mobile_net_model_weights/epoch_60.pth.tar
+slt-app/ml-model/mobile_net_model_weights/epoch_70.pth.tar
+slt-app/ml-model/mobile_net_model_weights/final_model.pth.tar
+slt-app/ml-model/test3_pt2tf/variables/variables.index
+slt-app/ml-model/test3_pt2tf/variables/variables.data-00000-of-00001
+slt-app/ml-model/test3_pt2tf/saved_model.pb
+slt-app/ml-model/variables/variables.data-00000-of-00001
+slt-app/ml-model/variables/variables.index

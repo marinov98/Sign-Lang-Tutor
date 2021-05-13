@@ -4,7 +4,7 @@ import os
 from pytorch2keras import pytorch_to_keras
 from sign_language_model import MODEL_TYPES, select_model
 from tensorflow.python.framework.graph_util import convert_variables_to_constants
-from keras import backend as K
+# from keras import backend as K
 import tensorflow as tf
 import argparse
 
@@ -78,6 +78,7 @@ def main():
     model = select_model(MODEL_TYPE, NUM_CLASSES)
     model.load_state_dict(torch.load(os.path.join(MODEL_PATH, "final_model.pth.tar"),map_location=torch.device('cpu')))
     model.eval()
+    # print(model)
 
     input_np = np.random.uniform(0, 1, (1, 3, 224, 224))
     input_var = torch.autograd.Variable(torch.FloatTensor(input_np))
@@ -85,9 +86,46 @@ def main():
     k_model = pytorch_to_keras(
         model, input_var, (3, 224, 224,), verbose=False, name_policy="short"
     )
-    print(k_model.summary())
-    print(f"saving keras model to {OUTPUT_PATH}")
-    k_model.save('keras_model_2.h5',save_format='h5')
+
+    # print(k_model.summary(),1)
+    # dense = k_model.get_layer(name="output_0")
+    # k_model.layers.pop()
+    # k_model.layers.pop()
+    # k_model.layers.pop()
+    # k_model.layers.pop()
+    # print(k_model.summary(),2)
+    # flat = tf.keras.layers.Flatten()
+    # inp = k_model.input
+
+
+    s_model = tf.keras.Sequential()
+    # s_model.add(k_model.layers[0])
+    # s_model.add(k_model.layers[1])
+    # print(dir(s_model))
+    print(len(k_model.layers))
+    print(k_model.layers[20])
+    ## TODO: NEW PLAN START THIS FROM SCRATCH
+    # FUCK PTK
+    for i in range(len(k_model.layers)):
+    #     # if layer.name != "464_EXPAND1" and layer.name != "464_EXPAND2":
+        s_model.add(k_model.layers[i])
+        print(i)
+
+    
+
+    # temp = tf.keras.Model(inp, flat)
+    # temp_in = temp.input
+
+    # new_last_layer = 
+    # pls_work = tf.keras.Model(inp, dense(flat(k_model.layers[-1].output)))
+
+    print(s_model.summary())
+
+
+
+
+    # print(f"saving keras model to {OUTPUT_PATH}")
+    # k_model.save('keras_model_2.h5',save_format='h5')
     # frozen_graph = freeze_session(
     #     K.get_session(), output_names=[out.op.name for out in k_model.outputs]
     # )
