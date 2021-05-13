@@ -1,1 +1,1 @@
-declare module 'handtrackjs'
+declare module 'handtrackjs';

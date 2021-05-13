@@ -67,7 +67,7 @@ export async function logout(): Promise<void> {
 }
 
 export function authenticate(): boolean {
-  const cookie = getCookie('csrf_access_token');
+  const cookie: any = getCookie('csrf_access_token');
   if (cookie === null) return false;
   else return true;
 }

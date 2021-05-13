@@ -23,7 +23,9 @@ const Photobooth = (props: PhotoboothProps) => {
     setCounter(2);
     setTimeout(() => {
       if (webcamRef && webcamRef.current) {
-        props.onChange(webcamRef.current.getScreenshot({width: 336, height: 336}));
+        props.onChange(
+          webcamRef.current.getScreenshot({ width: 336, height: 336 })
+        );
       }
     }, 3000);
   }, [webcamRef]);
