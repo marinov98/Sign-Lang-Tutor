@@ -1,10 +1,10 @@
 import Photobooth from '../Photobooth/Photobooth';
 import React, { useEffect, useState, useRef } from 'react';
-import { analyze, handDetect, getTensorFlowModel  } from 'src/utils/analysis';
+import { analyze, handDetect, getTensorFlowModel } from 'src/utils/analysis';
 import { getLesson, updateLesson } from 'src/utils/lessons';
 import { getUserInfo, updateUser } from 'src/utils/user';
 import { Rating } from '@material-ui/lab';
-import * as tf from "@tensorflow/tfjs"
+import * as tf from '@tensorflow/tfjs';
 import { ILesson } from '../../interfaces/lesson';
 import {
   Button,
@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import { useStyles } from 'src/styles/lessonStyles';
 import { images } from 'src/images/alphabet';
-import MobileNet from "./mobilenet"
+import MobileNet from './mobilenet';
 
 const Lesson = (props: any) => {
   const classes = useStyles();
@@ -27,11 +27,10 @@ const Lesson = (props: any) => {
   const [analysis, setAnalysis] = useState<any>();
   const [stars, setStars] = useState<any>(0);
   const [loadingAnalysis, setLoadingAnalysis] = useState<boolean>(false);
-  const [hand, sethand] = useState<boolean>(true)
+  const [hand, sethand] = useState<boolean>(true);
   const imgId: any = useRef(null);
 
   const allLessons = async () => {
-
     const lessons: ILesson = await getLesson(props.match.params.lessonId);
 
     if (lessons) {
@@ -39,7 +38,6 @@ const Lesson = (props: any) => {
 
       console.log(lessons);
       setStars(lessons.starsAchieved);
-
 
       return;
     }
@@ -52,7 +50,7 @@ const Lesson = (props: any) => {
   }, []);
 
   const handleChange = (value: string) => {
-    sethand(true)
+    sethand(true);
     setImageSrc(value);
   };
 
@@ -63,30 +61,30 @@ const Lesson = (props: any) => {
 
   const sendPhoto = async () => {
     setLoadingAnalysis(true);
-     // const res = await analyze(imageSrc);
+    // const res = await analyze(imageSrc);
     //setAnalysis(res);
-    const res: any = {pred: "No!"}
-    const handres = await handDetect(imgId.current)
-    sethand(handres)
-    console.log(handres)
+    const res: any = { pred: 'No!' };
+    const handres = await handDetect(imgId.current);
+    sethand(handres);
+    console.log(handres);
     if (handres) {
       // Grab image for classification
-      const img: any = await tf.browser.fromPixelsAsync(imgId.current)
-      console.log({img})
+      const img: any = await tf.browser.fromPixelsAsync(imgId.current);
+      console.log({ img });
 
       // get tensorflow model
-      const model: any = new MobileNet("keras_web_model_2")
-      await model.load()
-//     const zeros = tf.zeros([224, 224,3]);
-//     model.predict(zeros)
-//     console.log("initial prediction finished")
-      let prediction: any = await model.predict(img)
-      console.log({prediction})
-      const res = model.getTopKClasses(prediction, 1)
-      console.log({res})
+      const model: any = new MobileNet('keras_web_model_2');
+      await model.load();
+      //     const zeros = tf.zeros([224, 224,3]);
+      //     model.predict(zeros)
+      //     console.log("initial prediction finished")
+      let prediction: any = await model.predict(img);
+      console.log({ prediction });
+      const res = model.getTopKClasses(prediction, 1);
+      console.log({ res });
     }
     const firstTime: boolean = !lesson.completed;
-    if (res.pred !== "No!" && lesson.title) {
+    if (res.pred !== 'No!' && lesson.title) {
       if (res.pred == lesson.title[lesson.title.length - 1]) {
         const payload: any = { starsAchieved: 0, completed: true };
         const lessonId: any = props.match.params.lessonId;
@@ -146,7 +144,7 @@ const Lesson = (props: any) => {
               </Paper>
             </Container>
           </Grid>
-          <Grid container  direction="row" spacing={4}>
+          <Grid container direction="row" spacing={4}>
             <Grid item xs={12} sm={6}>
               <Paper elevation={5} className={classes.maxHeight}>
                 <Photobooth onChange={handleChange} />
@@ -165,7 +163,11 @@ const Lesson = (props: any) => {
                   {imageSrc ? (
                     <React.Fragment>
                       <Container className={classes.container}>
-                        <img ref={imgId} className={classes.img} src={imageSrc!} />
+                        <img
+                          ref={imgId}
+                          className={classes.img}
+                          src={imageSrc!}
+                        />
                         <Grid
                           container
                           justify="center"
@@ -202,8 +204,12 @@ const Lesson = (props: any) => {
                                 {100 * analysis.confidence}% confidence
                               </Typography>
                             ) : !hand ? (
-                              <div style={{"fontWeight": "bold"}}>Hand was not detected, please try again</div>
-                            ) : <div></div>}
+                              <div style={{ fontWeight: 'bold' }}>
+                                Hand was not detected, please try again
+                              </div>
+                            ) : (
+                              <div></div>
+                            )}
                           </Grid>
                         </Grid>
                       </Container>

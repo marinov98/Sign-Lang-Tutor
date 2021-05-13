@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { load } from "handtrackjs";
+import { load } from 'handtrackjs';
 
 export async function analyze(imageSrc: any): Promise<any> {
   try {
@@ -19,19 +19,18 @@ export async function analyze(imageSrc: any): Promise<any> {
 
 export async function handDetect(imageSrc: any): Promise<any> {
   try {
-    const model = await load({ scoreThreshold: 0.46 })
+    const model = await load({ scoreThreshold: 0.46 });
     const predictions = await model.detect(imageSrc);
     let hand = false;
     for (const prediction of predictions) {
-      if (prediction.label !== "face") {
-        hand = true
-        break
+      if (prediction.label !== 'face') {
+        hand = true;
+        break;
       }
     }
-    
-    return hand
-  }
-  catch (err) {
+
+    return hand;
+  } catch (err) {
     if (err.response) {
       return err.response.data;
     } else {
@@ -42,9 +41,8 @@ export async function handDetect(imageSrc: any): Promise<any> {
 
 export async function getTensorFlowModel(): Promise<any> {
   try {
-    return await axios('api/analysis/model/tfjs_model/model.json')
-  }
-  catch (err) {
+    return await axios('api/analysis/model/tfjs_model/model.json');
+  } catch (err) {
     if (err.response) {
       return err.response.data;
     } else {
