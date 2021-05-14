@@ -68,8 +68,7 @@ const Lesson = (props: any) => {
     sethand(handres);
     console.log(handres);
     if (handres) {
-      // Grab image for classification
-      const img: any = await tf.browser.fromPixelsAsync(imgId.current);
+      
       console.log({ img });
 
       // get tensorflow model
@@ -77,11 +76,15 @@ const Lesson = (props: any) => {
       await model.load();
       // warmup the model, makes first prediction faster
       const zeros: any = tf.zeros([224, 224,3]);
-      model.predict(zeros).dispose();
+      await model.predict(zeros).dispose();
       console.log("initial prediction finished")
+      // Grab image for classification
+      const img: any = await tf.browser.fromPixelsAsync(imgId.current);
       let prediction: any = await model.predict(img);
+      img.dispose()
       console.log({ prediction });
       const res = model.getTopKClasses(prediction, 1);
+      prediction.dispose()
       console.log({ res });
     }
     const firstTime: boolean = !lesson.completed;

@@ -45,7 +45,7 @@ export default class MobileNet {
    * @return The softmax logits.
    */
 
-  public predict(input: any): Promise<any> {
+  public async predict(input: any): Promise<any> {
     const preprocessedInput = tf.transpose(
       this.normalize(input, this.IMAGENET_MEAN, this.IMAGENET_STD),
       [2, 0, 1]
@@ -53,7 +53,7 @@ export default class MobileNet {
 
     const reshapedInput = preprocessedInput.reshape([1, 3, this.IMAGE_SIZE, this.IMAGE_SIZE]);
 
-    return this.model.predict(reshapedInput);
+    return await this.model.executeAsync(reshapedInput);
     // {[this.INPUT_NODE_NAME]: reshapedInput}, this.OUTPUT_NODE_NAME);
   }
 
