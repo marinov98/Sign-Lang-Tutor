@@ -32,7 +32,7 @@ def pil_to_tensor(pic):
 
 # /api/analysis/analyze
 @analysis.route("/analyze", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def infer():
     classes = [chr(i + 65) for i in range(26) if i != 25 and i != 9]
     if ml:

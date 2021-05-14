@@ -11,16 +11,15 @@ from flask_jwt_extended import (
 
 
 def create_app():
-
-    # initialize flask app creation
-    app = Flask(__name__)
-
     if os.getenv("FLASK_ENV") == "development":
         from flask_cors import CORS
 
+        # initialize flask app creation
+        app = Flask(__name__)
         app.config["JWT_COOKIE_SECURE"] = False
         CORS(app, supports_credentials=True, withCredentials=True)
     else:
+        app = Flask(__name__, static_folder="../build/", static_url_path="/")
         app.config["JWT_COOKIE_SECURE"] = True
 
     # jwt and bcrypt
@@ -67,4 +66,4 @@ if __name__ == "__main__":
     if os.getenv("FLASK_ENV") == "development":
         app.run(host="0.0.0.0", port="5000")
     else:
-        app.run()
+        app.run(host="0.0.0.0", debug=False, port=int(os.environ.get("PORT", 5000)))

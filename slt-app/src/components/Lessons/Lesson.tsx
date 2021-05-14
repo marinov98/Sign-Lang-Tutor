@@ -83,6 +83,7 @@ const Lesson = (props: any) => {
 
       // if hand is found, perform sign language prediction
       if (handDetected) {
+        await model.load();
         // Grab image for classification
         const img: any = await tf.browser.fromPixelsAsync(imgId.current);
         let prediction: any = await model.predict(img);

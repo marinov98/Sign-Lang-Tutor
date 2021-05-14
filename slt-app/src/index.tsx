@@ -9,8 +9,6 @@ import { getCookie } from './utils/auth';
 
 if (process.env.NODE_ENV !== 'production') {
   axios.defaults.baseURL = process.env.REACT_APP_BASE_URL_DEV;
-  console.log(process.env.REACT_APP_BASE_URL_DEV);
-  console.log(process.env.REACT_APP_REFRESH_METHOD);
 }
 
 if (process.env.REACT_APP_REFRESH_METHOD === 'explicit') {
