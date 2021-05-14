@@ -68,11 +68,8 @@ const Lesson = (props: any) => {
     sethand(handres);
     console.log(handres);
     if (handres) {
-      
-      console.log({ img });
-
       // get tensorflow model
-      const model: any = new MobileNet('test_web_model_2');
+      const model: any = new MobileNet();
       await model.load();
       // warmup the model, makes first prediction faster
       const zeros: any = tf.zeros([224, 224,3]);
