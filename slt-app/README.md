@@ -43,6 +43,10 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 Installs the python environment from the enviroment file located in the `api` folder and then returns the user to the original directory
 
+### `yarn/npm run app:install`
+
+Installs packages for both the frontend and backend and goes into appropriate conda environment
+
 ### `yarn/npm run server:start`
 
 Starts the flask back-end server

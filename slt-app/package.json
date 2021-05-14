@@ -30,9 +30,11 @@
   "scripts": {
     "format": "prettier --write ./src/**/*.{ts,tsx}",
     "server:install": "conda create -n slt-pip python=3.7 && conda activate slt-pip && python -m pip install -r requirements.txt",
+    "app:install": "npm i && npm run server:install",
     "server:test": "cd api && python test.py && cd ..",
     "server:start": "cd api && flask run && cd ..",
     "dev": "concurrently \"npm run server:start\"  \"npm start\"",
+    "flask-start": "cp api && flask run",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
