@@ -6,6 +6,7 @@
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "@tensorflow/tfjs": "^3.3.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -13,6 +14,7 @@
     "axios": "^0.21.1",
     "axios-auth-refresh": "^3.1.0",
     "bootstrap": "^4.6.0",
+    "handtrackjs": "^0.1.5",
     "jwt-decode": "^3.1.2",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
@@ -21,15 +23,18 @@
     "react-scripts": "4.0.2",
     "react-webcam": "^5.2.3",
     "reactstrap": "^8.9.0",
+    "seedrandom": "^3.0.5",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
     "format": "prettier --write ./src/**/*.{ts,tsx}",
     "server:install": "conda create -n slt-pip python=3.7 && conda activate slt-pip && python -m pip install -r requirements.txt",
+    "app:install": "npm i && npm run server:install",
     "server:test": "cd api && python test.py && cd ..",
     "server:start": "cd api && flask run && cd ..",
     "dev": "concurrently \"npm run server:start\"  \"npm start\"",
+    "flask-start": "cp api && flask run",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -60,5 +65,5 @@
     "@types/react-router-dom": "^5.1.7",
     "concurrently": "^6.0.0"
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://127.0.0.1:5000/"
 }

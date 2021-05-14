@@ -1,4 +1,7 @@
-# Getting Started with SLT
+# Sign-Lang-Tutor
+A web app aimed at teaching sign language.
+
+## Getting Started with SLT
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -43,6 +46,10 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 Installs the python environment from the enviroment file located in the `api` folder and then returns the user to the original directory
 
+### `yarn/npm run app:install`
+
+Installs packages for both the frontend and backend and goes into appropriate conda environment
+
 ### `yarn/npm run server:start`
 
 Starts the flask back-end server
@@ -67,3 +74,9 @@ Create React environment file `cat .env.sample > .env` , fields are already fill
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Contributors
+- [marinov98](https://github.com/marinov98)
+- [Ajani Stewart](https://github.com/AjaniStewart)
+- [hecris](https://github.com/hecris)
+- [abidh0601](https://github.com/abidh0601)

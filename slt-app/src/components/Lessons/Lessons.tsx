@@ -5,15 +5,7 @@ import { ILesson } from 'src/interfaces/lesson';
 import { getLessons } from 'src/utils/lessons';
 import GridLessons from '../Grid/Grid';
 import { Link } from 'react-router-dom';
-
-const useStyles = makeStyles(theme => ({
-  paper: {
-    // height: 100,
-    // width: 100,
-    padding: theme.spacing(2),
-    textAlign: 'center'
-  }
-}));
+import { useStyles } from 'src/styles/modulesStyles';
 
 const Lesson: React.FC<ILesson> = props => {
   const classes = useStyles();
@@ -40,10 +32,9 @@ const Lessons = (props: any) => {
   const moduleName = props.match.params.moduleName;
 
   const allLessons = async () => {
-    const lessons = await getLessons(moduleName);
+    const lessons: Array<ILesson> = await getLessons(moduleName);
     if (lessons) {
       setLessons(lessons);
-      console.log(lessons);
       return;
     }
     console.log('Error occured getting lessons');

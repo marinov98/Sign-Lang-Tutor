@@ -1,21 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { getModules } from 'src/utils/lessons';
 
-import { Col, Button } from 'reactstrap';
 import GridLessons from '../Grid/Grid';
-import { makeStyles, Paper } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
 import { UserContext, logout } from 'src/utils/auth';
-
-const useStyles = makeStyles(theme => ({
-  paper: {
-    // height: 100,
-    // width: 100,
-    padding: theme.spacing(2),
-    textAlign: 'center'
-  }
-}));
+import { useStyles } from 'src/styles/modulesStyles';
 
 interface ModuleProps {
   name: string;

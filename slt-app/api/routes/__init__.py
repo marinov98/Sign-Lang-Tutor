@@ -3,6 +3,7 @@ from .token import token
 from .analysis import analysis
 from .users import users
 from .lessons import lessons
+from .reviews import reviews
 from config.keys import mongo
 
 
@@ -19,3 +20,5 @@ def init_app(app):
         app.register_blueprint(analysis, url_prefix="/api/analysis")
         app.register_blueprint(users, url_prefix="/api/users")
         app.register_blueprint(lessons, url_prefix="/api/lessons")
+        app.register_blueprint(auth, url_prefix="/api/auth")
+        app.register_blueprint(reviews, url_prefix="/api/reviews")
