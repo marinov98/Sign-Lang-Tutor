@@ -73,7 +73,8 @@ const Lesson = (props: any) => {
       await model.load();
       // warmup the model, makes first prediction faster
       const zeros: any = tf.zeros([224, 224,3]);
-      await model.predict(zeros).dispose();
+      const dummy = await model.predict(zeros);
+      dummy.dispose()
       console.log("initial prediction finished")
       // Grab image for classification
       const img: any = await tf.browser.fromPixelsAsync(imgId.current);
@@ -83,6 +84,7 @@ const Lesson = (props: any) => {
       const res = model.getTopKClasses(prediction, 1);
       prediction.dispose()
       console.log({ res });
+      model.dispose()
     }
     const firstTime: boolean = !lesson.completed;
     if (res.pred !== 'No!' && lesson.title) {
