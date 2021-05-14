@@ -1,0 +1,6 @@
+FLASK_APP=api.py
+FLASK_ENV=
+SECRET=
+DB_URL=
+DB_NAME=
+REFRESH_METHOD="implicit"
