@@ -25,7 +25,7 @@ def create_app():
 
     # jwt and bcrypt
     app.config["JWT_SECRET_KEY"] = os.getenv("SECRET")
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=40)
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=2)
     app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=6)
     app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
     jwt.init_app(app)
@@ -49,11 +49,11 @@ app = create_app()
 # implicit method for refreshing tokens
 @app.after_request
 def refresh_expiring_jwts(response):
-    """ Refresh tokens that are within 10 minute(s) of expiring """
+    """ Refresh tokens that are within 15 minute(s) of expiring """
     try:
         exp_time = get_jwt()["exp"]
         now = datetime.now(timezone.utc)
-        target = datetime.timestamp(now + timedelta(minutes=10))
+        target = datetime.timestamp(now + timedelta(minutes=15))
         if target > exp_time:
             access_token = create_access_token(identity=get_jwt_identity())
             set_access_cookies(response, access_token)

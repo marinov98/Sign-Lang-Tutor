@@ -35,7 +35,6 @@ const Lessons = (props: any) => {
     const lessons: Array<ILesson> = await getLessons(moduleName);
     if (lessons) {
       setLessons(lessons);
-      console.log(lessons);
       return;
     }
     console.log('Error occured getting lessons');

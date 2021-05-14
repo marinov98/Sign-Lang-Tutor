@@ -39,9 +39,9 @@ export async function handDetect(imageSrc: any): Promise<any> {
   }
 }
 
-export async function getTensorFlowModel(): Promise<any> {
+export async function getModelFile(dir: string, file: string): Promise<any> {
   try {
-    return await axios('api/analysis/model/tfjs_model/model.json');
+    return await axios(`api/analysis/model/${dir}/${file}`);
   } catch (err) {
     if (err.response) {
       return err.response.data;

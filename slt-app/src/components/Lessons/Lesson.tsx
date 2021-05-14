@@ -1,6 +1,6 @@
 import Photobooth from '../Photobooth/Photobooth';
 import React, { useEffect, useState, useRef } from 'react';
-import { analyze, handDetect, getTensorFlowModel } from 'src/utils/analysis';
+import { handDetect } from 'src/utils/analysis';
 import { getLesson, updateLesson } from 'src/utils/lessons';
 import { getUserInfo, updateUser } from 'src/utils/user';
 import { Rating } from '@material-ui/lab';
@@ -28,6 +28,7 @@ const Lesson = (props: any) => {
   const [stars, setStars] = useState<any>(0);
   const [loadingAnalysis, setLoadingAnalysis] = useState<boolean>(false);
   const [hand, sethand] = useState<boolean>(true);
+  const [model, setModel] = useState<any>();
   const imgId: any = useRef(null);
 
   const allLessons = async () => {
@@ -35,18 +36,32 @@ const Lesson = (props: any) => {
 
     if (lessons) {
       setLesson(lessons);
-
-      console.log(lessons);
       setStars(lessons.starsAchieved);
-
       return;
     }
     // lessons could not fetched error handling
     console.log('Error occured getting lessons');
   };
 
+  const setupModel = async () => {
+    try {
+      // get tensorflow model
+      const model: any = new MobileNet();
+      await model.load();
+
+      // warmup the model, makes first prediction faster
+      const zeros: any = tf.zeros([224, 224, 3]);
+      const dummy = await model.predict(zeros);
+      dummy.dispose();
+      setModel(model);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     allLessons();
+    setupModel();
   }, []);
 
   const handleChange = (value: string) => {
@@ -60,46 +75,48 @@ const Lesson = (props: any) => {
   };
 
   const sendPhoto = async () => {
-    setLoadingAnalysis(true);
-    // const res = await analyze(imageSrc);
-    //setAnalysis(res);
-    const res: any = { pred: 'No!' };
-    const handres = await handDetect(imgId.current);
-    sethand(handres);
-    console.log(handres);
-    if (handres) {
-      // get tensorflow model
-      const model: any = new MobileNet();
-      await model.load();
-      // warmup the model, makes first prediction faster
-      const zeros: any = tf.zeros([224, 224,3]);
-      const dummy = await model.predict(zeros);
-      dummy.dispose()
-      console.log("initial prediction finished")
-      // Grab image for classification
-      const img: any = await tf.browser.fromPixelsAsync(imgId.current);
-      let prediction: any = await model.predict(img);
-      img.dispose()
-      console.log({ prediction });
-      const res = model.getTopKClasses(prediction, 1);
-      prediction.dispose()
-      console.log({ res });
-      model.dispose()
+    try {
+      setLoadingAnalysis(true);
+      // try to spot a hand
+      const handDetected = await handDetect(imgId.current);
+      sethand(handDetected);
+
+      // if hand is found, perform sign language prediction
+      if (handDetected) {
+        // Grab image for classification
+        const img: any = await tf.browser.fromPixelsAsync(imgId.current);
+        let prediction: any = await model.predict(img);
+        img.dispose();
+        const res: Array<any> = model.getTopKClasses(prediction, 1);
+        prediction.dispose();
+        model.dispose();
+
+        // assign stars based on performance and display results to the user
+        assignStars(res);
+        setAnalysis(res);
+      }
+
+      setLoadingAnalysis(false);
+    } catch (err) {
+      console.error(err);
     }
+  };
+
+  const assignStars = async (prediction: Array<any> = []) => {
     const firstTime: boolean = !lesson.completed;
-    if (res.pred !== 'No!' && lesson.title) {
-      if (res.pred == lesson.title[lesson.title.length - 1]) {
+    if (prediction.length !== 0 && lesson.title) {
+      if (prediction[0].label === lesson.title[lesson.title.length - 1]) {
         const payload: any = { starsAchieved: 0, completed: true };
         const lessonId: any = props.match.params.lessonId;
 
         // determine stars
-        if (res.confidence > 0.5 && res.confidence <= 0.7) {
+        if (prediction[0].value > 0.5 && prediction[0].value <= 0.7) {
           // 1 star
           payload.starsAchieved = 1;
-        } else if (res.confidence > 0.7 && res.confidence <= 0.9) {
+        } else if (prediction[0].value > 0.7 && prediction[0].value <= 0.9) {
           // 2 stars
           payload.starsAchieved = 2;
-        } else if (res.confidence > 0.9) {
+        } else if (prediction[0].value > 0.9) {
           // 3 stars
           payload.starsAchieved = 3;
         }
@@ -126,7 +143,6 @@ const Lesson = (props: any) => {
         }
       }
     }
-    setLoadingAnalysis(false);
   };
 
   return (
@@ -203,8 +219,11 @@ const Lesson = (props: any) => {
                               />
                             ) : analysis ? (
                               <Typography variant="h6">
-                                We predicted that's an {analysis.pred} with{' '}
-                                {100 * analysis.confidence}% confidence
+                                <strong>Model Sign Prediction:</strong>{' '}
+                                {analysis[0].label}
+                                <br />
+                                <strong>Confidence:</strong>{' '}
+                                {Math.round(100 * analysis[0].value)}%
                               </Typography>
                             ) : !hand ? (
                               <div style={{ fontWeight: 'bold' }}>
