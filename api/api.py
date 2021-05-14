@@ -45,6 +45,15 @@ def create_app():
 
 app = create_app()
 
+if os.getenv("FLASK_ENV") != "development":
+    @app.route('/')
+    def index():
+        return app.send_static_file('index.html')
+
+    @app.errorhandler(404)
+    def not_found(e):
+        return app.send_static_file('index.html')
+
 # implicit method for refreshing tokens
 @app.after_request
 def refresh_expiring_jwts(response):
