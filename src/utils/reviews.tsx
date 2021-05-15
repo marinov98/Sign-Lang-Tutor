@@ -46,3 +46,18 @@ export const deleteReview = async (id: string): Promise<any> => {
     console.log(err);
   }
 };
+
+export const getUserReviews = async () => {
+  try {
+    const { data } = await axios.get('api/reviews/user/get');
+    if (data) {
+      return data;
+    }
+    return null;
+  } catch (err) {
+    if (err.response) {
+      return err.response.data;
+    }
+    console.log(err);
+  }
+};
