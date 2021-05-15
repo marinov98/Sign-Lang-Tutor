@@ -28,6 +28,7 @@ if (process.env.REACT_APP_REFRESH_METHOD === 'explicit') {
 
     if (cookie !== null) request.headers['X-CSRF-TOKEN'] = cookie;
 
+    console.log(process.env.REACT_APP_ENV_TYPE)
     return request;
   });
 }
