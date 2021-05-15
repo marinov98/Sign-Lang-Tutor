@@ -149,14 +149,6 @@ const Account = () => {
                   >
                     Reset Progress
                   </Button>
-                  <Button
-                    variant="contained"
-                    color="default"
-                    onClick={() => history.push('/reviews')}
-                    style={{ margin: '5px' }}
-                  >
-                    Post a review
-                  </Button>
                 </Grid>
                 <Grid container item xs={12} sm={6} justify="center">
                   <Button
