@@ -4,7 +4,7 @@ import { Tensor1D } from '@tensorflow/tfjs';
 import { MODEL_CLASSES } from './MODEL_CLASSES';
 
 export default class MobileNet {
-  private MODEL_URL: string = '/api/analysis/model/';
+  private MODEL_URL: string = 'https://sign-lang-tutor.herokuapp.com/api/analysis/model/';
   private MODEL_DIR: string;
   private MODEL_FILE_URL: string;
   // private INPUT_NODE_NAME: string = 'image';
@@ -19,15 +19,10 @@ export default class MobileNet {
     modelDir: string = 'test_web_model_2',
     modelFile: string = 'model.json'
   ) {
-    if (process.env.REACT_APP_ENV_TYPE !== "development") {
-      console.log("TRIGGERED!")
-      this.MODEL_URL = "https://sign-lang-tutor.herokuapp.com/api/analysis/model/"
-    }
-    else 
-      console.log("NOT TRIGGERED")
+    if (process.env.REACT_APP_ENV_TYPE === "development")
+      this.MODEL_URL = "/api/analysis/model/"
     this.MODEL_DIR = modelDir;
     this.MODEL_FILE_URL = modelFile;
-
   }
 
   public async load(): Promise<void> {
