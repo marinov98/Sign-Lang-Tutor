@@ -108,8 +108,7 @@ def get_authenticated_user():
 @auth.route("/delete", methods=["DELETE"])
 @jwt_required()
 def delete_user_account():
-    auth_identity = get_jwt_identity()
-    proper_id = ObjectId(auth_identity)
+    proper_id = ObjectId(get_jwt_identity())
     delete_lesson = False
 
     if request.data:
