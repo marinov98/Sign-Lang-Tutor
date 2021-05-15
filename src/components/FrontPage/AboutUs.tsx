@@ -43,7 +43,13 @@ const AboutUs = () => {
         </p>
       </div>
       {authenticated ? (
-        ''
+        <Button
+          variant="contained"
+          color="default"
+          onClick={() => history.push('/reviews')}
+        >
+          Post a review!
+        </Button>
       ) : (
         <Button
           variant="contained"
