@@ -4,7 +4,7 @@ import { Tensor1D } from '@tensorflow/tfjs';
 import { MODEL_CLASSES } from './MODEL_CLASSES';
 
 export default class MobileNet {
-  private MODEL_URL: string = 'http://127.0.0.1:5000/api/analysis/model/';
+  private MODEL_URL: string = '/api/analysis/model/';
   private MODEL_DIR: string;
   private MODEL_FILE_URL: string;
   // private INPUT_NODE_NAME: string = 'image';
