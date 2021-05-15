@@ -30,13 +30,21 @@ def create_review():
     return jsonify({"msg": "Review successfully submitted"})
     
 
-# /api/reviews/get/<start>/<end>
+# /api/reviews/get/<limit>
 @reviews.route("/get/<limit>", methods=["GET"])
 def get_all_reviews(limit=50):
     if not limit.isdigit():
         return jsonify({"msg": "Faulty limit!"})
 
     reviews = mongo.db.reviews.find(limit=int(limit))
+
+    return json.dumps([review for review in reviews], indent=4, default=str), 200
+
+# /api/reviews/user/get
+@reviews.route("/user/get", methods=["GET"])
+@jwt_required()
+def get_all_reviews():
+    reviews = mongo.db.reviews.find({"userId": ObjectId(get_jwt_identity())})
 
     return json.dumps([review for review in reviews], indent=4, default=str), 200
 
