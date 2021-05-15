@@ -28,7 +28,7 @@ const Review: React.FC<IReview> = props => {
   return (
     <Paper elevation={5}>
       <Typography>
-        {firstName} {lastName}
+        {props.userName}
       </Typography>
       <Typography>{props.Content}</Typography>
       <Rating max={props.starsTotal} value={props.stars} readOnly />

@@ -9,9 +9,11 @@ import {
 
 import React, { useEffect, useState, useContext } from 'react';
 import { IReview } from 'src/interfaces/review';
+import { IUser } from 'src/interfaces/user';
 import { createReview, getReviews } from 'src/utils/reviews';
+import { getUserInfo } from 'src/utils/user'
 
-import RenderGrid from '../Grid/Grid';
+import RenderGrid from './../Grid/Grid';
 import Review from './Review';
 
 const Reviews = () => {
@@ -20,10 +22,39 @@ const Reviews = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await createReview({ content, stars: 5 });
-    changeContent('');
-    getAllReviews();
-    console.log(res);
+    try {
+      const user: IUser  = await getUserInfo()
+      let userName = ""
+      if (user.firstName !== "Not provided" || user.lastName !== "Not provided") {
+          const msg = "Do you want your name to be included in your review?"
+          if (user.lastName !== "Not provided") {
+              if (window.confirm(msg)) {
+                if (user.firstName !== "Not provided")
+                    userName = user.firstName + " " + user.lastName;
+                else
+                    userName = user.lastName;
+              }
+              else
+                userName = "anonymous";
+          }
+          else if (user.firstName !== "Not provided") {
+              if (window.confirm(msg)) {
+                if (user.lastName !== "Not provided")
+                  userName = user.firstName + " " + user.lastName;
+                else
+                  userName = user.firstName;
+              }
+              else 
+                userName = "anonymous"
+          }
+      }
+      await createReview({ userName , content, stars: 5 });
+      changeContent('');
+      getAllReviews();
+    }
+    catch (err) {
+        console.error(err)
+    }
   };
 
   const getAllReviews = async () => {

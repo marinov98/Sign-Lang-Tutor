@@ -1,4 +1,4 @@
-from config.keys import mongo
+from ..config.keys import mongo
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from bson import ObjectId
