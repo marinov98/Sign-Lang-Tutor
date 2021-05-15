@@ -20,14 +20,6 @@ const Reviews = () => {
   const [content, changeContent] = useState<any>('');
   const [reviews, setReviews] = useState<any[]>([]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const res = await createReview({ content, stars: 5 });
-    changeContent('');
-    getAllReviews();
-    console.log(res);
-  };
-
   const getAllReviews = async () => {
     const reviews: Array<IReview> = await getReviews();
     if (reviews) {
