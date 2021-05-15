@@ -53,6 +53,7 @@ export default class MobileNet {
    */
 
   public async predict(input: any): Promise<any> {
+    input = tf.image.resizeBilinear(input,[this.IMAGE_SIZE,this.IMAGE_SIZE]);
     const preprocessedInput = tf.transpose(
       this.normalize(input, this.IMAGENET_MEAN, this.IMAGENET_STD),
       [2, 0, 1]
