@@ -4,11 +4,9 @@ import { Tensor1D } from '@tensorflow/tfjs';
 import { MODEL_CLASSES } from './MODEL_CLASSES';
 
 export default class MobileNet {
-  private MODEL_URL: string = 'https://sign-lang-tutor.herokuapp.com/api/analysis/model/';
+  private MODEL_URL: string = "/api/analysis/model/";
   private MODEL_DIR: string;
   private MODEL_FILE_URL: string;
-  // private INPUT_NODE_NAME: string = 'image';
-  // private OUTPUT_NODE_NAME: string = 'logits';
   private IMAGENET_MEAN: Tensor1D = tf.tensor1d([0.485, 0.456, 0.406]);
   private IMAGENET_STD: Tensor1D = tf.tensor1d([0.229, 0.224, 0.225]);
   private MODEL_CLASSES: any = MODEL_CLASSES;
@@ -19,8 +17,6 @@ export default class MobileNet {
     modelDir: string = 'test_web_model_2',
     modelFile: string = 'model.json'
   ) {
-    if (process.env.REACT_APP_ENV_TYPE === "development")
-      this.MODEL_URL = "/api/analysis/model/"
     this.MODEL_DIR = modelDir;
     this.MODEL_FILE_URL = modelFile;
   }
