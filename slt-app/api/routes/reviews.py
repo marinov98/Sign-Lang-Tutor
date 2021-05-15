@@ -17,8 +17,11 @@ def create_review():
     if stars is None:
         return jsonify({"msg": "User did not leave a rating"}), 409
 
+    user_name = request.json.get("userName") if request.json.get("userName") else "anonymous"
+
     mongo.db.reviews.insert_one({
         "userId": ObjectId(get_jwt_identity()),
+        "userName": user_name,
         "stars": request.json.get("stars"),
         "Content": request.json.get("content", "No description provided"),
         "starsTotal": 5
