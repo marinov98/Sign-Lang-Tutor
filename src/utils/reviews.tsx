@@ -33,10 +33,10 @@ export const createReview = async (review: any): Promise<any> => {
   }
 };
 
-export const deleteReview = async (_id: any): Promise<any> => {
+export const deleteReview = async (id: string): Promise<any> => {
   try {
     const { data } = await axios.delete('api/reviews/delete', {
-      data: { _id }
+      data: { reviewId: id }
     });
     console.log(data);
   } catch (err) {

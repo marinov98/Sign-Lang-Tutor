@@ -55,7 +55,9 @@ def delete_review():
     if not request.data:
         return jsonify({"msg": "No data found in request!"}), 409
 
-    mongo.db.reviews.remove({"userId": ObjectId(get_jwt_identity()), "_id": ObjectId(request.json.get("reviewId"))})
+    proper_review_id = ObjectId(request.json.get("reviewId"))
+    mongo.db.reviews.find_one_or_404({"_id": proper_review_id})
+    mongo.db.reviews.remove({"userId": ObjectId(get_jwt_identity()), "_id": proper_review_id})
 
     return jsonify({"msg": "Review successfully deleted!"})
 

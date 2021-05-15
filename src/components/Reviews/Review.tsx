@@ -7,9 +7,9 @@ import { deleteReview } from '../../utils/reviews';
 import { UserContext } from 'src/utils/auth';
 
 const Review: React.FC<IReview> = (props: any) => {
-  const removeReview = async (_id: any) => {
-    console.log(_id);
-    const res = await deleteReview(_id);
+  const removeReview = async (id: string) => {
+    console.log(id);
+    const res = await deleteReview(id);
     if (res) {
       console.log(res);
     }

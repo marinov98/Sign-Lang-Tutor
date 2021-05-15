@@ -66,7 +66,7 @@ def update_user():
 
     if user_id:
         proper_id = ObjectId(user_id)
-        user = mongo.db.users.find_one_or_404({"_id": proper_id})
+        mongo.db.users.find_one_or_404({"_id": proper_id})
         mongo.db.users.update(
             {"_id": proper_id},
             {
@@ -78,7 +78,7 @@ def update_user():
             },
         )
     elif email:
-        user = mongo.db.users.find_one_or_404({"email": email})
+        mongo.db.users.find_one_or_404({"email": email})
         mongo.db.users.update(
             {"email": email},
             {
