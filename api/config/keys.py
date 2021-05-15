@@ -1,6 +1,4 @@
 import os
-#import torch
-#import torchvision.models as models
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
