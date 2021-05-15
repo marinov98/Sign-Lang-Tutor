@@ -1,23 +1,34 @@
-import { Grid, makeStyles, Container } from '@material-ui/core';
+import { Grid, makeStyles, Container, GridSize } from '@material-ui/core';
 import { useStyles } from 'src/styles/modulesStyles';
 
 interface GridProps {
-  rowSize: number;
+  rowSize: {
+    xs: GridSize;
+    sm: GridSize;
+    md: GridSize;
+    lg: GridSize;
+  };
   items: any[];
 }
 
-const GridLessons: React.FunctionComponent<GridProps> = props => {
-  const numRows = Math.ceil(props.items.length / props.rowSize);
+const RenderGrid: React.FunctionComponent<GridProps> = props => {
   const classes = useStyles();
+
   return (
     <Container
-      maxWidth="xl"
       className={classes.grid}
       key={Math.random().toString(36).substr(2, 9)}
     >
       <Grid container justify="flex-start" spacing={2}>
         {props.items.map((x, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={2} key={index}>
+          <Grid
+            item
+            xs={props.rowSize.xs}
+            sm={props.rowSize.sm}
+            md={props.rowSize.md}
+            lg={props.rowSize.lg}
+            key={index}
+          >
             {x}
           </Grid>
         ))}
@@ -26,4 +37,4 @@ const GridLessons: React.FunctionComponent<GridProps> = props => {
   );
 };
 
-export default GridLessons;
+export default RenderGrid;

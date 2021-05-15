@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { getModules } from 'src/utils/lessons';
 
-import GridLessons from '../Grid/Grid';
+import RenderGrid from '../Grid/Grid';
 import { Paper } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
@@ -66,8 +66,8 @@ const Modules = () => {
       {loading ? (
         <CircularProgress style={{ marginTop: 20 }} size={90} />
       ) : (
-        <GridLessons
-          rowSize={3}
+        <RenderGrid
+          rowSize={{ xs: 12, sm: 6, md: 4, lg: 2 }}
           items={modules.map((m, index) => (
             <Module name={m} key={index} />
           ))}

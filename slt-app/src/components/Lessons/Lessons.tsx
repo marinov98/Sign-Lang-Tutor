@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Container } from 'reactstrap';
 import { ILesson } from 'src/interfaces/lesson';
 import { getLessons } from 'src/utils/lessons';
-import GridLessons from '../Grid/Grid';
+import RenderGrid from '../Grid/Grid';
 import { Link } from 'react-router-dom';
 import { useStyles } from 'src/styles/modulesStyles';
 
@@ -45,8 +45,8 @@ const Lessons = (props: any) => {
   }, []);
 
   return (
-    <GridLessons
-      rowSize={26}
+    <RenderGrid
+      rowSize={{ xs: 12, sm: 6, md: 4, lg: 2 }}
       items={lessons.map(l => (
         <Lesson key={l._id} {...l} />
       ))}
