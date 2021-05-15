@@ -37,7 +37,6 @@
     "server:test": "cd api && python test.py && cd ..",
     "server:start": "flask run",
     "dev": "concurrently \"npm run server:start\"  \"npm start\"",
-    "flask-start": "cp api && flask run",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
