@@ -102,4 +102,6 @@ def main():
 
 
 if __name__ == "__main__":
+  # example command 
+  # python pt2onnx.py {path/to/model/weights} {model_type} {num_classes} {output_path} {tf_output_dir}
   main()
