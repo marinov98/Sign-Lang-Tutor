@@ -19,7 +19,7 @@ def create_app():
         app.config["JWT_COOKIE_SECURE"] = False
         CORS(app, supports_credentials=True, withCredentials=True)
     else:
-        app = Flask(__name__, static_folder="../build/", static_url_path="/")
+        app = Flask(__name__, static_folder="./build", static_url_path="/")
         app.config["JWT_COOKIE_SECURE"] = True
 
     # jwt and bcrypt
