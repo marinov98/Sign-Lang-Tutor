@@ -491,23 +491,75 @@ dist
 # TernJS port file
 .tern-port
 
+ml-model/keras_model
+ml-model/keras_model_2.h5
+ml-model/saved_model.pb
+ml-model/mobile_net_model_weights/epoch_10.pth.tar
+ml-model/mobile_net_model_weights/epoch_20.pth.tar
+ml-model/mobile_net_model_weights/epoch_30.pth.tar
+ml-model/mobile_net_model_weights/epoch_40.pth.tar
+ml-model/mobile_net_model_weights/epoch_50.pth.tar
+ml-model/mobile_net_model_weights/epoch_60.pth.tar
+ml-model/mobile_net_model_weights/epoch_70.pth.tar
+ml-model/mobile_net_model_weights/final_model.pth.tar
+ml-model/test3_pt2tf/variables/variables.index
+ml-model/test3_pt2tf/variables/variables.data-00000-of-00001
+ml-model/test3_pt2tf/saved_model.pb
+ml-model/variables/variables.data-00000-of-00001
+ml-model/variables/variables.index
 
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
+# testing
+/coverage
 
-slt-app/ml-model/keras_model
-slt-app/ml-model/keras_model_2.h5
-slt-app/ml-model/saved_model.pb
-slt-app/ml-model/mobile_net_model_weights/epoch_10.pth.tar
-slt-app/ml-model/mobile_net_model_weights/epoch_20.pth.tar
-slt-app/ml-model/mobile_net_model_weights/epoch_30.pth.tar
-slt-app/ml-model/mobile_net_model_weights/epoch_40.pth.tar
-slt-app/ml-model/mobile_net_model_weights/epoch_50.pth.tar
-slt-app/ml-model/mobile_net_model_weights/epoch_60.pth.tar
-slt-app/ml-model/mobile_net_model_weights/epoch_70.pth.tar
-slt-app/ml-model/mobile_net_model_weights/final_model.pth.tar
-slt-app/ml-model/test3_pt2tf/variables/variables.index
-slt-app/ml-model/test3_pt2tf/variables/variables.data-00000-of-00001
-slt-app/ml-model/test3_pt2tf/saved_model.pb
-slt-app/ml-model/variables/variables.data-00000-of-00001
-slt-app/ml-model/variables/variables.index
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+*/data
+*.png
+*/dataset5
+*/fingerspelling5.tar.bz2
+*/image_sizes.csv
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# vscode 
+.vscode/
