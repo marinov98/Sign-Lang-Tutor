@@ -5,15 +5,12 @@ import { IReview } from 'src/interfaces/review';
 import { getUser } from 'src/utils/user';
 
 const Review: React.FC<IReview> = props => {
-  const [firstName, setFirstName] = useState<any>('');
-  const [lastName, setLastName] = useState<any>('');
+  const [firstName, setFirstName] = useState<any>('Anonymous');
+  const [lastName, setLastName] = useState<any>('User');
   const getUserName = async (userID: string) => {
     const { firstName, lastName } = await getUser(userID);
     if (firstName) {
-      if (firstName === 'Not provided') {
-        setFirstName('Anonymous');
-        setLastName('User');
-      } else {
+      if (firstName !== 'Not provided') {
         setFirstName(firstName);
         setLastName(lastName);
       }
