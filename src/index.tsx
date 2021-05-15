@@ -7,8 +7,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
 import { getCookie } from './utils/auth';
 
-if (process.env.NODE_ENV !== 'production') {
-  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL_DEV;
+if (process.env.NODE_ENV === 'production') {
+  console.log(process.env.REACT_APP_ENV_TYPE)
+  console.log(process.env.REACT_APP_REFRESH_METHOD)
 }
 
 if (process.env.REACT_APP_REFRESH_METHOD === 'explicit') {
@@ -28,7 +29,6 @@ if (process.env.REACT_APP_REFRESH_METHOD === 'explicit') {
 
     if (cookie !== null) request.headers['X-CSRF-TOKEN'] = cookie;
 
-    console.log(process.env.REACT_APP_ENV_TYPE)
     return request;
   });
 }
