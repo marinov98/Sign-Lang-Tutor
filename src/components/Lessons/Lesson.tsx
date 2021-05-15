@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import { useStyles } from 'src/styles/lessonStyles';
 import { images } from 'src/images/alphabet';
-import MobileNet from './mobilenet';
+import MobileNet from '../../utils/mobilenet';
 
 const Lesson = (props: any) => {
   const classes = useStyles();
