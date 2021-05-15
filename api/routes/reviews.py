@@ -43,7 +43,7 @@ def get_all_reviews(limit=50):
 # /api/reviews/user/get
 @reviews.route("/user/get", methods=["GET"])
 @jwt_required()
-def get_all_reviews():
+def get_user_reviews():
     reviews = mongo.db.reviews.find({"userId": ObjectId(get_jwt_identity())})
 
     return json.dumps([review for review in reviews], indent=4, default=str), 200
