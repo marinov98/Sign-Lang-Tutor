@@ -5,7 +5,7 @@ import { Button, Container } from 'reactstrap';
 
 import { createReview, getReviews } from 'src/utils/reviews';
 import { IUser } from 'src/interfaces/user';
-import { getUserInfo } from "src/utils/user";
+import { getUserInfo } from 'src/utils/user';
 
 const ReviewForm = (props: any) => {
   const [content, changeContent] = useState<any>('');
@@ -14,38 +14,32 @@ const ReviewForm = (props: any) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const user: IUser  = await getUserInfo()
-      let userName = ""
-      if (user.firstName !== "Not provided" || user.lastName !== "Not provided") {
-          const msg = "Do you want your name to be included in your review?"
-          if (user.lastName !== "Not provided") {
-              if (window.confirm(msg)) {
-                if (user.firstName !== "Not provided")
-                    userName = user.firstName + " " + user.lastName;
-                else
-                    userName = user.lastName;
-              }
-              else
-                userName = "anonymous";
-          }
-          else if (user.firstName !== "Not provided") {
-              if (window.confirm(msg)) {
-                if (user.lastName !== "Not provided")
-                  userName = user.firstName + " " + user.lastName;
-                else
-                  userName = user.firstName;
-              }
-              else 
-                userName = "anonymous"
-          }
+      let userName = '';
+      if (
+        props.user.firstName !== 'Not provided' ||
+        props.user.lastName !== 'Not provided'
+      ) {
+        const msg = 'Do you want your name to be included in your review?';
+        if (props.user.lastName !== 'Not provided') {
+          if (window.confirm(msg)) {
+            if (props.user.firstName !== 'Not provided')
+              userName = props.user.firstName + ' ' + props.user.lastName;
+            else userName = props.user.lastName;
+          } else userName = 'anonymous';
+        } else if (props.user.firstName !== 'Not provided') {
+          if (window.confirm(msg)) {
+            if (props.user.lastName !== 'Not provided')
+              userName = props.user.firstName + ' ' + props.user.lastName;
+            else userName = props.user.firstName;
+          } else userName = 'anonymous';
+        }
       }
-      await createReview({ userName , content, stars });
+      await createReview({ userName, content, stars });
       changeContent('');
       changeStars(0);
       props.getAllReviews();
-    }
-    catch(err) {
-      console.error(err)
+    } catch (err) {
+      console.error(err);
     }
   };
   return (

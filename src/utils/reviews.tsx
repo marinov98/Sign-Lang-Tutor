@@ -32,3 +32,17 @@ export const createReview = async (review: any): Promise<any> => {
     console.error(err);
   }
 };
+
+export const deleteReview = async (_id: any): Promise<any> => {
+  try {
+    const { data } = await axios.delete('api/reviews/delete', {
+      data: { _id }
+    });
+    console.log(data);
+  } catch (err) {
+    if (err.response) {
+      return err.response.error;
+    }
+    console.log(err);
+  }
+};
