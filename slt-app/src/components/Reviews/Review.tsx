@@ -1,5 +1,6 @@
-import { Paper, Typography } from '@material-ui/core';
+import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
+
 import React, { useEffect, useState, useContext } from 'react';
 import { IReview } from 'src/interfaces/review';
 import { getUser } from 'src/utils/user';
@@ -7,6 +8,7 @@ import { getUser } from 'src/utils/user';
 const Review: React.FC<IReview> = props => {
   const [firstName, setFirstName] = useState<any>('Anonymous');
   const [lastName, setLastName] = useState<any>('User');
+
   const getUserName = async (userID: string) => {
     const { firstName, lastName } = await getUser(userID);
     if (firstName) {
@@ -23,12 +25,24 @@ const Review: React.FC<IReview> = props => {
     getUserName(props.userId);
   }, []);
   return (
-    <Paper elevation={5}>
-      <Typography>
-        {firstName} {lastName}
-      </Typography>
-      <Typography>{props.Content}</Typography>
-      <Rating max={props.starsTotal} value={props.stars} readOnly />
+    <Paper elevation={5} style={{ height: '100%' }}>
+      <Container>
+        <Grid container direction="column" spacing={1}>
+          <Grid item container direction="row" justify="space-between">
+            <Grid item>
+              <Typography>
+                {firstName} {lastName}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Rating max={props.starsTotal} value={props.stars} readOnly />
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Typography paragraph>{props.Content}</Typography>
+          </Grid>
+        </Grid>
+      </Container>
     </Paper>
   );
 };

@@ -67,6 +67,7 @@ const Modules = () => {
         <CircularProgress style={{ marginTop: 20 }} size={90} />
       ) : (
         <RenderGrid
+          gridSpacing={2}
           rowSize={{ xs: 12, sm: 6, md: 4, lg: 2 }}
           items={modules.map((m, index) => (
             <Module name={m} key={index} />

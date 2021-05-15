@@ -47,6 +47,7 @@ const Lessons = (props: any) => {
   return (
     <RenderGrid
       rowSize={{ xs: 12, sm: 6, md: 4, lg: 2 }}
+      gridSpacing={2}
       items={lessons.map(l => (
         <Lesson key={l._id} {...l} />
       ))}
