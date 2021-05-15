@@ -12,6 +12,7 @@ import Lessons from './components/Lessons/Lessons';
 import Modules from './components/Lessons/Modules';
 import Lesson from './components/Lessons/Lesson';
 import FrontPage from './components/FrontPage/FrontPageContainer';
+import Reviews from './components/Reviews/Reviews';
 
 const App: React.FunctionComponent = () => {
   const [auth, setAuth] = useState<IUser | null>(null);
@@ -46,6 +47,7 @@ const App: React.FunctionComponent = () => {
           <Route exact path="/" component={FrontPage} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
+          <Route path="/reviews" component={Reviews} />
         </Switch>
       </UserContext.Provider>
     </BrowserRouter>
