@@ -6,12 +6,12 @@ import os
 from flask import Blueprint, request, jsonify, send_file, abort
 from flask_jwt_extended import jwt_required
 #from torchvision import transforms
-from config.keys import ml
+#from ..config.keys import ml
 
-if ml:
-    from config.keys import model, device
-else:
-    model = None
+#if ml:
+#    from ..config.keys import model, device
+#else:
+#    model = None
 
 from PIL import Image
 import base64
@@ -88,7 +88,7 @@ def infer():
 @analysis.route("/model/<folder>/<file>", methods=["GET"])
 def serve_model(folder="tfjs_model", file="model.json"):
     try:
-        path = os.path.realpath(os.path.join("../ml-model", folder, file))
+        path = os.path.realpath(os.path.join("ml-model", folder, file))
         if file == "model.json":
             with open(path, 'r') as f:
                 j = json.load(f)

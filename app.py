@@ -1,7 +1,7 @@
 import os
 from datetime import timezone, timedelta, datetime
 from flask import Flask
-from config.keys import bcrypt, mongo, db_url, db_name, jwt
+from api.config.keys import bcrypt, mongo, db_url, db_name, jwt
 from flask_jwt_extended import (
     create_access_token,
     set_access_cookies,
@@ -36,9 +36,9 @@ def create_app():
     mongo.init_app(app)
 
     # routes
-    import routes
+    from api.routes import init_app
 
-    routes.init_app(app)
+    init_app(app)
 
     return app
 

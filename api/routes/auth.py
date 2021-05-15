@@ -1,4 +1,4 @@
-from config.keys import mongo, bcrypt
+from ..config.keys import mongo, bcrypt
 import json
 from bson import ObjectId
 from datetime import datetime
@@ -10,7 +10,7 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt_identity,
 )
-from utils.lessons import create_alphabet_lessons
+from ..utils.lessons import create_alphabet_lessons
 
 
 auth = Blueprint("auth", __name__)

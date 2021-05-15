@@ -4,7 +4,7 @@ from .analysis import analysis
 from .users import users
 from .lessons import lessons
 from .reviews import reviews
-from config.keys import mongo
+from ..config.keys import mongo
 
 
 def init_app(app):

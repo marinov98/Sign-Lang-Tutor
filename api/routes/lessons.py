@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 import json
 from bson import ObjectId
-from config.keys import mongo
+from ..config.keys import mongo
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 lessons = Blueprint("lessons", __name__)
