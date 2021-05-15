@@ -44,3 +44,19 @@ export const removeUser = async (
     }
   }
 };
+
+export const getUser = async (userID: string) => {
+  try {
+    const url = `/api/users/single?id=${userID}`;
+    const { data } = await axios.get(url);
+    if (data) {
+      return data;
+    }
+    return null;
+  } catch (err) {
+    if (err.response) {
+      return err.response.data;
+    }
+    console.error(err);
+  }
+};
