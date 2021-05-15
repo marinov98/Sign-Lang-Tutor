@@ -45,7 +45,7 @@ export const removeUser = async (
   }
 };
 
-export const getUser = async (userID: string) => {
+export const getUser = async (userID: string): Promise<any> => {
   try {
     const url = `/api/users/single?id=${userID}`;
     const { data } = await axios.get(url);
