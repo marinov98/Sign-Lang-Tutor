@@ -19,8 +19,12 @@ export default class MobileNet {
     modelDir: string = 'test_web_model_2',
     modelFile: string = 'model.json'
   ) {
-    if (process.env.REACT_APP_ENV_TYPE !== "development")
+    if (process.env.REACT_APP_ENV_TYPE !== "development") {
+      console.log("TRIGGERED!")
       this.MODEL_URL = "https://sign-lang-tutor.herokuapp.com/api/analysis/model/"
+    }
+    else 
+      console.log("NOT TRIGGERED")
     this.MODEL_DIR = modelDir;
     this.MODEL_FILE_URL = modelFile;
 
