@@ -1,4 +1,4 @@
-import { Grid, makeStyles, Container, GridSize } from '@material-ui/core';
+import { Grid, Container, GridSize, GridSpacing } from '@material-ui/core';
 import { useStyles } from 'src/styles/modulesStyles';
 
 interface GridProps {
@@ -8,6 +8,7 @@ interface GridProps {
     md: GridSize;
     lg: GridSize;
   };
+  gridSpacing: GridSpacing;
   items: any[];
 }
 
@@ -19,7 +20,7 @@ const RenderGrid: React.FunctionComponent<GridProps> = props => {
       className={classes.grid}
       key={Math.random().toString(36).substr(2, 9)}
     >
-      <Grid container justify="flex-start" spacing={2}>
+      <Grid container justify="flex-start" spacing={props.gridSpacing}>
         {props.items.map((x, index) => (
           <Grid
             item
