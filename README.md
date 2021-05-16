@@ -9,6 +9,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `yarn/npm run app:install`
+
+Installs packages for both the frontend and backend and goes into appropriate conda environment
+
 ### `yarn start`
 
 Runs the app in the development mode.\
@@ -46,10 +50,6 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 Installs the python environment from the enviroment file located in the `api` folder and then returns the user to the original directory
 
-### `yarn/npm run app:install`
-
-Installs packages for both the frontend and backend and goes into appropriate conda environment
-
 ### `yarn/npm run server:start`
 
 Starts the flask back-end server
@@ -74,6 +74,33 @@ Create React environment file `cat .env.sample > .env` , fields are already fill
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Flask Backend API for SLT
+Contains the flask code used in setting up the database and making the routes for slt
+
+### Contributing
+
+#### Python
+
+This backend uses python's Flask framework and uses [conda](https://docs.conda.io/en/latest/miniconda.html) for package, environment, and dependency management
+- *NOTE* commands might be different based on OS 
+- To create the appropriate python environment run `conda create -n slt-pip python=3.7`
+	- To activate the environment run `conda activate slt-pip`
+		- Install all necessary packages with pip: `python -m pip install -r requirements.txt`
+	- To update the environment run `python -m pip freeze > requirements.txt`
+- Create Flask environment file `cat .flaskenv.example > .env` and fill in appropriate fields
+- To delete Python environment run `conda remove env --name slt-pip --all`
+
+#### Database
+
+Our backend uses [MongoDB](https://docs.mongodb.com/manual/installation/) as its DBMS, for making 
+a local database use the `mongodb://127.0.0.1:27017/mydbname` as a connect string
+
+### Running the backend
+- Assuming you have your environment setup, then use the command `flask run` to start the server
+#### Running tests
+- To initiate unit testing, run `python test.py`
+
 
 ## Contributors
 - [marinov98](https://github.com/marinov98)
