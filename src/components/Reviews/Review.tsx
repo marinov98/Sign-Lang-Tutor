@@ -1,16 +1,16 @@
 import { Button, Container, Grid, Paper, Typography } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { IReview } from 'src/interfaces/review';
-import { getUser } from 'src/utils/user';
 import { deleteReview } from '../../utils/reviews';
 import { UserContext } from 'src/utils/auth';
 
 const Review: React.FC<IReview> = (props: any) => {
   const removeReview = async (id: string) => {
-    const res = await deleteReview(id);
-
-    props.getAllReviews();
+    if (window.confirm("Are you sure you want to delete your review?")) {
+      await deleteReview(id);
+      props.getAllReviews();
+    }
   };
   const { authenticated } = useContext(UserContext);
   return (
