@@ -61,7 +61,7 @@ const Lesson = (props: any) => {
 
   useEffect(() => {
     allLessons();
-    //setupModel();
+    setupModel();
   }, []);
 
   const handleChange = (value: string) => {
