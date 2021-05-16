@@ -69,6 +69,9 @@ const NavBar: React.FunctionComponent = () => {
           </Typography>
           {authenticated ? (
             <React.Fragment>
+              <Button color="inherit" onClick={() => history.push('/reviews')}>
+                Reviews
+              </Button>
               <Button color="inherit" onClick={() => history.push('/')}>
                 About
               </Button>
@@ -87,6 +90,9 @@ const NavBar: React.FunctionComponent = () => {
             </React.Fragment>
           ) : (
             <React.Fragment>
+              <Button color="inherit" onClick={() => history.push('/reviews')}>
+                Reviews
+              </Button>
               <Button color="inherit" onClick={() => history.push('/')}>
                 About
               </Button>
