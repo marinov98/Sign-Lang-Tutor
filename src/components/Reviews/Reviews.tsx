@@ -28,16 +28,15 @@ const Reviews = () => {
     const reviews: Array<IReview> = await getReviews();
     if (reviews) {
       setReviews(reviews);
-      console.log(reviews);
+
       return;
     }
-    console.log('Error occured getting reviews');
+    console.error('Error occured getting reviews');
   };
 
   const getUser = async () => {
     const user = await getUserInfo();
     setUser(user);
-    console.log(user);
   };
 
   useEffect(() => {

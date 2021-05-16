@@ -42,7 +42,7 @@ const Account = () => {
       setUserReviews(reviews);
       return;
     }
-    console.log('Error occured');
+    console.error('Error occurred getting user reviews');
   };
 
   const userInfo = async () => {
@@ -63,7 +63,7 @@ const Account = () => {
       return;
     }
 
-    console.log('Error occured');
+    console.error('Error occured getting user');
   };
 
   const handleDelete = async () => {

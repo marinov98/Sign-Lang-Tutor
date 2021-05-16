@@ -40,7 +40,7 @@ const Lesson = (props: any) => {
       return;
     }
     // lessons could not fetched error handling
-    console.log('Error occured getting lessons');
+    console.error('Error occured getting lessons');
   };
 
   const setupModel = async () => {
@@ -61,7 +61,7 @@ const Lesson = (props: any) => {
 
   useEffect(() => {
     allLessons();
-    setupModel();
+    //setupModel();
   }, []);
 
   const handleChange = (value: string) => {
