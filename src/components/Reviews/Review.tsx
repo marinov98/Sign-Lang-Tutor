@@ -7,7 +7,7 @@ import { UserContext } from 'src/utils/auth';
 
 const Review: React.FC<IReview> = (props: any) => {
   const removeReview = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete your review?")) {
+    if (window.confirm('Are you sure you want to delete your review?')) {
       await deleteReview(id);
       props.getAllReviews();
     }

@@ -19,11 +19,11 @@ export default class MobileNet {
     modelDir: string = 'test_web_model_2',
     modelFile: string = 'model.json'
   ) {
-    if (process.env.REACT_APP_ENV_TYPE === "production")
-      this.MODEL_URL = "https://sign-lang-tutor.herokuapp.com/api/analysis/model/"
+    if (process.env.REACT_APP_ENV_TYPE === 'production')
+      this.MODEL_URL =
+        'https://sign-lang-tutor.herokuapp.com/api/analysis/model/';
     this.MODEL_DIR = modelDir;
     this.MODEL_FILE_URL = modelFile;
-
   }
 
   public async load(): Promise<void> {
@@ -53,7 +53,7 @@ export default class MobileNet {
    */
 
   public async predict(input: any): Promise<any> {
-    input = tf.image.resizeBilinear(input,[this.IMAGE_SIZE,this.IMAGE_SIZE]);
+    input = tf.image.resizeBilinear(input, [this.IMAGE_SIZE, this.IMAGE_SIZE]);
     const preprocessedInput = tf.transpose(
       this.normalize(input, this.IMAGENET_MEAN, this.IMAGENET_STD),
       [2, 0, 1]
