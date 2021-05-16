@@ -1,5 +1,5 @@
 # Sign-Lang-Tutor
-A web app aimed at teaching sign language. Test if for yourself by clicking [here](https://sign-lang-tutor.herokuapp.com/)
+A web app aimed at teaching sign language. Test it for yourself by clicking [here](https://sign-lang-tutor.herokuapp.com/)
 
 ## Getting Started with SLT
 
