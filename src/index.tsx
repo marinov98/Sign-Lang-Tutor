@@ -7,11 +7,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
 import { getCookie } from './utils/auth';
 
-if (process.env.NODE_ENV === 'production') {
-  console.log(process.env.REACT_APP_ENV_TYPE);
-  console.log(process.env.REACT_APP_REFRESH_METHOD);
-}
-
 if (process.env.REACT_APP_REFRESH_METHOD === 'explicit') {
   axios.interceptors.request.use(request => {
     const token = localStorage.getItem('access_token');
