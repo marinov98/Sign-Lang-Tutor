@@ -31,7 +31,7 @@ const Photobooth = (props: PhotoboothProps) => {
   }, [webcamRef]);
 
   return (
-    <Grid item direction="column">
+    <Grid item>
       <Container className={classes.container}>
         <Webcam
           className={classes.webcam}

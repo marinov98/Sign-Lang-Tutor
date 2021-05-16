@@ -40,7 +40,7 @@ const Lesson = (props: any) => {
       return;
     }
     // lessons could not fetched error handling
-    console.log('Error occured getting lessons');
+    console.error('Error occured getting lessons');
   };
 
   const setupModel = async () => {

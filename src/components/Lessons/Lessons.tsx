@@ -37,7 +37,7 @@ const Lessons = (props: any) => {
       setLessons(lessons);
       return;
     }
-    console.log('Error occured getting lessons');
+    console.error('Error occured getting lessons');
   };
 
   useEffect(() => {

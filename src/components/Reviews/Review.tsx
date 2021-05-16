@@ -8,11 +8,8 @@ import { UserContext } from 'src/utils/auth';
 
 const Review: React.FC<IReview> = (props: any) => {
   const removeReview = async (id: string) => {
-    console.log(id);
     const res = await deleteReview(id);
-    if (res) {
-      console.log(res);
-    }
+
     props.getAllReviews();
   };
   const { authenticated } = useContext(UserContext);

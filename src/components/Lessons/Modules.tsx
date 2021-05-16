@@ -50,7 +50,7 @@ const Modules = () => {
         checkAuth();
       }
     } else {
-      console.log('Error occured');
+      console.error('Error occured getting modules');
     }
 
     // worst-case safety check
