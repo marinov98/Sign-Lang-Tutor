@@ -190,7 +190,7 @@ const Account = () => {
                     onClick={() => history.push('/reviews')}
                   >
                     {' '}
-                    Submit a review
+                    Submit another review
                   </Button>
                 </Grid>
               </Grid>
