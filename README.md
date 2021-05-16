@@ -88,7 +88,7 @@ This backend uses python's Flask framework and uses [conda](https://docs.conda.i
 	- To activate the environment run `conda activate slt-pip`
 		- Install all necessary packages with pip: `python -m pip install -r requirements.txt`
 	- To update the environment run `python -m pip freeze > requirements.txt`
-- Create Flask environment file `cat .flaskenv.example > .env` and fill in appropriate fields
+- Create Flask environment file `cat .env.example > .env` and fill in appropriate fields
 - To delete Python environment run `conda remove env --name slt-pip --all`
 
 #### Database
@@ -99,7 +99,7 @@ a local database use the `mongodb://127.0.0.1:27017/mydbname` as a connect strin
 ### Running the backend
 - Assuming you have your environment setup, then use the command `flask run` to start the server
 #### Running tests
-- To initiate unit testing, run `python test.py`
+- To initiate unit testing, run `python test.py` inside the `api` folder
 
 
 ## Contributors
